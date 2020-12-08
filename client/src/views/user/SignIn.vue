@@ -1,0 +1,122 @@
+<template>
+  <a-row id="loginLayout" type="flex" justify="center" align="bottom" class="container">
+    <a-col :xs="19" :sm="15" :md="11" :lg="8" :xl="20">
+      <a-row type="flex" justify="center">
+        <a-col :xl="24">
+          <a-row>
+            <a-col flex="1">
+              <div>
+                <img src="@/assets/logo.png" alt="logo" class="login-logo" />
+                <h3 class="login-title">教研项目管理系统</h3>
+              </div>
+              <a-from layout="horizontal" align="end">
+                <a-from-item>
+                  <a-input v-model:value="jobCode" placeholder="请输入工号">
+                    <template v-slot:prefix>
+                      <user-outlined class="login-icon-color" />
+                    </template>
+                  </a-input>
+                </a-from-item>
+                <a-from-item>
+                  <a-input-password v-model:value="password" placeholder="请输入密码">
+                    <template v-slot:prefix>
+                      <lock-outlined class="login-icon-color" />
+                    </template>
+                  </a-input-password>
+                </a-from-item>
+                <a-from-item>
+                  <a-row type="flex" justify="space-between">
+                    <!-- <a-checkbox v-model="checked">自动登录</a-checkbox>
+                    <a @click="forgetNotification">忘记密码</a> -->
+                  </a-row>
+                </a-from-item>
+                <a-from-item>
+                  <a-button type="primary" block @click="login">登录</a-button>
+                </a-from-item>
+              </a-from>
+            </a-col>
+          </a-row>
+          <a-row>
+            <p class="copyright">Copyright © 2020 丹东卓智科技有限公司</p>
+          </a-row>
+        </a-col>
+      </a-row>
+    </a-col>
+  </a-row>
+</template>
+
+<script>
+// TODO: 没从antd中引入Checkbox
+import { Row, Col, Button, Input, Form, notification } from 'ant-design-vue'
+import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
+import { mapActions, mapState } from 'vuex'
+export default {
+  components: {
+    ARow: Row,
+    ACol: Col,
+    AButton: Button,
+    AInput: Input,
+    AInputPassword: Input.Password,
+    AFrom: Form,
+    AFromItem: Form.Item,
+    // ACheckbox: Checkbox,
+    UserOutlined,
+    LockOutlined
+  },
+  data() {
+    return {
+      jobCode: null,
+      password: null,
+      checked: false,
+      showmore: false
+    }
+  },
+  computed: { ...mapState({}) },
+  methods: {
+    ...mapActions(['executeSignIn', 'loadDictionaryRoleInfo']),
+    login() {
+      this.executeSignIn({ jobCode: this.jobCode, password: this.password }).then((res, err) => {
+        console.log(res)
+        if (res.code === 200) this.$router.push({ name: 'index' })
+      })
+    },
+    forgetNotification() {
+      notification.info({
+        message: '提示信息',
+        description: '如果您忘记密码，请联络所在部门教研项目负责人。',
+        key: 'forgetPasswordAction'
+      })
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+#loginLayout.container {
+  height: 35rem;
+  border-radius: 6px;
+  background-color: rgb(243, 243, 243);
+
+  .login-logo {
+    width: 90px;
+    height: 90px;
+  }
+
+  .login-title {
+    font-weight: 600;
+    letter-spacing: 4px;
+    line-height: 4em;
+  }
+
+  .login-icon-color {
+    color: rgba(0, 0, 0, 0.25);
+  }
+
+  .copyright {
+    font-size: 0.3em;
+    line-height: 0.5em;
+    color: rgb(160, 160, 160);
+    margin-bottom: 1rem;
+  }
+}
+</style>
