@@ -12,6 +12,7 @@ const {
   projectMemberFindByProjectId,
   sameProjectVerifyRepeat,
   projectMemberFindByJobCode,
+  teacherProjectInfoFindByJobcode,
 } = require('../controllers/projectMember')
 
 const router = express.Router()
@@ -61,6 +62,18 @@ router.post(
   (req, res) => {
     res.json(
       listFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message, req.projectMemberInfo)
+    )
+  }
+)
+
+router.get(
+  '/find/allinfo/by-jobcode',
+  teacherProjectInfoFindByJobcode,
+  (req, res) => {
+    res.json(
+      entityFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message, {
+        ...req.teacherProjectInfo,
+      })
     )
   }
 )

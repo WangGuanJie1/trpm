@@ -8,7 +8,8 @@ export default createStore({
   state: {
     token: window.localStorage.getItem('authorization'),
     signInLoading: false, // 登录加载状态
-    currentTeacherInfo: {}, // 当前登录教师信息
+    currentTeacherInfo: {}, // 当前登录教师信息(teacherInfo、roleInfo、settingInfo)
+    teacherProjectInfo: {}, // 当前登录教师的项目信息（teacherProjectList、totalCount、leaderCount、participantCount）
     dictionaryResearchCategoryInfo: [], // 研究类别字典
     dictionaryTermInfo: [], // 学期字典
     dictionaryDepartmentInfo: [], // 部门字典
@@ -53,6 +54,9 @@ export default createStore({
     },
     SET_BATCH_PARTICULARS_INFO: (state, batchParticularsInfo) => {
       state.batchParticularsInfo = batchParticularsInfo
+    },
+    SET_TEACHER_PROJECT_INFO: (state, teacherProjectInfo) => {
+      state.teacherProjectInfo = teacherProjectInfo
     }
   },
   actions: {
@@ -82,6 +86,8 @@ export default createStore({
           dispatch('loadDictionaryProjectBatchInfo')
           dispatch('loadDictionarySecretQuestionInfo')
           dispatch('loadBatchParticularsInfo')
+          const jobCode = res.data.currentTeacherInfo.teacherInfo.jobCode
+          dispatch('findTeacherProjectInfoByJobcode', { jobCode })
         })
         return res
       })
@@ -482,6 +488,41 @@ export default createStore({
           console.log(err)
           return
         }
+        return res
+      })
+    },
+    /**
+     * 根据项目编号更新项目信息
+     * @method projectUpdateById
+     * @param {Function} commit context.commit
+     * @param {Object} payload 负载
+     * @returns {Object} 更新后的项目信息
+     */
+    projectUpdateById: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.projectUpdateById(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
+    },
+    /**
+     * 根据教师工号找到项目基本信息、成员信息、教学工作简历、教研工作简历
+     * @method findTeacherProjectInfoByJobcode
+     * @param {Function} commit context.commit
+     * @param {Object} payload 负载
+     * @returns {Array} 查找到的项目相关信息
+     */
+    findTeacherProjectInfoByJobcode: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.findTeacherProjectInfoByJobcode(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        stateSuccessVerify(res.code, () => {
+          commit('SET_TEACHER_PROJECT_INFO', res.data)
+        })
         return res
       })
     }

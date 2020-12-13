@@ -1,12 +1,12 @@
 <template>
   <BaseContent id="projectApplication" class="project-application-wrapper" :headerPageTitle="this.$route.meta.title">
     <template #content>
-      <a-tabs :tabBarStyle="tabBarStyle">
+      <a-tabs>
         <template #tabBarExtraContent style="background-color: skyblue">
           <a-row>
             <a-col>
-              <a-button type="primary" @click="onSubmit">提交</a-button>
-              <a-button type="default" @click="temporaryStorage" class="ml-10">暂存</a-button>
+              <a-button type="primary" @click="onSubmit(1)">提交</a-button>
+              <a-button type="default" @click="onSubmit(0)" class="ml-10">暂存</a-button>
             </a-col>
           </a-row>
         </template>
@@ -23,7 +23,7 @@
               </a-select>
             </a-form-item>
             <a-form-item label="所在单位">
-              <a-input v-model:value="baseProjectData.departmentName" />
+              <a-input v-model:value="baseProjectData.department" />
             </a-form-item>
             <a-form-item label="办公电话">
               <a-input v-model:value="baseProjectData.landline" />
@@ -282,19 +282,19 @@
         <a-tab-pane key="5" tab="立项依据和目标">
           <a-form layout="vertical" :model="baseProjectData">
             <a-form-item label="本项目的现状与存在问题分析">
-              <editor :value="baseProjectData.currentSituationAndProblemAnalysis" @input="csapa"></editor>
+              <editor :value="baseProjectData.cuSiAnPrAn" @input="csapa"></editor>
             </a-form-item>
             <a-form-item label="本项目的改革研究内容、主要特色和要解决的关键问题">
-              <editor :value="baseProjectData.researchContentAndMainFeaturesAndKeyIssues" @input="rcamfaki"></editor>
+              <editor :value="baseProjectData.reCoAnMaFeAnKeIs" @input="rcamfaki"></editor>
             </a-form-item>
             <a-form-item label="本项目改革研究的预期成果">
               <editor :value="baseProjectData.expectedResults" @input="er"></editor>
             </a-form-item>
             <a-form-item label="本项目的改革研究的总体安排及进度">
-              <editor :value="baseProjectData.arrangementAndProgress" @input="aap"></editor>
+              <editor :value="baseProjectData.arAnPr" @input="aap"></editor>
             </a-form-item>
             <a-form-item label="已有的工作基础、条件及前期已有工作成果">
-              <editor :value="baseProjectData.workExperienceAndAchievements" @input="weaa"></editor>
+              <editor :value="baseProjectData.woExAnAc" @input="weaa"></editor>
             </a-form-item>
           </a-form>
         </a-tab-pane>
@@ -328,17 +328,17 @@ import BaseContent from '@/views/layouts/BaseContent'
 const baseProjectData = {
   projectName: '',
   _researchCategoryId: '',
-  departmentName: '',
+  department: '',
   landline: '',
   telphone: '',
   email: '',
   dateWritten: '',
   researchPeriod: 1,
-  currentSituationAndProblemAnalysis: '',
-  researchContentAndMainFeaturesAndKeyIssues: '',
+  cuSiAnPrAn: '',
+  reCoAnMaFeAnKeIs: '',
   expectedResults: '',
-  arrangementAndProgress: '',
-  workExperienceAndAchievements: ''
+  arAnPr: '',
+  woExAnAc: ''
 }
 
 // 主要科研和教研工作简历表格字段定义
@@ -585,9 +585,6 @@ export default {
     return {
       projectId: null, // 项目编号，需要在created周期中从route.params获取
       dateWrittenDisable: false, // 填表日期控件是否可编辑
-      tabBarStyle: {
-        // textAlign: 'left'
-      },
       // 表单配置
       formOption: {
         labelCol: { span: 2 },
@@ -636,8 +633,10 @@ export default {
   },
   computed: {
     ...mapState({
+      teacherProjectInfo: (state) => {},
       researchCategoryArray: (state) => state.dictionaryResearchCategoryInfo,
-      termArray: (state) => state.dictionaryTermInfo
+      termArray: (state) => state.dictionaryTermInfo,
+      jobCode: (state) => state.currentTeacherInfo.teacherInfo.jobCode
     }),
     momentTime: () => moment(new Date(), 'YYYY-MM-DD')
   },
@@ -654,6 +653,7 @@ export default {
   },
   created() {
     this.projectId = this.$route.params.projectId
+    this.baseProjectData.projectId = this.projectId
     for (let i = 0; i < this.memberCount; i++) {
       memberTableData.push(defaultMemberData(i))
     }
@@ -666,24 +666,22 @@ export default {
     this.cacheMemberTableData = memberTableData.map((item) => ({ ...item }))
     this.cacheTeachingTableData = teachingTableData.map((item) => ({ ...item }))
     this.cacheResearchTableData = researchTableData.map((item) => ({ ...item }))
-    this.baseProjectData.departmentName = this.$store.state.currentTeacherInfo.teacherInfo.department
+    this.baseProjectData.department = this.$store.state.currentTeacherInfo.teacherInfo.department
   },
   methods: {
-    ...mapActions(['findTeacherByJobcode']),
+    ...mapActions(['findTeacherByJobcode', 'projectUpdateById']),
     /**
      * 提交项目
      * @method onSubmit
+     * @param {Number} auditStatus 项目审核状态号，对应MongoDB.project.auditStatus
      */
-    onSubmit() {
-      console.log(this.baseProjectData)
-    },
-    /**
-     * 暂存项目
-     * @method temporaryStorage
-     */
-    temporaryStorage() {
-      console.log(this.$store.state.dictionaryResearchCategoryInfo)
-      console.log(this.$store.state.teacherInfo)
+    onSubmit(auditStatus) {
+      const payload = JSON.parse(JSON.stringify(this.baseProjectData))
+      payload.auditStatus = auditStatus
+      this.projectUpdateById(payload).then((res, err) => {
+        console.log('存储结果如下：')
+        console.log(res)
+      })
     },
     /**
      * 表值改变（成员表）
@@ -906,7 +904,7 @@ export default {
      * @param {String} e 改变后的内容
      */
     csapa(e) {
-      this.baseProjectData.currentSituationAndProblemAnalysis = e
+      this.baseProjectData.cuSiAnPrAn = e
     },
     /**
      * 本项目的改革研究内容、主要特色和要解决的关键问题（内容更改）
@@ -914,7 +912,7 @@ export default {
      * @param {String} e 改变后的内容
      */
     rcamfaki(e) {
-      this.baseProjectData.researchContentAndMainFeaturesAndKeyIssues = e
+      this.baseProjectData.reCoAnMaFeAnKeIs = e
     },
     /**
      * 本项目改革研究的预期成果（内容更改）
@@ -930,7 +928,7 @@ export default {
      * @param {String} e 改变后的内容
      */
     aap(e) {
-      this.baseProjectData.arrangementAndProgress = e
+      this.baseProjectData.arAnPr = e
     },
     /**
      * 已有的工作基础、条件及前期已有工作成果（内容更改）
@@ -938,7 +936,7 @@ export default {
      * @param {String} e 改变后的内容
      */
     weaa(e) {
-      this.baseProjectData.workExperienceAndAchievements = e
+      this.baseProjectData.woExAnAc = e
     },
     /**
      * 是否为教师工号字段

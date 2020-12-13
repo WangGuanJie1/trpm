@@ -72,7 +72,7 @@ const ProjectSchema = new Schema(
       default: '',
     },
     // 本项目改革研究的预期成果（输入）
-    exRe: {
+    expectedResults: {
       type: String,
       default: '',
     },

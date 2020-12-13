@@ -179,6 +179,7 @@ export default {
     }
   },
   methods: {
+    // TODO: projectMemberFindByJobCode应被替换为teacherProjectInfoFindByJobcode，2者接口获得的数据不一样，需要对整体做出相关修改，数据具体请postman
     ...mapActions(['projectMemberFindByJobCode', 'initializeProject']),
     /**
      * 验证申报资格，符合申报条件创建项目

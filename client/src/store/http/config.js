@@ -43,6 +43,7 @@ export default {
   FIND_ROLE_BY_TEACHERID: `${BASE_URL}${ROLE}/find/by-teacherid`, // 根据教师编号查询身份信息
   FIND_PROJECT_MEMBER_BY_PROJECTID: `${BASE_URL}${PROJ_MEMB}/find/by-projectid`, // 根据项目编号查询项目成员信息
   FIND_PROJECT_MEMBER_BY_JOBCODE: `${BASE_URL}${PROJ_MEMB}/find/by-jobcode`, // 根据教师工号查询主持和参与的项目数量
+  FIND_TEACHER_PROJECT_INFO_BY_JOBCODE: `${BASE_URL}${PROJ_MEMB}/find/allinfo/by-jobcode`, // 根据教师工号找到项目基本信息、成员信息、教学工作简历、教研工作简历
   CREATE_DICTIONARY_TERM: `${BASE_URL}${DIC_TERM}/create`, // 创建学期字典信息
   CREATE_DICTIONARY_ROLE: `${BASE_URL}${DIC_ROLE}/create`, // 创建身份字典信息
   CREATE_DICTIONARY_RESEARCH_CATEGORY: `${BASE_URL}${DIC_RESE_CATE}/create`, // 创建研究类别字典信息
@@ -53,6 +54,7 @@ export default {
   CREATE_LOG_PROJECT_STATUS: `${BASE_URL}${LOG_PROJ_STAT}/create`, // 创建项目状态日志信息
   CREATE_TOKEN: `${BASE_URL}${TOKEN}/creat`, // 创建token
   CREATE_PROJECT_MEMBER: `${BASE_URL}${PROJ_MEMB}/create`, // 创建项目成员
+  UPDATE_PROJECT_BY_ID: `${BASE_URL}${PROJ}/update/by-id`, // 根据项目编号更新项目信息
   VERIFY_TOKEN: `${BASE_URL}${TOKEN}/verify`, // 验证token
   VERIFY_APPLY_QUALIFICATION: `${BASE_URL}${PROJ_MEMB}/veApQu` // 验证项目申请资格
 }

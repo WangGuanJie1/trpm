@@ -421,5 +421,34 @@ export default {
       data: payload
     })
     return res
+  },
+  /**
+   * 根据项目编号更新项目信息
+   * @method projectUpdateById
+   * @param {Object} payload 负载
+   * @returns {Object} 更新后的项目信息
+   */
+  projectUpdateById: async (payload) => {
+    const res = await http({
+      url: config.UPDATE_PROJECT_BY_ID,
+      method: 'post',
+      data: payload
+    })
+    return res
+  },
+  /**
+   * 根据教师工号找到项目基本信息、成员信息、教学工作简历、教研工作简历
+   * @method findTeacherProjectInfoByJobcode
+   * @param {Object} payload 负载
+   * @returns {Array} 查找到的项目相关信息
+   */
+  findTeacherProjectInfoByJobcode: async (payload) => {
+    const res = await http({
+      url: config.FIND_TEACHER_PROJECT_INFO_BY_JOBCODE,
+      data: {
+        jobCode: payload.jobCode
+      }
+    })
+    return res
   }
 }

@@ -4,6 +4,7 @@ const { stateFormat } = require('./dataFormat')
 const {
   NOT_FOUND_PROJECT_INFO,
   INITIALIZE_PROJECT_ERROR,
+  PROJECT_UPDATE_BY_ID_ERROR,
 } = require('../config/statusCode')
 
 module.exports = {
@@ -54,5 +55,36 @@ module.exports = {
         )
       }
     })
+  },
+  /**
+   * 根据项目id更新项目数据
+   * @method projectUpdateById
+   */
+  projectUpdateById: async (req, res, next) => {
+    const payload = JSON.stringify(req.query) !== '{}' ? req.query : req.body
+    // 由于前端未对负载信息做限制，所以这里需要防恶意篡改项目批次信息
+    '_researchCategoryId' in payload ? delete payload._researchCategoryId : null
+    Project.findOneAndUpdate(
+      { _id: payload.projectId },
+      payload,
+      { new: true },
+      (err, doc) => {
+        if (err) {
+          console.log(err)
+          next(createHttpError(404))
+        }
+        if (doc) {
+          req.projectInfo = doc
+          next()
+        } else {
+          res.json(
+            stateFormat(
+              PROJECT_UPDATE_BY_ID_ERROR.code,
+              PROJECT_UPDATE_BY_ID_ERROR.message
+            )
+          )
+        }
+      }
+    )
   },
 }

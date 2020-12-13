@@ -10,8 +10,10 @@ const {
   PERMISSION_APPLY_PROJECT_AS_LEADER,
   PERMISSION_APPLY_PROJECT_AS_PARTICIPENT,
   PROJECT_MEMBER_IS_REPEAT,
+  NOT_FOUND_TEACHER_PROJECT_INFO_BY_JOBCODE,
 } = require('../config/statusCode')
 const { isValidObjectId, Types } = require('mongoose')
+const Project = require('../models/Project')
 
 module.exports = {
   /**
@@ -36,6 +38,89 @@ module.exports = {
         )
       }
     })
+  },
+  /**
+   * 根据教师工号找到项目基本信息、成员信息、教学工作简历、教研工作简历数据,并统计参与和主持的项目数量及总数量
+   *
+   * @method teacherProjectInfoFindByJobcode
+   */
+  teacherProjectInfoFindByJobcode: async (req, res, next) => {
+    const { jobCode } =
+      JSON.stringify(req.query) !== '{}' ? req.query : req.body
+    ProjectMember.aggregate(
+      [
+        {
+          $lookup: {
+            from: 'project', // 当前参与的项目基本信息
+            localField: '_projectId',
+            foreignField: '_id',
+            as: 'project',
+          },
+        },
+        {
+          $lookup: {
+            from: 'project_member', // 项目的成员名单
+            localField: '_projectId',
+            foreignField: '_projectId',
+            as: 'member',
+          },
+        },
+        {
+          $lookup: {
+            from: 'teacher_research_resume', // 该项目中教师教研简历
+            localField: '_projectId',
+            foreignField: '_projectId',
+            as: 'teacher_research_resume',
+          },
+        },
+        {
+          $lookup: {
+            from: 'teacher_resume', // 该项目中教师教学简历
+            localField: '_projectId',
+            foreignField: '_projectId',
+            as: 'teacher_resume',
+          },
+        },
+        {
+          $match: {
+            jobCode: jobCode,
+          },
+        },
+      ],
+      (err, doc) => {
+        if (err) {
+          console.log(err)
+          next(createHttpError(404))
+        }
+        if (doc.length !== 0) {
+          let leaderCount = 0
+          let participantCount = 0
+          // 数据过滤，仅需要当前教师的项目、项目的成员、项目的教研简历、项目的教学简历数据
+          const teacherProjectList = doc.map((item) => {
+            item.memberRank === 1 ? ++leaderCount : ++participantCount
+            const project = item.project[0]
+            const member = item.member
+            const teacherResearchResume = item.teacher_research_resume
+            const teacherResume = item.teacher_resume
+            return { project, member, teacherResearchResume, teacherResume }
+          })
+          req.teacherProjectInfo = {
+            teacherProjectList,
+            totalCount: leaderCount + participantCount,
+            leaderCount,
+            participantCount,
+          }
+          next()
+        } else {
+          res.json(
+            stateFormat(
+              NOT_FOUND_TEACHER_PROJECT_INFO_BY_JOBCODE.code,
+              NOT_FOUND_TEACHER_PROJECT_INFO_BY_JOBCODE.message
+            )
+          )
+        }
+      }
+    )
   },
   /**
    * 根据教师工号查询主持和参与的项目

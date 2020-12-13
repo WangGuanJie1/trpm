@@ -1,11 +1,16 @@
 const express = require('express')
 const { listFormat, entityFormat } = require('../controllers/dataFormat')
 const { HTTP_SUCCEED } = require('../config/statusCode')
-const { projectFindAll, projectInitialize } = require('../controllers/project')
+const {
+  projectFindAll,
+  projectInitialize,
+  projectUpdateById,
+} = require('../controllers/project')
 const {
   verifyApplyQualification,
   createProjectMember,
   projectMemberFindByJobCode,
+  teacherProjectInfoFindByJobcode,
 } = require('../controllers/projectMember')
 
 const router = express.Router()
@@ -29,5 +34,17 @@ router.post(
       })
     )
   }
-)
+),
+  router.post(
+    '/update/by-id',
+    projectUpdateById,
+    teacherProjectInfoFindByJobcode,
+    (req, res) => {
+      res.json(
+        entityFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message, {
+          ...req.teacherProjectInfo,
+        })
+      )
+    }
+  )
 module.exports = router

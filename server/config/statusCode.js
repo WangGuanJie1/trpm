@@ -217,4 +217,12 @@ module.exports = {
     code: 3044,
     message: '在该项目中，项目成员重复出现',
   },
+  PROJECT_UPDATE_BY_ID_ERROR: {
+    code: 3045,
+    message: '根据项目编号更新项目失败',
+  },
+  NOT_FOUND_TEACHER_PROJECT_INFO_BY_JOBCODE: {
+    code: 3046,
+    message: '根据教师工号没有找到教师项目相关信息',
+  },
 }
