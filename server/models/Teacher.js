@@ -13,11 +13,11 @@ const TeacherSchema = new Schema(
     employment: {
       type: String,
     },
-    // 部门
+    // 所属部门
     department: {
       type: String,
     },
-    // 系部
+    // 所属系部
     office: {
       type: String,
       default: '',
@@ -47,7 +47,6 @@ const TeacherSchema = new Schema(
       type: String,
     },
     // 岗位分类
-
     jobClassification: {
       type: String,
     },

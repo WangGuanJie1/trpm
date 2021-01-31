@@ -15,11 +15,10 @@ const ProjectReviewRecordSchema = new Schema(
       required: true,
       ref: 'project',
     },
-    // 评审阶段编号（以项目评审时所在阶段为准，数据来自project._projectStatusId）
+    // 评审阶段编号（以项目评审时所在阶段为准,数据来自project.researchStatus）
     _projectStatusId: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       required: true,
-      ref: 'project',
     },
     // 专家编号（数据来自specialist._id）
     _specialistId: {

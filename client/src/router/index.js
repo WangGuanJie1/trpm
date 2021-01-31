@@ -12,15 +12,13 @@ const routes = [
     path: '/',
     component: () => import('@/views/layouts/BaseLayout'),
     redirect: '/index',
-    meta: {
-      title: '首页'
-    },
     children: [
       {
         path: '/index',
         name: 'index',
         component: () => import('@/components/ActionCard/ActionCard'),
         meta: {
+          title: '首页',
           roles: [teacher, sLeader, dLeader, specialist]
         }
       },
@@ -34,12 +32,42 @@ const routes = [
         }
       },
       {
+        path: '/viewSchoolProject',
+        name: 'viewSchoolProject',
+        // TODO: 组件暂时未做
+        component: () => import('@/views/list/projectSelectionApplication'),
+        meta: {
+          title: '查看学校所有项目',
+          roles: [sLeader]
+        }
+      },
+      {
+        path: '/viewDepartmentProject',
+        name: 'viewDepartmentProject',
+        // TODO: 组件暂时未做
+        component: () => import('@/views/list/projectSelectionApplication'),
+        meta: {
+          title: '查看本部门所有项目',
+          roles: [sLeader, dLeader]
+        }
+      },
+      {
+        path: '/viewOwnProject',
+        name: 'viewOwnProject',
+        // TODO: 组件暂时未做
+        component: () => import('@/views/list/projectSelectionApplication'),
+        meta: {
+          title: '查看个人项目',
+          roles: [teacher, sLeader, dLeader, specialist]
+        }
+      },
+      {
         path: '/projectApplication',
         name: 'projectApplication',
         component: () => import('@/views/form/projectApplication'),
         meta: {
           title: '教研项目申请',
-          roles: [teacher]
+          roles: [teacher, sLeader]
         }
       },
       {
@@ -48,8 +76,34 @@ const routes = [
         component: () => import('@/views/form/createProjectBatch'),
         meta: {
           title: '创建项目批次信息',
-          breadcrumbName: '创建项目批次信息',
           roles: [sLeader]
+        }
+      },
+      {
+        path: '/account/personalCenter',
+        name: 'personalCenter',
+        component: () => import('@/views/account/PersonalCenter'),
+        meta: {
+          title: '个人中心',
+          roles: [teacher, sLeader, dLeader, specialist]
+        }
+      },
+      {
+        path: '/account/systemSetting',
+        name: 'systemSetting',
+        component: () => import('@/views/account/SyetemSetting'),
+        meta: {
+          title: '系统设置',
+          roles: [teacher, sLeader, dLeader, specialist]
+        }
+      },
+      {
+        path: '/account/cecuritySetting',
+        name: 'cecuritySetting',
+        component: () => import('@/views/account/CecuritySetting'),
+        meta: {
+          title: '安全设置',
+          roles: [teacher, sLeader, dLeader, specialist]
         }
       }
     ]

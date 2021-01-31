@@ -1,5 +1,5 @@
 <template>
-  <BaseContent
+  <BaseContentLayout
     id="projectSelectionApplication"
     class="project-selection-application-wrapper"
     :headerPageTitle="this.$route.meta.title"
@@ -32,14 +32,14 @@
         <a-select-option value="以参与者申报">以参与者申报</a-select-option>
       </a-select>
     </template>
-  </BaseContent>
+  </BaseContentLayout>
 </template>
 
 <script>
 import { Table, Select, Spin } from 'ant-design-vue'
 import { mapActions, mapState } from 'vuex'
 import moment from 'moment'
-import BaseContent from '@/views/layouts/BaseContent'
+import BaseContentLayout from '@/views/layouts/BaseContentLayout'
 
 const columns = [
   {
@@ -68,7 +68,7 @@ export default {
     ASelect: Select,
     ASelectOption: Select.Option,
     ASpin: Spin,
-    BaseContent
+    BaseContentLayout
   },
   data() {
     return {

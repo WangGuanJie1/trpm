@@ -17,8 +17,8 @@ const LogProjectStatusSchema = new Schema(
       required: true,
       ref: 'project',
     },
-    // 项目状态（0：暂存，1：提交，2：在研，3：已结项）
-    projectStatus: {
+    // 项目状态（数据源自Project.auditStatus，0：暂存，1：提交，2：通过，3：驳回）
+    auditStatus: {
       type: Number,
       required: true,
     },

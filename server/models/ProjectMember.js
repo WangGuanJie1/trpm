@@ -42,7 +42,7 @@ const ProjectMemberSchema = new Schema(
       type: String,
       default: '',
     },
-    // 所在部门（外校：输入，本校：数据来自teacher.department）
+    // 所属部门（外校：输入，本校：数据来自teacher.department）
     department: {
       type: String,
       default: '',

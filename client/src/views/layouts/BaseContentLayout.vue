@@ -55,13 +55,10 @@ export default {
       default: function () {
         return {
           margin: '24px',
-          'background-color': '#fff'
+          backgroundColor: '#fff'
         }
       }
     }
-  },
-  data() {
-    return {}
   }
 }
 </script>

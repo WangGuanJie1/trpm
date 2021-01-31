@@ -11,7 +11,7 @@ const model = mongoose.model
 
 const SecuritySchema = new Schema(
   {
-    // 教师编号（数据来自teacher._id）
+    // 教师记录编号（数据来自teacher._id）
     _teacherId: {
       type: Schema.Types.ObjectId,
       required: true,

@@ -102,7 +102,7 @@ const ProjectSchema = new Schema(
       default: '',
     },
     // 项目研究状态（0：申请，1：在研，2：结题，3：撤销）
-    rsearchStatus: {
+    researchStatus: {
       type: Number,
       default: 0,
     },

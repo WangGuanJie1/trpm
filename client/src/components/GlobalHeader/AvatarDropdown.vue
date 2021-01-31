@@ -1,66 +1,97 @@
 <template>
-  <div>
+  <div class="avatar-dropdown-wrapper">
     <!-- TODO: dropdown 为默认true，所以不会触发spin，这里需要根据获取到头像数据后再渲染，否则执行spin -->
     <a-dropdown v-if="true">
-      <a-avatar size="small" :src="avatar"> </a-avatar>
-      <span>{{ username }}</span>
-      <a-menu :selected-keys="[]">
-        <a-menu-item key="center">
-          <a-icon type="user" />
-          个人中心
-        </a-menu-item>
-        <a-menu-item key="settings">
-          <a-icon type="setting" />
-          个人设置
-        </a-menu-item>
-        <a-menu-divider />
-        <a-menu-item key="logout">
-          <a-icon type="logout" />
-          退出登录
-        </a-menu-item>
-      </a-menu>
-    </a-dropdown>
-    <a-spin v-else> </a-spin>
-
-    <a-dropdown>
-      <template v-slot:overlay>
-        <a @click="e => e.preventDefault()"> Hover me </a>
+      <div class="pointer">
+        <a-avatar size="default" :src="state.avatar" class="avatar"></a-avatar>
+        <span class="name">{{ state.username }}</span>
+        <CaretDownOutlined />
+      </div>
+      <template #overlay>
         <a-menu>
-          <a-menu-item key="1">
-            <a href="javascript:;">1st menu item</a>
+          <a-menu-item key="personalCenter">
+            <router-link :to="{ name: 'personalCenter' }"><UserOutlined :style="menuItemIcon" />个人中心 </router-link>
           </a-menu-item>
-          <a-menu-item key="12">
-            <a href="javascript:;">2nd menu item</a>
+          <a-menu-item key="cecuritySetting">
+            <router-link :to="{ name: 'cecuritySetting' }">
+              <SafetyOutlined :style="menuItemIcon" />安全设置
+            </router-link>
           </a-menu-item>
-          <a-menu-item key="13">
-            <a href="javascript:;">3rd menu item</a>
+          <a-menu-item key="systemSetting">
+            <router-link :to="{ name: 'systemSetting' }"><SettingOutlined :style="menuItemIcon" />系统设置</router-link>
+          </a-menu-item>
+          <a-menu-item key="logout">
+            <router-link to=""><PoweroffOutlined :style="[menuItemIcon, logoutIcon]" />退出登录</router-link>
           </a-menu-item>
         </a-menu>
       </template>
     </a-dropdown>
+    <a-spin v-else></a-spin>
   </div>
 </template>
 
 <script>
-import { Dropdown, Spin, Avatar, Menu } from 'ant-design-vue'
+import { Dropdown, Avatar, Menu, Spin } from 'ant-design-vue'
+import {
+  CaretDownOutlined,
+  UserOutlined,
+  SafetyOutlined,
+  SettingOutlined,
+  PoweroffOutlined
+} from '@ant-design/icons-vue'
+import { useStore } from 'vuex'
+import { reactive } from 'vue'
 export default {
-  data () {
-    return {
-      // TODO: username需要登录后获取
-      username: '戒骄戒躁的王',
-      // TODO: avatar需要登录后获取
-      avatar:
-        'https://lh3.googleusercontent.com/-xWEepX1PSVA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmvJoena98hPnusSGyIdeFlmqyeOA/photo.jpg?sz=46'
-    }
-  },
   components: {
     ADropdown: Dropdown,
     ASpin: Spin,
     AMenu: Menu,
-    AMenuItem: Menu.item,
-    AAvatar: Avatar
+    AMenuItem: Menu.Item,
+    AAvatar: Avatar,
+    CaretDownOutlined,
+    UserOutlined,
+    SafetyOutlined,
+    SettingOutlined,
+    PoweroffOutlined
+  },
+  setup() {
+    const store = useStore()
+    const menuItemIcon = {
+      color: '#1890ff',
+      marginRight: '12px'
+    }
+    const logoutIcon = {
+      color: '#FF4D4F'
+    }
+    const state = reactive({
+      username: store.state.currentTeacherInfo.teacherInfo.name,
+      avatar:
+        'https://lh3.googleusercontent.com/-xWEepX1PSVA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmvJoena98hPnusSGyIdeFlmqyeOA/photo.jpg?sz=46'
+    })
+
+    return {
+      state,
+      menuItemIcon,
+      logoutIcon
+    }
   }
 }
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="less" scoped>
+.avatar-dropdown-wrapper {
+  padding: 0 24px;
+
+  .pointer {
+    cursor: pointer;
+  }
+
+  .avatar {
+    margin: 0 12px;
+  }
+
+  .name {
+    margin-right: 6px;
+  }
+}
+</style>

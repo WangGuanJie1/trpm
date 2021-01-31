@@ -9,7 +9,7 @@ const model = mongoose.model
 
 const BatchParticularsSchema = new Schema(
   {
-    // 批次编号（数据来自dictionary_project_batch._id）
+    // 项目批次编号（数据来自dictionary_project_batch._id）
     _projectBatchId: {
       type: Schema.Types.ObjectId,
       required: true,

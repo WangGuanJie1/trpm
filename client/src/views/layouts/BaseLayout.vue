@@ -1,21 +1,27 @@
 <template>
   <a-layout id="base-layout-wrapper" class="base-layout-wrapper">
     <a-layout-sider
-      v-model="collapsed"
+      :collapsed="state.collapsed"
       width="256"
       :trigger="null"
       collapsible
-      :theme="navTheme"
+      :theme="state.navTheme"
       class="base-layout-sider-wrapper"
     >
-      <GlobalSider></GlobalSider>
+      <GlobalSider :collapsed="state.collapsed" :navTheme="state.navTheme" />
     </a-layout-sider>
     <a-layout>
       <a-layout-header class="base-layout-header-wrapper">
-        <menu-fold-outlined class="trigger" v-show="!collapsed" @click="menuChange" />
-        <menu-unfold-outlined class="trigger" v-show="collapsed" @click="menuChange" />
+        <a-row type="flex" justify="space-between">
+          <a-col>
+            <menu-fold-outlined class="trigger" v-if="!state.collapsed" @click="toggleCollapsed" />
+            <menu-unfold-outlined class="trigger" v-else @click="toggleCollapsed" />
+          </a-col>
+          <a-col>
+            <AvatarDropdown />
+          </a-col>
+        </a-row>
       </a-layout-header>
-      <!-- <GlobalPageHeader /> -->
       <a-layout-content class="base-layout-content-wrapper">
         <router-view class="min-content-height"> </router-view>
       </a-layout-content>
@@ -23,32 +29,44 @@
   </a-layout>
 </template>
 <script>
-import { Layout } from 'ant-design-vue'
+import { Layout, Row, Col } from 'ant-design-vue'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 import GlobalSider from '@/components/GlobalSider'
-// import AvatarDropdown from '@/components/GlobalHeader/AvatarDropdown'
-// import GlobalPageHeader from '@/components/PageHeader/GlobalPageHeader'
+import { useStore } from 'vuex'
+import { reactive } from 'vue'
+import AvatarDropdown from '@/components/GlobalHeader/AvatarDropdown'
 
 export default {
-  data() {
-    return {
-      collapsed: false,
-      navTheme: this.$store.state.themeSetting.navTheme
-    }
-  },
   components: {
     ALayout: Layout,
     ALayoutSider: Layout.Sider,
     ALayoutHeader: Layout.Header,
     ALayoutContent: Layout.Content,
+    ARow: Row,
+    ACol: Col,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-    GlobalSider
-    // GlobalPageHeader
+    GlobalSider,
+    AvatarDropdown
   },
-  methods: {
-    menuChange() {
-      this.collapsed = !this.collapsed
+  setup() {
+    const store = useStore()
+    const state = reactive({
+      collapsed: false, // 导航收缩/展开
+      navTheme: store.state.currentTeacherInfo.settingInfo.navTheme // 导航配色主题
+    })
+
+    /**
+     * 触发导航收缩
+     * @method toggleCollapsed
+     */
+    const toggleCollapsed = () => {
+      state.collapsed = !state.collapsed
+    }
+
+    return {
+      state,
+      toggleCollapsed
     }
   }
 }
@@ -66,6 +84,7 @@ export default {
     background: #fff;
     box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
     z-index: 999;
+    text-align: left;
 
     .trigger {
       padding: 0 24px;

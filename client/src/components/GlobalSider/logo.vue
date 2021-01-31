@@ -1,20 +1,25 @@
 <template>
   <div class="logo-wrapper">
     <img src="@/assets/logo.png" alt="logo" class="logo-img" />
-    <h1 class="system-title">{{ title }}</h1>
+    <h1 class="system-title" :class="[!showTitle ? 'show' : 'hidden']">{{ title }}</h1>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { reactive } from 'vue'
+import { useStore } from 'vuex'
+
 export default {
-  data() {
-    return {}
-  },
-  computed: {
-    ...mapState({
-      title: (state) => state.themeSetting.title
-    })
+  props: ['showTitle'],
+  setup() {
+    const store = useStore()
+    const title = store.state.themeSetting.title
+    const state = reactive({})
+
+    return {
+      state,
+      title
+    }
   }
 }
 </script>
@@ -28,13 +33,24 @@ export default {
 
   .logo-img {
     height: 32px;
+    margin: auto 0;
   }
 
   .system-title {
-    margin: 0 0 0 12px;
+    margin: auto 0;
+    margin-left: 12px;
     color: white;
     font-size: 20px;
     font-weight: 600;
+  }
+
+  .show {
+    opacity: 1;
+    transition: 0.7s all;
+  }
+
+  .hidden {
+    opacity: 0;
   }
 }
 </style>

@@ -36,7 +36,7 @@ export default {
   computed: {
     routes() {
       let route = this.$route.matched
-      // 排除不允许在面包屑显示的导航，一般是使用在父子path同名上，通过判断meta.breadcrumbShow是否存在来排除
+      // 排除不允许在面包屑上显示的导航，一般是使用在父子path同名上
       route = route.filter((item) => {
         item.breadcrumbName = item.meta.title
         item.children = []
