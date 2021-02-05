@@ -3,7 +3,9 @@
     <!-- TODO: dropdown 为默认true，所以不会触发spin，这里需要根据获取到头像数据后再渲染，否则执行spin -->
     <a-dropdown v-if="true">
       <div class="pointer">
-        <a-avatar size="default" :src="state.avatar" class="avatar"></a-avatar>
+        <a-avatar size="default" :src="state.avatar" class="avatar">
+          <template #icon><UserOutlined /></template>
+        </a-avatar>
         <span class="name">{{ state.username }}</span>
         <CaretDownOutlined />
       </div>
@@ -12,8 +14,8 @@
           <a-menu-item key="personalCenter">
             <router-link :to="{ name: 'personalCenter' }"><UserOutlined :style="menuItemIcon" />个人中心 </router-link>
           </a-menu-item>
-          <a-menu-item key="cecuritySetting">
-            <router-link :to="{ name: 'cecuritySetting' }">
+          <a-menu-item key="securitySetting">
+            <router-link :to="{ name: 'securitySetting' }">
               <SafetyOutlined :style="menuItemIcon" />安全设置
             </router-link>
           </a-menu-item>
@@ -65,8 +67,8 @@ export default {
     }
     const state = reactive({
       username: store.state.currentTeacherInfo.teacherInfo.name,
-      avatar:
-        'https://lh3.googleusercontent.com/-xWEepX1PSVA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmvJoena98hPnusSGyIdeFlmqyeOA/photo.jpg?sz=46'
+      avatar: ''
+      // 'https://lh3.googleusercontent.com/-xWEepX1PSVA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmvJoena98hPnusSGyIdeFlmqyeOA/photo.jpg?sz=46'
     })
 
     return {

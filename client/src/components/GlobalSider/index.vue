@@ -181,8 +181,6 @@ export default {
   },
   props: ['collapsed', 'navTheme'],
   setup(props) {
-    console.log(1234564797897987878979)
-    console.log(props.collapsed)
     const state = reactive({})
     return {
       state

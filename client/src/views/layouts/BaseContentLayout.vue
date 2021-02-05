@@ -18,7 +18,11 @@
       </a-row>
       <a-row :style="contentStyle">
         <a-col class="content">
-          <slot name="content"></slot>
+          <a-row type="flex" justify="center" class="space-mt">
+            <a-col :span="23">
+              <slot name="content"></slot>
+            </a-col>
+          </a-row>
         </a-col>
       </a-row>
     </a-col>
@@ -71,6 +75,9 @@ export default {
   .content {
     text-align: left;
     min-height: 100vh;
+    .space-mt {
+      margin-top: 2.5vw;
+    }
   }
 }
 </style>

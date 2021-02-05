@@ -12,9 +12,7 @@
               <a-from layout="horizontal" align="end">
                 <a-from-item>
                   <a-input v-model:value="jobCode" placeholder="请输入工号">
-                    <template v-slot:prefix>
-                      <user-outlined class="login-icon-color" />
-                    </template>
+                    <template v-slot:prefix> <user-outlined class="login-icon-color" /> </template>
                   </a-input>
                 </a-from-item>
                 <a-from-item>

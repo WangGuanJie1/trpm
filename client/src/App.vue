@@ -21,12 +21,19 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  .w-100 {
+    width: 100%;
+  }
+}
+
+.content-box {
+  padding: 2vw;
 }
 </style>

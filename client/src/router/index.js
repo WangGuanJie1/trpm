@@ -98,9 +98,9 @@ const routes = [
         }
       },
       {
-        path: '/account/cecuritySetting',
-        name: 'cecuritySetting',
-        component: () => import('@/views/account/CecuritySetting'),
+        path: '/account/securitySetting',
+        name: 'securitySetting',
+        component: () => import('@/views/account/SecuritySetting'),
         meta: {
           title: '安全设置',
           roles: [teacher, sLeader, dLeader, specialist]
