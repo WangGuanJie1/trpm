@@ -525,6 +525,22 @@ export default createStore({
         })
         return res
       })
+    },
+    /**
+     * 根据教师编号查询当前教师安全信息
+     * @method findSecurityInfoByTeacherId
+     * @param {Function} commit context.commit
+     * @param {*} payload 负载
+     * @returns {Object} 查找到的安全信息
+     */
+    findSecurityInfoByTeacherId: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.findSecurityInfoByTeacherId(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
     }
   },
   modules: {

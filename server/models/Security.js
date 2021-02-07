@@ -3,8 +3,8 @@
  *
  * 用于管理账号安全相关内容
  */
-const mongoose = require('./connect')
-const bcrypt = require('bcrypt')
+const mongoose = require("./connect")
+const bcrypt = require("bcrypt")
 
 const Schema = mongoose.Schema
 const model = mongoose.model
@@ -15,12 +15,12 @@ const SecuritySchema = new Schema(
     _teacherId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'teacher',
+      ref: "teacher",
     },
     // 密码
     password: {
       type: String,
-      default: '111',
+      default: "111",
       set: (val) => {
         return bcrypt.hashSync(val, 10)
       },
@@ -50,9 +50,9 @@ const SecuritySchema = new Schema(
       },
     ],
   },
-  { timestamps: { createdAt: 'createAt', updatedAt: 'updateAt' } }
+  { timestamps: { createdAt: "createAt", updatedAt: "updateAt" } }
 )
 
-let Security = model('security', SecuritySchema, 'security')
+let Security = model("security", SecuritySchema, "security")
 
 module.exports = Security

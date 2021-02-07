@@ -16,3 +16,4 @@ router.get('/all', teachingResumeFindAll, (req, res) => {
 })
 
 module.exports = router
+    

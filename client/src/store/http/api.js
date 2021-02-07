@@ -450,5 +450,19 @@ export default {
       }
     })
     return res
+  },
+  /**
+   * 根据教师编号查询当前教师安全信息
+   * @method findSecurityInfoByTeacherId
+   * @param {Object} payload 负载
+   * @returns {Object} 查找到的安全信息
+   */
+  findSecurityInfoByTeacherId: async (payload) => {
+    const res = await http({
+      url: config.FIND_TEACHER_SECUITY_INFO_BY_TEACHERID,
+      method: 'post',
+      data: payload
+    })
+    return res
   }
 }

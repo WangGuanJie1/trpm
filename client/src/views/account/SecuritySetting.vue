@@ -3,10 +3,10 @@
     <template #content>
       <a-descriptions title="账号安全" bordered :column="1">
         <a-descriptions-item v-for="item in securityType" :key="item.cnName" :label="item.cnName">
-          <a-button type="primary" @click="changeShowDrawer(item)">修改</a-button>
+          <a-button type="primary" @click="handleBtn(item)">修改</a-button>
         </a-descriptions-item>
       </a-descriptions>
-      <SecurityInfoEdit />
+      <SecurityLayout />
     </template>
   </BaseContentLayout>
 </template>
@@ -14,12 +14,12 @@
 <script>
 import { Descriptions, Button } from 'ant-design-vue'
 import BaseContentLayout from '@/views/layouts/BaseContentLayout'
-import SecurityInfoEdit from '@/views/account/SecurityInfoEdit'
+import SecurityLayout from '@/views/layouts/SecurityLayout'
 import { reactive, ref, provide } from 'vue'
 export default {
   components: {
     BaseContentLayout,
-    SecurityInfoEdit,
+    SecurityLayout,
     ADescriptions: Descriptions,
     ADescriptionsItem: Descriptions.Item,
     AButton: Button
@@ -49,10 +49,10 @@ export default {
 
     /**
      * 触发btn事件
-     * @method changeShowDrawer
+     * @method handleBtn
      * @param {String} typeName 当前触发btn的enName
      */
-    const changeShowDrawer = (typeName) => {
+    const handleBtn = (typeName) => {
       btnTriggerName.value = typeName
       btnIsTrigger.value += 1
     }
@@ -62,7 +62,7 @@ export default {
       securityType,
       btnIsTrigger,
       btnTriggerName,
-      changeShowDrawer
+      handleBtn
     }
   }
 }
