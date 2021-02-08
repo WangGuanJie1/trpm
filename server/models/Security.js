@@ -29,26 +29,33 @@ const SecuritySchema = new Schema(
     // 安全邮箱
     secureEmail: {
       type: String,
+      default: "111",
       set: (val) => {
         return bcrypt.hashSync(val, 10)
       },
     },
     // 密保问题
-    secretQuestion: [
-      {
-        // 问题（数据来自dictionary_secret_question.question）
-        question: {
-          type: String,
-        },
-        // 答案
-        answer: {
-          type: String,
-          set: (val) => {
-            return bcrypt.hashSync(val, 10)
-          },
-        },
-      },
-    ],
+    secretQuestion: {
+      type: [Object],
+      default: [{ question: "问题1", answer: "答案1" }],
+      // {
+      //   // 问题（数据来自dictionary_secret_question.question）
+      //   question: {
+      //     type: String,
+      //     default: "这个是默认问题",
+      //     require: true,
+      //   },
+      //   // 答案
+      //   answer: {
+      //     type: String,
+      //     default: "",
+      //     set: (val) => {
+      //       return bcrypt.hashSync(val, 10)
+      //     },
+      //     require: true,
+      //   },
+      // },
+    },
   },
   { timestamps: { createdAt: "createAt", updatedAt: "updateAt" } }
 )

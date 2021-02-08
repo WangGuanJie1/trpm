@@ -1,13 +1,13 @@
-const bcrypt = require('bcrypt')
-const Security = require('../models/Security')
-const { stateFormat } = require('../controllers/dataFormat')
-const createHttpError = require('http-errors')
+const bcrypt = require("bcrypt")
+const Security = require("../models/Security")
+const { stateFormat } = require("../controllers/dataFormat")
+const createHttpError = require("http-errors")
 const {
   HTTP_SUCCEED,
   WRONG_PASSWORD,
   NOT_FOUND_SECURITY_INFO,
   INITIALIZE_SECURITY_ERROR,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
 
 module.exports = {
   /**
@@ -15,14 +15,16 @@ module.exports = {
    * @method securityFindByTeacherId
    */
   securityFindByTeacherId: async (req, res, next) => {
+    console.log(req.body)
     let _teacherId = req.body._teacherId
     Security.findOne({ _teacherId: _teacherId }, (err, doc) => {
       if (err) {
         console.log(err)
-        nexy(createHttpError(404))
+        next(createHttpError(404))
       }
       if (doc) {
         req.securityInfo = doc
+        console.log(req.securityInfo)
         next()
       } else {
         res.json(
@@ -87,5 +89,41 @@ module.exports = {
         )
       }
     })
+  },
+  /**
+   * 筛选改变密码时候的验证方式
+   * @method changePasswordSelectItem
+   */
+  changePasswordVerifyType: async (req, res, next) => {
+    // let { _teacherId, password } = req.body
+    // let originPassword = req.securityInfo.password
+    // let isValid = bcrypt.compareSync(password, originPassword)
+    // if (!isValid)
+    //   res.json(stateFormat(WRONG_PASSWORD.code, WRONG_PASSWORD.message))
+    // next()
+
+    const verifyType = [
+      {
+        cnName: "密码",
+        enName: "password",
+      },
+      {
+        cnName: "邮箱",
+        enName: "email",
+      },
+      {
+        cnName: "密保问题",
+        enName: "question",
+      },
+    ]
+    const idCard2Verify = {
+      cnName: "身份证号",
+      enName: "idcard",
+    }
+    let { password, secureEmail } = req.securityInfo
+    const passwordIsValid = bcrypt.compareSync(password, "111")
+    const emailIsValid = bcrypt.compareSync(secureEmail, "111")
+    if (!passwordIsValid) {
+    }
   },
 }

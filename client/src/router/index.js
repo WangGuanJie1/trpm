@@ -145,6 +145,7 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     next()
   } else {
+    // 跳转页面时候，需要验证浏览器是否还存在Token
     store.dispatch('verifyToken').then((res, err) => {
       const verifyToken = res.code === 200 && res.data.tokenUser === store.state.currentTeacherInfo.teacherInfo._id
       verifyToken ? next() : next({ path: '/login' })

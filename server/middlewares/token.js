@@ -1,12 +1,12 @@
-const createHttpError = require('http-errors')
-const JWT = require('jsonwebtoken')
-const keys = require('../config/keys')
-const { stateFormat } = require('../controllers/dataFormat')
+const createHttpError = require("http-errors")
+const JWT = require("jsonwebtoken")
+const keys = require("../config/keys")
+const { stateFormat } = require("../controllers/dataFormat")
 const {
   HTTP_HEADER_NOT_FOUND_TOKEN_INFO,
   TOKEN_OTHER_ERROR,
   TOKEN_EXPIRED,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
 
 module.exports = {
   /**
@@ -34,9 +34,9 @@ module.exports = {
    * @method verifyToken
    */
   verifyToken: async (req, res, next) => {
-    if (req.headers.hasOwnProperty('authorization')) {
-      let token = req.headers['authorization']
-      token = token.replace('Bearer ', '') // 'Bearer ' 与expressJWT有关
+    if (req.headers.hasOwnProperty("authorization")) {
+      let token = req.headers["authorization"]
+      token = token.replace("Bearer ", "") // 'Bearer ' 与expressJWT有关
       if (!token) {
         res.json(
           stateFormat(
@@ -48,7 +48,7 @@ module.exports = {
       JWT.verify(token, keys.secret, (err, decoded) => {
         if (err) {
           console.log(err)
-          err.name === 'TokenExpiredError'
+          err.name === "TokenExpiredError"
             ? res.json(stateFormat(TOKEN_EXPIRED.code, TOKEN_EXPIRED.message))
             : res.json(
                 stateFormat(TOKEN_OTHER_ERROR.code, TOKEN_OTHER_ERROR.message)

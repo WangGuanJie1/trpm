@@ -74,7 +74,6 @@ export default {
     ...mapActions(['executeSignIn', 'loadDictionaryRoleInfo']),
     login() {
       this.executeSignIn({ jobCode: this.jobCode, password: this.password }).then((res, err) => {
-        console.log(res)
         if (res.code === 200) this.$router.push({ name: 'index' })
       })
     },

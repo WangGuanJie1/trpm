@@ -86,11 +86,19 @@ export default {
       height: '85%'
     }
     const teacherId = store.state.currentTeacherInfo.teacherInfo._id
+    const securityInfo = ref('')
     store.dispatch('findSecurityInfoByTeacherId', { _teacherId: teacherId }).then((res, err) => {
       if (res.code === 200) {
-        console.log(res)
+        securityInfo.value = res.data
       }
     })
+
+    watch(
+      () => securityInfo.value,
+      () => {
+        console.log(securityInfo.value)
+      }
+    )
 
     /**
      * 安全选项卡组件选项变更
