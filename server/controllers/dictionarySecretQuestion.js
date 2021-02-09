@@ -1,10 +1,11 @@
-const DictionarySecretQuestion = require('../models/DictionarySecretQuestion')
-const createHttpError = require('http-errors')
-const { stateFormat } = require('./dataFormat')
+const DictionarySecretQuestion = require("../models/DictionarySecretQuestion")
+const createHttpError = require("http-errors")
+const { stateFormat } = require("./dataFormat")
 const {
   NOT_FOUND_DICTIONARY_SECRET_QUESTION_INFO,
   CREATE_DICTIONARY_SECRET_QUESTION_ERROR,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
+const { fillAllMust } = require("../middlewares/fillMustRecord")
 
 module.exports = {
   /**
@@ -35,27 +36,23 @@ module.exports = {
    * @method dictionarySecretQuestioCreate
    */
   dictionarySecretQuestioCreate: async (req, res, next) => {
-    DictionarySecretQuestion.create(
-      {
-        question: req.query.question,
-      },
-      (err, doc) => {
-        if (err) {
-          console.log(err)
-          next(createHttpError(404))
-        }
-        if (doc) {
-          req.dictionarySecretQuestionInfo = doc
-          next()
-        } else {
-          res.json(
-            stateFormat(
-              CREATE_DICTIONARY_SECRET_QUESTION_ERROR.code,
-              CREATE_DICTIONARY_SECRET_QUESTION_ERROR.message
-            )
-          )
-        }
+    req = fillAllMust(req)
+    DictionarySecretQuestion.create(req.query, (err, doc) => {
+      if (err) {
+        console.log(err)
+        next(createHttpError(404))
       }
-    )
+      if (doc) {
+        req.dictionarySecretQuestionInfo = doc
+        next()
+      } else {
+        res.json(
+          stateFormat(
+            CREATE_DICTIONARY_SECRET_QUESTION_ERROR.code,
+            CREATE_DICTIONARY_SECRET_QUESTION_ERROR.message
+          )
+        )
+      }
+    })
   },
 }

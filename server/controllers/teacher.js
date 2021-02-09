@@ -1,11 +1,11 @@
-const createHttpError = require('http-errors')
-const Teacher = require('../models/Teacher')
-const { stateFormat } = require('./dataFormat')
+const createHttpError = require("http-errors")
+const Teacher = require("../models/Teacher")
+const { stateFormat } = require("./dataFormat")
 const {
   CREATE_TEACHER_ERROR,
   NOT_FOUND_JOBCODE,
   NOT_FOUND_TEACHER_INFO,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
 
 module.exports = {
   /**
@@ -13,7 +13,8 @@ module.exports = {
    * @method teacherCreate
    */
   teacherCreate: async (req, res, next) => {
-    const payload = JSON.stringify(req.query) !== '{}' ? req.query : req.body
+    req = fillAllMust(req)
+    const payload = JSON.stringify(req.query) !== "{}" ? req.query : req.body
     Teacher.create(payload, (err, doc) => {
       if (err) {
         console.log(err)

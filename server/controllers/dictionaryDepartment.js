@@ -1,10 +1,11 @@
-const DictionaryDepartment = require('../models/DictionaryDepartment')
-const createHttpError = require('http-errors')
-const { stateFormat } = require('./dataFormat')
+const DictionaryDepartment = require("../models/DictionaryDepartment")
+const createHttpError = require("http-errors")
+const { stateFormat } = require("./dataFormat")
 const {
   NOT_FOUND_DICTIONARY_DEPARTMENT_INFO,
   CREATE_DICTIONARY_DEPARTMENT_ERROR,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
+const { fillAllMust } = require("../middlewares/fillMustRecord")
 
 module.exports = {
   /**
@@ -35,27 +36,23 @@ module.exports = {
    * @method dictionaryDepartmentCreate
    */
   dictionaryDepartmentCreate: async (req, res, next) => {
-    DictionaryDepartment.create(
-      {
-        departmentName: req.query.departmentName,
-      },
-      (err, doc) => {
-        if (err) {
-          console.log(err)
-          next(createHttpError(404))
-        }
-        if (doc) {
-          req.dictionaryDepartmentInfo = doc
-          next()
-        } else {
-          res.json(
-            stateFormat(
-              CREATE_DICTIONARY_DEPARTMENT_ERROR.code,
-              CREATE_DICTIONARY_DEPARTMENT_ERROR.message
-            )
-          )
-        }
+    req = fillAllMust(req)
+    DictionaryDepartment.create(req.query, (err, doc) => {
+      if (err) {
+        console.log(err)
+        next(createHttpError(404))
       }
-    )
+      if (doc) {
+        req.dictionaryDepartmentInfo = doc
+        next()
+      } else {
+        res.json(
+          stateFormat(
+            CREATE_DICTIONARY_DEPARTMENT_ERROR.code,
+            CREATE_DICTIONARY_DEPARTMENT_ERROR.message
+          )
+        )
+      }
+    })
   },
 }

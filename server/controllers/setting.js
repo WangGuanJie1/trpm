@@ -1,10 +1,10 @@
-const Setting = require('../models/Setting')
-const createHttpError = require('http-errors')
-const { stateFormat } = require('./dataFormat')
+const Setting = require("../models/Setting")
+const createHttpError = require("http-errors")
+const { stateFormat } = require("./dataFormat")
 const {
   INITIALIZE_SETTING_ERROR,
   NOT_FOUND_SETTING_INFO,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
 
 module.exports = {
   /**
@@ -12,6 +12,7 @@ module.exports = {
    * @method settingInitialize
    */
   settingInitialize: async (req, res, next) => {
+    // 这里无需针对创建人和修改人是由系统默认
     Setting.create({ _teacherId: req.teacherInfo._id }, (err, doc) => {
       if (err) {
         console.log(err)

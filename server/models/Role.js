@@ -3,7 +3,7 @@
  *
  * 用于登录验证，当识别身份为专家时，请到specialist中具体细分专家身份
  */
-const mongoose = require('./connect')
+const mongoose = require("./connect")
 
 const Schema = mongoose.Schema
 const model = mongoose.model
@@ -18,13 +18,26 @@ const RoleSchema = new Schema(
     // 身份编号（数据来自dictionary_role._id）
     _roleId: {
       type: Schema.Types.ObjectId,
-      default: '5fb637317f45e444b4474088',
+      default: "5fb637317f45e444b4474088",
+      required: true,
+    },
+    // 创建人
+    createdBy: {
+      type: String,
+      default: "administrator",
+      required: true,
+    },
+    // 修改人
+    updatedBy: {
+      type: String,
+      default: "administrator",
       required: true,
     },
   },
-  { timestamps: { createdAt: 'createAt', updatedAt: 'updatedAt' } }
+  // 创建、修改时间
+  { timestamps: { createdAt: "createAt", updatedAt: "updateAt" } }
 )
 
-let Role = model('role', RoleSchema, 'role')
+let Role = model("role", RoleSchema, "role")
 
 module.exports = Role

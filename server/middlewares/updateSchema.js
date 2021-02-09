@@ -4,6 +4,7 @@
  * 注意：需要在Schema中对新增的Attr设置default值，该API仅针对测试开发时期使用
  */
 
+const mongoose = require("mongoose")
 const createHttpError = require("http-errors")
 const express = require("express")
 const router = express.Router()
@@ -21,9 +22,6 @@ const nameDispose = (schemaName) => {
 
 /**
  * Schema 名称转换
- * @param {*} req
- * @param {*} res
- * @param {*} next
  */
 const disposeName = async (req, res, next) => {
   try {
@@ -36,9 +34,6 @@ const disposeName = async (req, res, next) => {
 
 /**
  * 获取当前Schema中所有的数据
- * @param {*} req
- * @param {*} res
- * @param {*} next
  */
 const getAllData = async (req, res, next) => {
   const Schema = req.Schema
@@ -62,9 +57,6 @@ const getAllData = async (req, res, next) => {
 
 /**
  * 删除当前Schema中所有的数据
- * @param {*} req
- * @param {*} res
- * @param {*} next
  */
 const delAllData = async (req, res, next) => {
   const Schema = req.Schema
@@ -82,10 +74,24 @@ const delAllData = async (req, res, next) => {
 }
 
 /**
+ * 删除集合
+ */
+const delCollection = async (req, res, next) => {
+  try {
+    mongoose.connection.db.dropCollection(req.query.schemaName, (err, doc) => {
+      if (err) {
+        console.log(err)
+        next(createHttpError(404))
+      }
+      next()
+    })
+  } catch (err) {
+    res.json("删除集合时发生错误")
+  }
+}
+
+/**
  * 当前Schema恢复原有数据
- * @param {*} req
- * @param {*} res
- * @param {*} next
  */
 const recover = async (req, res, next) => {
   const Schema = req.Schema
@@ -106,6 +112,6 @@ const recover = async (req, res, next) => {
   }
 }
 
-router.get("/update/schema", disposeName, getAllData, delAllData, recover)
+router.get("/update/schema", disposeName, getAllData, delCollection, recover)
 
 module.exports = router

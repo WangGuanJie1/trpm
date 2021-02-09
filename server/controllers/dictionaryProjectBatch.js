@@ -1,10 +1,11 @@
-const DictionaryProjectBatch = require('../models/DictionaryProjectBatch')
-const createHttpError = require('http-errors')
-const { stateFormat } = require('./dataFormat')
+const DictionaryProjectBatch = require("../models/DictionaryProjectBatch")
+const createHttpError = require("http-errors")
+const { stateFormat } = require("./dataFormat")
 const {
   NOT_FOUND_DICTIONARY_PROJECT_BATCH_INFO,
   CREATE_DICTIONARY_PROJECT_BATCH_ERROR,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
+const { fillAllMust } = require("../middlewares/fillMustRecord")
 
 module.exports = {
   /**
@@ -35,27 +36,23 @@ module.exports = {
    * @method dictionaryProjectBatchCreate
    */
   dictionaryProjectBatchCreate: async (req, res, next) => {
-    DictionaryProjectBatch.create(
-      {
-        projectBatchName: req.query.projectBatchName,
-      },
-      (err, doc) => {
-        if (err) {
-          console.log(err)
-          next(createHttpError(404))
-        }
-        if (doc) {
-          req.dictionaryProjectBatchInfo = doc
-          next()
-        } else {
-          res.json(
-            stateFormat(
-              CREATE_DICTIONARY_PROJECT_BATCH_ERROR.code,
-              CREATE_DICTIONARY_PROJECT_BATCH_ERROR.message
-            )
-          )
-        }
+    req = fillAllMust(req)
+    DictionaryProjectBatch.create(req.query, (err, doc) => {
+      if (err) {
+        console.log(err)
+        next(createHttpError(404))
       }
-    )
+      if (doc) {
+        req.dictionaryProjectBatchInfo = doc
+        next()
+      } else {
+        res.json(
+          stateFormat(
+            CREATE_DICTIONARY_PROJECT_BATCH_ERROR.code,
+            CREATE_DICTIONARY_PROJECT_BATCH_ERROR.message
+          )
+        )
+      }
+    })
   },
 }

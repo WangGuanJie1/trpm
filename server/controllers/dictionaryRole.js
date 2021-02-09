@@ -1,10 +1,11 @@
-const DictionaryRole = require('../models/DictionaryRole')
-const createHttpError = require('http-errors')
-const { stateFormat } = require('./dataFormat')
+const DictionaryRole = require("../models/DictionaryRole")
+const createHttpError = require("http-errors")
+const { stateFormat } = require("./dataFormat")
 const {
   NOT_FOUND_DICTIONARY_ROLE_INFO,
   CREATE_DICTIONARY_ROLE_ERROR,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
+const { fillAllMust } = require("../middlewares/fillMustRecord")
 
 module.exports = {
   /**
@@ -35,27 +36,23 @@ module.exports = {
    * @method dictionaryRoleCreate
    */
   dictionaryRoleCreate: async (req, res, next) => {
-    DictionaryRole.create(
-      {
-        roleName: req.query.roleName,
-      },
-      (err, doc) => {
-        if (err) {
-          console.log(err)
-          next(createHttpError(404))
-        }
-        if (doc) {
-          req.dictionaryRoleInfo = doc
-          next()
-        } else {
-          res.json(
-            stateFormat(
-              CREATE_DICTIONARY_ROLE_ERROR.code,
-              CREATE_DICTIONARY_ROLE_ERROR.message
-            )
-          )
-        }
+    req = fillAllMust(req)
+    DictionaryRole.create(req.query, (err, doc) => {
+      if (err) {
+        console.log(err)
+        next(createHttpError(404))
       }
-    )
+      if (doc) {
+        req.dictionaryRoleInfo = doc
+        next()
+      } else {
+        res.json(
+          stateFormat(
+            CREATE_DICTIONARY_ROLE_ERROR.code,
+            CREATE_DICTIONARY_ROLE_ERROR.message
+          )
+        )
+      }
+    })
   },
 }

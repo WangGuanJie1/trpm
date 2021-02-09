@@ -1,10 +1,11 @@
-const LogProjectStatus = require('../models/LogProjectStatus')
-const createHttpError = require('http-errors')
-const { stateFormat } = require('./dataFormat')
+const LogProjectStatus = require("../models/LogProjectStatus")
+const createHttpError = require("http-errors")
+const { stateFormat } = require("./dataFormat")
 const {
   NOT_FOUND_LOG_PROJECT_STATUS_INFO,
   CREATE_LOG_PROJECT_STATUS_ERROR,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
+const { fillAllMust } = require("../middlewares/fillMustRecord")
 
 module.exports = {
   /**
@@ -35,6 +36,7 @@ module.exports = {
    * @method logProjectStatusCreate
    */
   logProjectStatusCreate: async (req, res, next) => {
+    req = fillAllMust(req)
     LogProjectStatus.create(req.query, (err, doc) => {
       if (err) {
         console.log(err)

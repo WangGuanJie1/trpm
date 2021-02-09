@@ -2,7 +2,7 @@
  * 教师信息
  *
  */
-const mongoose = require('./connect')
+const mongoose = require("./connect")
 
 const Schema = mongoose.Schema
 const model = mongoose.model
@@ -20,7 +20,7 @@ const TeacherSchema = new Schema(
     // 所属系部
     office: {
       type: String,
-      default: '',
+      default: "",
     },
     // 工号
     jobCode: {
@@ -53,17 +53,17 @@ const TeacherSchema = new Schema(
     // 管理级
     managementLevel: {
       type: String,
-      default: '',
+      default: "",
     },
     // 专业级
     professionalLevel: {
       type: String,
-      default: '',
+      default: "",
     },
     // 工勤级
     serviceLevel: {
       type: Number,
-      default: '',
+      default: "",
     },
     // 专级聘任时间（数据类型感觉不对）
     apTiOfPrLe: {
@@ -72,72 +72,85 @@ const TeacherSchema = new Schema(
     // 具体岗位
     specificPositions: {
       type: String,
-      default: '',
+      default: "",
     },
     // 岗位系列
     jobSeries: {
       type: String,
-      default: '',
+      default: "",
     },
     // 专技分类
     technicalClassification: {
       type: String,
-      default: '',
+      default: "",
     },
     // 政治面貌
     politicalOutlook: {
       type: String,
-      default: '',
+      default: "",
     },
     // 职称聘任级别
     prTiApLe: {
       type: String,
-      default: '',
+      default: "",
     },
     // 现聘聘任职称
     cuEmPrTi: {
       type: String,
-      default: '无',
+      default: "无",
     },
     // 聘任时间（数据类型感觉不对）
     appointmentTime: {
       type: String,
-      default: '',
+      default: "",
     },
     // 最后学位
     finalDegree: {
       type: String,
-      default: '',
+      default: "",
     },
     // 最后学历
     finalEducation: {
       type: String,
-      default: '本科',
+      default: "本科",
     },
     // 最后院校
     finalInstitutions: {
       type: String,
-      default: '',
+      default: "",
     },
     // 最后专业
     lastMajor: {
       type: String,
-      default: '',
+      default: "",
     },
     // 最后时间
     lastTime: {
       type: String,
-      default: '',
+      default: "",
     },
     // 所学专业分类
     majorClassification: {
       type: String,
-      default: '',
+      default: "",
+    },
+    // 创建人
+    createdBy: {
+      type: String,
+      default: "administrator",
+      required: true,
+    },
+    // 修改人
+    updatedBy: {
+      type: String,
+      default: "administrator",
+      required: true,
     },
   },
-  { timestamps: { createdAt: 'createAt', updatedAt: 'updatedAt' } }
+  // 创建、修改时间
+  { timestamps: { createdAt: "createAt", updatedAt: "updateAt" } }
 )
 
-let Teacher = model('teacher', TeacherSchema, 'teacher')
+let Teacher = model("teacher", TeacherSchema, "teacher")
 
 module.exports = Teacher

@@ -8,6 +8,7 @@ const {
   NOT_FOUND_SECURITY_INFO,
   INITIALIZE_SECURITY_ERROR,
 } = require("../config/statusCode")
+const { fillUpdatedBy } = require("../middlewares/fillMustRecord")
 
 module.exports = {
   /**
@@ -15,7 +16,6 @@ module.exports = {
    * @method securityFindByTeacherId
    */
   securityFindByTeacherId: async (req, res, next) => {
-    console.log(req.body)
     let _teacherId = req.body._teacherId
     Security.findOne({ _teacherId: _teacherId }, (err, doc) => {
       if (err) {
@@ -24,7 +24,6 @@ module.exports = {
       }
       if (doc) {
         req.securityInfo = doc
-        console.log(req.securityInfo)
         next()
       } else {
         res.json(
@@ -72,6 +71,7 @@ module.exports = {
    * @method securityInitialize
    */
   securityInitialize: async (req, res, next) => {
+    // 这里无需针对创建人和修改人是由系统默认
     Security.create({ _teacherId: req.teacherInfo._id }, (err, doc) => {
       if (err) {
         console.log(err)
@@ -89,6 +89,13 @@ module.exports = {
         )
       }
     })
+  },
+  /**
+   * 初始化密保问题（一定需要提供3个问题及答案）
+   * @method createSecretQuestion
+   */
+  initSecretQuestion: async (req, res, next) => {
+    req = fillUpdatedBy(req)
   },
   /**
    * 筛选改变密码时候的验证方式
@@ -121,8 +128,10 @@ module.exports = {
       enName: "idcard",
     }
     let { password, secureEmail } = req.securityInfo
+    // 验证密码、邮箱、密保问题是否设置
     const passwordIsValid = bcrypt.compareSync(password, "111")
     const emailIsValid = bcrypt.compareSync(secureEmail, "111")
+
     if (!passwordIsValid) {
     }
   },

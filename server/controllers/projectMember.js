@@ -1,6 +1,6 @@
-const ProjectMember = require('../models/ProjectMember')
-const createHttpError = require('http-errors')
-const { stateFormat } = require('./dataFormat')
+const ProjectMember = require("../models/ProjectMember")
+const createHttpError = require("http-errors")
+const { stateFormat } = require("./dataFormat")
 const {
   NOT_FOUND_PROJECT_MEMBER_INFO,
   NOT_FOUND_PROJECT_MEMBER_INFO_BY_JOBCODE,
@@ -11,9 +11,10 @@ const {
   PERMISSION_APPLY_PROJECT_AS_PARTICIPENT,
   PROJECT_MEMBER_IS_REPEAT,
   NOT_FOUND_TEACHER_PROJECT_INFO_BY_JOBCODE,
-} = require('../config/statusCode')
-const { isValidObjectId, Types } = require('mongoose')
-const Project = require('../models/Project')
+} = require("../config/statusCode")
+const { isValidObjectId, Types } = require("mongoose")
+const Project = require("../models/Project")
+const { fillAllMust } = require("../middlewares/fillMustRecord")
 
 module.exports = {
   /**
@@ -46,39 +47,39 @@ module.exports = {
    */
   teacherProjectInfoFindByJobcode: async (req, res, next) => {
     const { jobCode } =
-      JSON.stringify(req.query) !== '{}' ? req.query : req.body
+      JSON.stringify(req.query) !== "{}" ? req.query : req.body
     ProjectMember.aggregate(
       [
         {
           $lookup: {
-            from: 'project', // 当前参与的项目基本信息
-            localField: '_projectId',
-            foreignField: '_id',
-            as: 'project',
+            from: "project", // 当前参与的项目基本信息
+            localField: "_projectId",
+            foreignField: "_id",
+            as: "project",
           },
         },
         {
           $lookup: {
-            from: 'project_member', // 项目的成员名单
-            localField: '_projectId',
-            foreignField: '_projectId',
-            as: 'member',
+            from: "project_member", // 项目的成员名单
+            localField: "_projectId",
+            foreignField: "_projectId",
+            as: "member",
           },
         },
         {
           $lookup: {
-            from: 'teacher_research_resume', // 该项目中教师教研简历
-            localField: '_projectId',
-            foreignField: '_projectId',
-            as: 'teacher_research_resume',
+            from: "teacher_research_resume", // 该项目中教师教研简历
+            localField: "_projectId",
+            foreignField: "_projectId",
+            as: "teacher_research_resume",
           },
         },
         {
           $lookup: {
-            from: 'teacher_resume', // 该项目中教师教学简历
-            localField: '_projectId',
-            foreignField: '_projectId',
-            as: 'teacher_resume',
+            from: "teacher_resume", // 该项目中教师教学简历
+            localField: "_projectId",
+            foreignField: "_projectId",
+            as: "teacher_resume",
           },
         },
         {
@@ -128,7 +129,7 @@ module.exports = {
    */
   projectMemberFindByJobCode: async (req, res, next) => {
     const { jobCode } =
-      JSON.stringify(req.query) !== '{}' ? req.query : req.body
+      JSON.stringify(req.query) !== "{}" ? req.query : req.body
     ProjectMember.find({ jobCode: jobCode }, (err, doc) => {
       if (err) {
         console.log(err)
@@ -164,7 +165,7 @@ module.exports = {
    */
   verifyApplyQualification: async (req, res, next) => {
     const { hoMaNuOfHoPr, hoMaNuOfPaPr, paMaNuOfHoPr, paMaNuOfPaPr, jobCode } =
-      JSON.stringify(req.query) !== '{}' ? req.query : req.body
+      JSON.stringify(req.query) !== "{}" ? req.query : req.body
     ProjectMember.find({ jobCode }, (err, doc) => {
       if (err) {
         console.log(err)
@@ -179,7 +180,7 @@ module.exports = {
         doc.map((item) => {
           item.memberRank === 1 ? ++leaderCount : ++participantCount
         })
-        console.log('主持的，参与的：', leaderCount, participantCount)
+        console.log("主持的，参与的：", leaderCount, participantCount)
         leaderApply =
           leaderCount >= hoMaNuOfHoPr || participantCount >= hoMaNuOfPaPr
             ? false
@@ -210,7 +211,7 @@ module.exports = {
    * @method projectMemberFindByProjectId
    */
   projectMemberFindByProjectId: async (req, res, next) => {
-    let data = JSON.stringify(req.query) !== '{}' ? req.query : req.body
+    let data = JSON.stringify(req.query) !== "{}" ? req.query : req.body
     let _projectId = data.length ? data[0]._projectId : data._projectId
     _projectId = isValidObjectId(_projectId)
       ? _projectId
@@ -234,8 +235,8 @@ module.exports = {
    * @method sameProjectVerifyRepeat
    */
   sameProjectVerifyRepeat: async (req, res, next) => {
-    if ('projectMemberInfo' in req) {
-      let data = JSON.stringify(req.query) !== '{}' ? req.query : req.body
+    if ("projectMemberInfo" in req) {
+      let data = JSON.stringify(req.query) !== "{}" ? req.query : req.body
       const projectMemberInfo = req.projectMemberInfo
       let isRepeat = false
       if (!data.length) {
@@ -264,7 +265,8 @@ module.exports = {
    * @method createProjectMember
    */
   createProjectMember: async (req, res, next) => {
-    const payload = JSON.stringify(req.query) !== '{}' ? req.query : req.body
+    req = fillAllMust(req)
+    const payload = JSON.stringify(req.query) !== "{}" ? req.query : req.body
     // 验证payload中是否存在_projectId，如果的没有话即为初始化项目，需要从req.peojectInfo中调用
     payload._projectId = payload._projectId
       ? payload._projectId

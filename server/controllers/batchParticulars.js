@@ -1,10 +1,11 @@
-const BatchParticulars = require('../models/BatchParticulars')
-const createHttpError = require('http-errors')
-const { stateFormat } = require('./dataFormat')
+const BatchParticulars = require("../models/BatchParticulars")
+const createHttpError = require("http-errors")
+const { stateFormat } = require("./dataFormat")
 const {
   NOT_FOUND_BATCH_PARTICULARS_INFO,
   INITIALIZE_BATCH_PARTICULARS_ERROR,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
+const { fillAllMust } = require("../middlewares/fillMustRecord")
 
 module.exports = {
   /**
@@ -16,10 +17,10 @@ module.exports = {
       [
         {
           $lookup: {
-            from: 'dictionary_project_batch',
-            localField: '_projectBatchId',
-            foreignField: '_id',
-            as: 'dictionary_project_batch',
+            from: "dictionary_project_batch",
+            localField: "_projectBatchId",
+            foreignField: "_id",
+            as: "dictionary_project_batch",
           },
         },
       ],
@@ -55,6 +56,7 @@ module.exports = {
    * @method batchParticularsInitialize
    */
   batchParticularsInitialize: async (req, res, next) => {
+    req = fillAllMust(req)
     req.query._projectBatchId = req.query._projectBatchId
       ? req.query._projectBatchId
       : req.dictionaryProjectBatchInfo._id

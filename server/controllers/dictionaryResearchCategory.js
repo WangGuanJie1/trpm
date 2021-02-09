@@ -1,9 +1,10 @@
-const DictionaryResearchCategory = require('../models/DictionaryResearchCategory')
-const createHttpError = require('http-errors')
-const { stateFormat } = require('./dataFormat')
+const DictionaryResearchCategory = require("../models/DictionaryResearchCategory")
+const createHttpError = require("http-errors")
+const { stateFormat } = require("./dataFormat")
 const {
   NOT_FOUND_DICTIONARY_RESEARCH_CATEGORY_INFO,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
+const { fillAllMust } = require("../middlewares/fillMustRecord")
 
 module.exports = {
   /**
@@ -34,27 +35,23 @@ module.exports = {
    * @method dictionaryResearchCategoryCreate
    */
   dictionaryResearchCategoryCreate: async (req, res, next) => {
-    DictionaryResearchCategory.create(
-      {
-        categoryName: req.query.categoryName,
-      },
-      (err, doc) => {
-        if (err) {
-          console.log(err)
-          next(createHttpError(404))
-        }
-        if (doc) {
-          req.dictionaryResearchCategoryInfo = doc
-          next()
-        } else {
-          res.json(
-            stateFormat(
-              CREATE_DICTIONARY_RESEARCH_CATEGORY_ERROR.code,
-              CREATE_DICTIONARY_RESEARCH_CATEGORY_ERROR.message
-            )
-          )
-        }
+    req = fillAllMust(req)
+    DictionaryResearchCategory.create(req.query, (err, doc) => {
+      if (err) {
+        console.log(err)
+        next(createHttpError(404))
       }
-    )
+      if (doc) {
+        req.dictionaryResearchCategoryInfo = doc
+        next()
+      } else {
+        res.json(
+          stateFormat(
+            CREATE_DICTIONARY_RESEARCH_CATEGORY_ERROR.code,
+            CREATE_DICTIONARY_RESEARCH_CATEGORY_ERROR.message
+          )
+        )
+      }
+    })
   },
 }

@@ -1,11 +1,12 @@
-const Project = require('../models/Project')
-const createHttpError = require('http-errors')
-const { stateFormat } = require('./dataFormat')
+const Project = require("../models/Project")
+const createHttpError = require("http-errors")
+const { stateFormat } = require("./dataFormat")
 const {
   NOT_FOUND_PROJECT_INFO,
   INITIALIZE_PROJECT_ERROR,
   PROJECT_UPDATE_BY_ID_ERROR,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
+const { fillUpdatedBy, fillAllMust } = require("../middlewares/fillMustRecord")
 
 module.exports = {
   /**
@@ -36,9 +37,10 @@ module.exports = {
    * @method projectInitialize
    */
   projectInitialize: async (req, res, next) => {
-    const { _projectBatchId } =
-      JSON.stringify(req.query) !== '{}' ? req.query : req.body
-    Project.create({ _projectBatchId: _projectBatchId }, (err, doc) => {
+    req = fillAllMust(req)
+    const { _projectBatchId, createdBy, updatedBy } =
+      JSON.stringify(req.query) !== "{}" ? req.query : req.body
+    Project.create({ _projectBatchId, createdBy, updatedBy }, (err, doc) => {
       if (err) {
         console.log(err)
         next(createHttpError(404))
@@ -61,9 +63,10 @@ module.exports = {
    * @method projectUpdateById
    */
   projectUpdateById: async (req, res, next) => {
-    const payload = JSON.stringify(req.query) !== '{}' ? req.query : req.body
+    req = fillUpdatedBy(req)
+    const payload = JSON.stringify(req.query) !== "{}" ? req.query : req.body
     // 由于前端未对负载信息做限制，所以这里需要防恶意篡改项目批次信息
-    '_researchCategoryId' in payload ? delete payload._researchCategoryId : null
+    "_researchCategoryId" in payload ? delete payload._researchCategoryId : null
     Project.findOneAndUpdate(
       { _id: payload.projectId },
       payload,

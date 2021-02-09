@@ -1,12 +1,13 @@
-const mongoose = require('../models/connect')
-const Role = require('../models/Role')
-const createHttpError = require('http-errors')
-const { stateFormat } = require('./dataFormat')
+const mongoose = require("../models/connect")
+const Role = require("../models/Role")
+const createHttpError = require("http-errors")
+const { stateFormat } = require("./dataFormat")
 const {
   NOT_FOUND_ROLE_INFO,
   INITIALIZE_ROLE_ERROR,
   NOT_FOUND_ROLE_INFO_BY_TEACHERID,
-} = require('../config/statusCode')
+} = require("../config/statusCode")
+const { fillAllMust } = require("../middlewares/fillMustRecord")
 
 module.exports = {
   /**
@@ -34,6 +35,7 @@ module.exports = {
    * @method roleInitialize
    */
   roleInitialize: async (req, res, next) => {
+    // 这里无需针对创建人和修改人是由系统默认
     Role.create({ _teacherId: req.teacherInfo._id }, (err, doc) => {
       if (err) {
         console.log(err)
@@ -59,10 +61,10 @@ module.exports = {
       [
         {
           $lookup: {
-            from: 'dictionary_role',
-            localField: '_roleId',
-            foreignField: '_id',
-            as: 'dictionary_role',
+            from: "dictionary_role",
+            localField: "_roleId",
+            foreignField: "_id",
+            as: "dictionary_role",
           },
         },
         {
@@ -75,7 +77,7 @@ module.exports = {
             _id: 1,
             _roleId: 1,
             _teacherId: 1,
-            'dictionary_role.roleName': 1,
+            "dictionary_role.roleName": 1,
           },
         },
       ],

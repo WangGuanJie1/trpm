@@ -2,7 +2,7 @@
  * 主要教学工作简历
  *
  */
-const mongoose = require('./connect')
+const mongoose = require("./connect")
 
 const Schema = mongoose.Schema
 const model = mongoose.model
@@ -34,14 +34,27 @@ const TeachingResumeSchema = new Schema(
     department: {
       type: String,
     },
+    // 创建人
+    createdBy: {
+      type: String,
+      default: "administrator",
+      required: true,
+    },
+    // 修改人
+    updatedBy: {
+      type: String,
+      default: "administrator",
+      required: true,
+    },
   },
-  { timestamps: { createdAt: 'createAt', updatedAt: 'updatedAt' } }
+  // 创建、修改时间
+  { timestamps: { createdAt: "createAt", updatedAt: "updateAt" } }
 )
 
 let TeachingResume = model(
-  'teaching_resume',
+  "teaching_resume",
   TeachingResumeSchema,
-  'teaching_resume'
+  "teaching_resume"
 )
 
 module.exports = TeachingResume
