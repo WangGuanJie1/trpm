@@ -40,6 +40,7 @@ export default {
   LOAD_BATCH_PARTICULARS_INFO: `${BASE_URL}${BATC_PART}/all`, // 获取所有批次详情信息
   INITIALIZE_PROJECT: `${BASE_URL}${PROJ}/init`, // 初始化项目信息
   INITIALIZE_BATCH_PARTICULARS: `${BASE_URL}${BATC_PART}/init`, // 初始化批次详情信息
+  INITIALIZE_SECURITY_INFO: `${BASE_URL}${SECU}/init`, // 初始化安全信息
   FIND_TEACHER_BY_JOBCODE: `${BASE_URL}${TEAC}/find/by-jobcode`, // 根据工号查询教师信息
   FIND_ROLE_BY_TEACHERID: `${BASE_URL}${ROLE}/find/by-teacherid`, // 根据教师编号查询身份信息
   FIND_PROJECT_MEMBER_BY_PROJECTID: `${BASE_URL}${PROJ_MEMB}/find/by-projectid`, // 根据项目编号查询项目成员信息

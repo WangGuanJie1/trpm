@@ -8,6 +8,7 @@ axios.defaults.baseURL = ''
 const fetch = (options) => {
   const { method = 'get', url } = options
   let { data } = options
+  // 将当前操作用户记录在请求信息当中
   const jobCode = store.state.currentTeacherInfo.teacherInfo.jobCode
   if (data === undefined) data = { handler: jobCode }
   else data.handler = jobCode

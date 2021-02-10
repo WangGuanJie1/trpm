@@ -464,5 +464,18 @@ export default {
       data: payload
     })
     return res
+  },
+  /**
+   * 根据教师工号初始化安全信息（用于初次登陆）
+   * @method initSecurityInfoByJobeCode
+   * @param {Object} payload 负载
+   * @returns {Object} 信息初始化是否成功的状态
+   */
+  initSecurityInfoByJobeCode: async (payload) => {
+    const res = await http({
+      url: config.INITIALIZE_SECURITY_INFO,
+      method: 'post',
+      data: payload
+    })
   }
 }

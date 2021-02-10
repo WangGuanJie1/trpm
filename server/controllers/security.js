@@ -7,6 +7,7 @@ const {
   WRONG_PASSWORD,
   NOT_FOUND_SECURITY_INFO,
   INITIALIZE_SECURITY_ERROR,
+  INITIALIZE_SECRET_QUESTION_INFO_BY_TEACHERID_ERROR,
 } = require("../config/statusCode")
 const { fillUpdatedBy } = require("../middlewares/fillMustRecord")
 
@@ -96,6 +97,27 @@ module.exports = {
    */
   initSecretQuestion: async (req, res, next) => {
     req = fillUpdatedBy(req)
+    const secretQuestion = req.body.secretQuestion
+    Security.updateOne(
+      { _teacherId: req.body._teacherId },
+      { secretQuestion: secretQuestion },
+      (err, doc) => {
+        if (err) {
+          console.log(err)
+          next(createHttpError(404))
+        }
+        if (doc.nModified !== 0) {
+          next()
+        } else {
+          res.json(
+            stateFormat(
+              INITIALIZE_SECRET_QUESTION_INFO_BY_TEACHERID_ERROR.code,
+              INITIALIZE_SECRET_QUESTION_INFO_BY_TEACHERID_ERROR.message
+            )
+          )
+        }
+      }
+    )
   },
   /**
    * 筛选改变密码时候的验证方式

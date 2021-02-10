@@ -37,10 +37,11 @@ const SecuritySchema = new Schema(
     // 密保问题
     secretQuestion: [
       {
-        // 问题（数据来自dictionary_secret_question.question）
-        question: {
-          type: String,
+        // 问题（数据来自dictionary_secret_question._id）
+        _questionId: {
+          type: Schema.Types.ObjectId,
           require: true,
+          ref: "dictionary_secret_question",
         },
         // 答案
         answer: {

@@ -541,6 +541,21 @@ export default createStore({
         }
         return res
       })
+    },
+    /**
+     * 根据教师工号初始化安全信息（用于初次登陆）
+     * @method initSecurityInfoByJobeCode
+     * @param {Object} payload 负载
+     * @returns {Object} 信息初始化是否成功的状态
+     */
+    initSecurityInfoByJobeCode: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.initSecurityInfoByJobeCode(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
     }
   },
   modules: {

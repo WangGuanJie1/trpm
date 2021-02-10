@@ -19,7 +19,7 @@
       <a-col :span="9">
         <a-row id="step1" v-if="state.current === 0">
           <a-col>
-            <VerifySelect @handle-change="optionIsChange" />
+            <VerifyTypeSelect @handle-change="optionIsChange" />
           </a-col>
         </a-row>
         <a-row id="step2" v-if="state.current === 1">
@@ -54,11 +54,11 @@
 import { Drawer, Row, Col, Steps, Button, Space } from 'ant-design-vue'
 import { inject, reactive, watch, ref, provide } from 'vue'
 import { useStore } from 'vuex'
-import VerifySelect from '@/views/account/security/VerifySelect'
+import VerifyTypeSelect from '@/views/account/security/VerifyTypeSelect'
 
 export default {
   components: {
-    VerifySelect,
+    VerifyTypeSelect,
     ADrawer: Drawer,
     ARow: Row,
     ACol: Col,
