@@ -1,6 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import store from '../index'
+import router from '../../router'
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 axios.defaults.baseURL = ''
@@ -8,10 +9,15 @@ axios.defaults.baseURL = ''
 const fetch = (options) => {
   const { method = 'get', url } = options
   let { data } = options
-  // 将当前操作用户记录在请求信息当中
-  const jobCode = store.state.currentTeacherInfo.teacherInfo.jobCode
-  if (data === undefined) data = { handler: jobCode }
-  else data.handler = jobCode
+  console.log(router.options.history.location === '/login')
+  // 将当前操作教师工号记录在请求信息当中（除登录以外）
+  let jobCode = ''
+  if (router.options.history.location !== '/login') {
+    jobCode = store.state.currentTeacherInfo.teacherInfo.jobCode
+    if (data === undefined) data = { handler: jobCode }
+    else data.handler = jobCode
+    console.log(56800)
+  }
   // 每次请求都确保重新获取localstorage中的最新 Token
   axios.defaults.headers.authorization = 'Bearer ' + localStorage.getItem('authorization')
   switch (method.toLowerCase()) {

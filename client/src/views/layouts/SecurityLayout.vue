@@ -39,8 +39,8 @@
         <a-row type="flex" justify="center">
           <a-col>
             <a-space>
-              <a-button type="primary" @click="btnNext"> 下一步 </a-button>
               <a-button type="" @click="btnNext"> 上一步 </a-button>
+              <a-button type="primary" @click="btnNext"> 下一步 </a-button>
               <a-button type="primary" @click="btnAffirm"> 确定 </a-button>
             </a-space>
           </a-col>

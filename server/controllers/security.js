@@ -124,13 +124,6 @@ module.exports = {
    * @method changePasswordSelectItem
    */
   changePasswordVerifyType: async (req, res, next) => {
-    // let { _teacherId, password } = req.body
-    // let originPassword = req.securityInfo.password
-    // let isValid = bcrypt.compareSync(password, originPassword)
-    // if (!isValid)
-    //   res.json(stateFormat(WRONG_PASSWORD.code, WRONG_PASSWORD.message))
-    // next()
-
     const verifyType = [
       {
         cnName: "密码",
@@ -145,16 +138,42 @@ module.exports = {
         enName: "question",
       },
     ]
+    // 身份证验证方式，不要轻易允许教师使用身份证验证
     const idCard2Verify = {
       cnName: "身份证号",
       enName: "idcard",
     }
     let { password, secureEmail } = req.securityInfo
-    // 验证密码、邮箱、密保问题是否设置
+    // 验证密码、邮箱、密保问题是否是默认设置
     const passwordIsValid = bcrypt.compareSync(password, "111")
     const emailIsValid = bcrypt.compareSync(secureEmail, "111")
 
+    // 当密码是初始化密码111，则不允许使用密码进行验证
     if (!passwordIsValid) {
+      const index = verifyType.findIndex(
+        (element) => element.enName === "password"
+      )
+      verifyType.splice(index, 1)
     }
+    // 当邮箱是初始化邮箱111，则不允许使用邮箱进行验证
+    if (!emailIsValid) {
+      const index = verifyType.findIndex(
+        (element) => element.enName === "email"
+      )
+      verifyType.splice(index, 1)
+    }
+    // 当密保问题数量小于1，则不允许使用密保问题进行验证
+    if (req.securityInfo.secretQuestion.length < 1) {
+      const index = verifyType.findIndex(
+        (element) => element.enName === "question"
+      )
+      verifyType.splice(index, 1)
+    }
+    // 检测验证方式禁用情况，若允许使用方式为0/1个则允许使用身份证验证
+    if (verifyType.length < 2) {
+      verifyType.push(idCard2Verify)
+    }
+    req.verifyType = verifyType
+    next()
   },
 }

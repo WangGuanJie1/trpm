@@ -59,5 +59,6 @@ export default {
   CREATE_PROJECT_MEMBER: `${BASE_URL}${PROJ_MEMB}/create`, // 创建项目成员
   UPDATE_PROJECT_BY_ID: `${BASE_URL}${PROJ}/update/by-id`, // 根据项目编号更新项目信息
   VERIFY_TOKEN: `${BASE_URL}${TOKEN}/verify`, // 验证token
+  VERIFY_TYPE_BY_TEACHERID: `${BASE_URL}${SECU}/verifytype`, // 获取安全验证方式
   VERIFY_APPLY_QUALIFICATION: `${BASE_URL}${PROJ_MEMB}/veApQu` // 验证项目申请资格
 }

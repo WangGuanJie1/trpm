@@ -556,6 +556,21 @@ export default createStore({
         }
         return res
       })
+    },
+    /**
+     * 根据教师编号获取安全验证方式
+     * @method verifyTypeByTeacherId
+     * @param {Object} payload 负载
+     * @returns {Object} 获取到的安全验证方式
+     */
+    verifyTypeByTeacherId: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.verifyTypeByTeacherId(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
     }
   },
   modules: {

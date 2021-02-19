@@ -477,5 +477,20 @@ export default {
       method: 'post',
       data: payload
     })
+    return res
+  },
+  /**
+   * 根据教师编号获取安全验证方式
+   * @method verifyTypeByTeacherId
+   * @param {Object} payload 负载
+   * @returns {Object} 获取到的安全验证方式
+   */
+  verifyTypeByTeacherId: async (payload) => {
+    const res = await http({
+      url: config.VERIFY_TYPE_BY_TEACHERID,
+      method: 'post',
+      data: payload
+    })
+    return res
   }
 }
