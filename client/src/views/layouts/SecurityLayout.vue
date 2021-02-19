@@ -15,33 +15,41 @@
       </a-col>
     </a-row>
 
-    <a-row type="flex" justify="center" align="middle" class="h-80p">
-      <a-col :span="9">
-        <a-row id="step1" v-if="state.current === 0">
-          <a-col>
-            <VerifyTypeSelect @handle-change="optionIsChange" />
+    <a-row type="flex" justify="center" align="middle" class="h-80">
+      <a-col :span="13" class="h-100">
+        <a-row type="flex" justify="center" align="middle" class="h-100 main-container">
+          <a-col :span="12">
+            <a-row id="step1" v-if="state.current === 0">
+              <a-col>
+                <VerifyTypeSelect @handle-change="optionIsChange" />
+              </a-col>
+            </a-row>
+            <a-row id="step2" v-if="state.current === 1">
+              <a-col>
+                <VerifyInfo />
+              </a-col>
+            </a-row>
+            <a-row id="step3" v-if="state.current === 2">
+              <a-col></a-col>
+            </a-row>
+            <a-row id="step4" v-if="state.current === 3">
+              <a-col></a-col>
+            </a-row>
           </a-col>
-        </a-row>
-        <a-row id="step2" v-if="state.current === 1">
-          <a-col></a-col>
-        </a-row>
-        <a-row id="step3" v-if="state.current === 2">
-          <a-col></a-col>
-        </a-row>
-        <a-row id="step4" v-if="state.current === 3">
-          <a-col></a-col>
         </a-row>
       </a-col>
     </a-row>
 
     <a-row type="flex" justify="center">
       <a-col :span="13">
-        <a-row type="flex" justify="center">
+        <a-row type="flex" justify="end">
           <a-col>
             <a-space>
-              <a-button type="" @click="btnNext"> 上一步 </a-button>
-              <a-button type="primary" @click="btnNext"> 下一步 </a-button>
-              <a-button type="primary" @click="btnAffirm"> 确定 </a-button>
+              <a-button type="" @click="btnPrev" v-if="state.current !== 0"> 上一步 </a-button>
+              <a-button type="primary" @click="btnNext" v-if="state.current !== 3" :loading="optionName === ''">
+                下一步
+              </a-button>
+              <a-button type="primary" @click="btnAffirm" v-if="state.current === 3"> 确&emsp;定 </a-button>
             </a-space>
           </a-col>
         </a-row>
@@ -53,12 +61,13 @@
 <script>
 import { Drawer, Row, Col, Steps, Button, Space } from 'ant-design-vue'
 import { inject, reactive, watch, ref, provide } from 'vue'
-import { useStore } from 'vuex'
+import VerifyInfo from '@/views/account/security/VerifyInfo'
 import VerifyTypeSelect from '@/views/account/security/VerifyTypeSelect'
 
 export default {
   components: {
     VerifyTypeSelect,
+    VerifyInfo,
     ADrawer: Drawer,
     ARow: Row,
     ACol: Col,
@@ -68,46 +77,32 @@ export default {
     AButton: Button
   },
   setup() {
-    const store = useStore()
     const btnIsTrigger = inject('btnIsTrigger')
     const btnTriggerName = inject('btnTriggerName')
-    const securityType = inject('securityType')
-    const verifyOptionName = ref(securityType.value[0].enName)
-    provide('verifyOptionName', verifyOptionName)
+
     const showDrawer = ref(false)
+    const optionName = ref('') // 选中的验证方式（英文标识）
+    provide('optionName', optionName)
     const state = reactive({
       current: 0, // 进度条位置
-      steps: ['选择验证类型', '输入验证信息', '', '完成']
+      steps: ['选择验证方式', '输入验证信息', '', '完成']
     })
+    // 模态框样式
     const drawerBodyStyle = {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
       height: '85%'
     }
-    const teacherId = store.state.currentTeacherInfo.teacherInfo._id
-    const securityInfo = ref('')
-    store.dispatch('findSecurityInfoByTeacherId', { _teacherId: teacherId }).then((res, err) => {
-      if (res.code === 200) {
-        securityInfo.value = res.data
-      }
-    })
-
-    watch(
-      () => securityInfo.value,
-      () => {
-        console.log(securityInfo.value)
-      }
-    )
 
     /**
      * 安全选项卡组件选项变更
      * @method optionIsChange
      * @param {String} optionName 选项名称
      */
-    const optionIsChange = (optionName) => {
-      console.log(optionName)
-      verifyOptionName.value = optionName
+    const optionIsChange = (enName) => {
+      console.log(enName)
+      optionName.value = enName
     }
 
     /**
@@ -115,7 +110,16 @@ export default {
      * @method btnNext
      */
     const btnNext = () => {
-      console.log(verifyOptionName.value)
+      // 只有optionName有具体值时候才可允许触发下一步
+      if (optionName.value) state.current += 1
+    }
+
+    /**
+     * 上一步按钮事件
+     * @method btnPrev
+     */
+    const btnPrev = () => {
+      state.current -= 1
     }
 
     /**
@@ -136,10 +140,12 @@ export default {
       state,
       drawerBodyStyle,
       showDrawer,
+      optionName,
       btnIsTrigger,
       btnTriggerName,
       optionIsChange,
       btnNext,
+      btnPrev,
       btnAffirm
     }
   }
@@ -147,7 +153,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.h-80p {
+.h-100 {
+  height: 100%;
+}
+.h-80 {
   height: 80%;
+}
+.main-container {
+  border: 1px solid rgba(199, 199, 199, 0.2);
+  border-radius: 8px;
 }
 </style>
