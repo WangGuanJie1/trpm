@@ -1,3 +1,7 @@
+/**
+ * 温馨提示：payload中的参数需要后端各接口内查看，这里不公示
+ */
+
 import config from './config'
 import http from './http'
 
@@ -502,6 +506,62 @@ export default {
   findSecurityQuestionByTeacherId: async (payload) => {
     const res = await http({
       url: config.FIND_SECURITY_QUESTION_BY_TEACHERID,
+      method: 'post',
+      data: payload
+    })
+    return res
+  },
+  /**
+   * 根据教师编号进行密码校验
+   * @method verifyPasswordByTeacherId
+   * @param {Object} payload 负载
+   * @returns {Object} 是否校验成功状态
+   */
+  verifyPasswordByTeacherId: async (payload) => {
+    const res = await http({
+      url: config.VERITY_PASSWORD,
+      method: 'post',
+      data: payload
+    })
+    return res
+  },
+  /**
+   * 根据教师编号进行邮箱校验
+   * @method verifyEmailByTeacherId
+   * @param {Object} payload 负载
+   * @returns {Object} 是否校验成功状态
+   */
+  verifyEmailByTeacherId: async (payload) => {
+    const res = await http({
+      url: config.VERITY_EMAIL,
+      method: 'post',
+      data: payload
+    })
+    return res
+  },
+  /**
+   * 根据教师编号进行密保问题校验
+   * @method verifyQuestionByTeacherId
+   * @param {Object} payload 负载
+   * @returns {Object} 是否校验成功状态
+   */
+  verifyQuestionByTeacherId: async (payload) => {
+    const res = await http({
+      url: config.VERITY_QUESTION,
+      method: 'post',
+      data: payload
+    })
+    return res
+  },
+  /**
+   * 根据教师编号进行身份证号码校验
+   * @method verifyIdcardByTeacherId
+   * @param {Object} payload 负载
+   * @returns {Object} 是否校验成功状态
+   */
+  verifyIdcardByTeacherId: async (payload) => {
+    const res = await http({
+      url: config.VERITY_IDCARD,
       method: 'post',
       data: payload
     })

@@ -10,6 +10,9 @@ const {
   INITIALIZE_SECURITY_ERROR,
   INITIALIZE_SECRET_QUESTION_INFO_BY_TEACHERID_ERROR,
   NOT_FOUND_SECRET_QUESTION_INFO_BY_TEACHERID,
+  WRONG_QUESTION,
+  WRONG_EMAIL,
+  WRONG_IDCARD,
 } = require("../config/statusCode")
 const { fillUpdatedBy } = require("../middlewares/fillMustRecord")
 
@@ -50,6 +53,34 @@ module.exports = {
       res.json(stateFormat(WRONG_PASSWORD.code, WRONG_PASSWORD.message))
     next()
   },
+  /**
+   * 密保问题验证
+   * @method securityCompareQuestion
+   */
+  securityCompareQuestion: async (req, res, next) => {
+    const { _teacher, secretQuestion } = req.body
+    const originSecretQuestion = req.securityInfo.secretQuestion // 原密保问题数组
+    const isPassVerify = secretQuestion.every((item, index) => {
+      const isValid = bcrypt.compareSync(
+        secretQuestion[index].answer,
+        originSecretQuestion[index].answer
+      )
+      return isValid === true
+    })
+    isPassVerify
+      ? next()
+      : res.json(stateFormat(WRONG_QUESTION.code, WRONG_QUESTION.message))
+  },
+  /**
+   * 安全邮箱验证
+   * @method securityCompareQuestion
+   */
+  securityCompareEmail: async (req, res, next) => {},
+  /**
+   * 身份证号码验证
+   * @method securityCompareQuestion
+   */
+  securityCompareIdcard: async (req, res, next) => {},
   /**
    * 更新密码 TODO: 书写+方法命名不规范，待修改
    * @method updatePassword

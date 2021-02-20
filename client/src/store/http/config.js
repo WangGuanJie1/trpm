@@ -1,3 +1,6 @@
+/**
+ * 温馨提示：路由地址需要后端各路由接口中查看
+ */
 const BASE_URL = '/api'
 const TEAC = '/teacher'
 const DIC_ROLE = '/dictionary-role'
@@ -61,5 +64,9 @@ export default {
   UPDATE_PROJECT_BY_ID: `${BASE_URL}${PROJ}/update/by-id`, // 根据项目编号更新项目信息
   VERIFY_TOKEN: `${BASE_URL}${TOKEN}/verify`, // 验证token
   VERIFY_TYPE_BY_TEACHERID: `${BASE_URL}${SECU}/verifytype`, // 获取安全验证方式
-  VERIFY_APPLY_QUALIFICATION: `${BASE_URL}${PROJ_MEMB}/veApQu` // 验证项目申请资格
+  VERIFY_APPLY_QUALIFICATION: `${BASE_URL}${PROJ_MEMB}/veApQu`, // 验证项目申请资格
+  VERITY_PASSWORD: `${BASE_URL}${SECU}/verify/password/by-teacherid`, // 密码校验
+  VERITY_EMAIL: `${BASE_URL}${SECU}/verify/email/by-teacherid`, // 邮箱校验
+  VERITY_QUESTION: `${BASE_URL}${SECU}/verify/question/by-teacherid`, // 密保问题校验
+  VERITY_IDCARD: `${BASE_URL}${SECU}/verify/idcard/by-teacherid` // 身份证号码校验
 }

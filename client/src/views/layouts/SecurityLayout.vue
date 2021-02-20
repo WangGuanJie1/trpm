@@ -6,6 +6,7 @@
     v-model:visible="showDrawer"
     height="90%"
     :bodyStyle="drawerBodyStyle"
+    @close="closeEvent"
   >
     <a-row type="flex" justify="center" align="middle">
       <a-col :span="13">
@@ -83,6 +84,8 @@ export default {
     const showDrawer = ref(false)
     const optionName = ref('') // 选中的验证方式（英文标识）
     provide('optionName', optionName)
+    const secretQuestion = ref('') // 验证信息的数据，数据内容根据验证方式改变，通过 optionName 进行区分
+    provide('secretQuestion', secretQuestion)
     const state = reactive({
       current: 0, // 进度条位置
       steps: ['选择验证方式', '输入验证信息', '', '完成']
@@ -111,8 +114,58 @@ export default {
      */
     const btnNext = () => {
       // 只有optionName有具体值时候才可允许触发下一步
-      if (optionName.value) state.current += 1
+      if (optionName.value) {
+        // 在选择验证方式时点击下一步
+        if (state.current === 0) state.current += 1
+
+        // 在输入验证信息时点击下一步
+        if (state.current === 1) {
+          let verifyPass = 0 // 校验是否通过
+          // 密保问题校验
+          if (optionName.value === 'question') verifyPass = questionVerify()
+          // 密码校验
+          if (optionName.value === 'password') verifyPass = passwordVerify()
+
+          // 邮箱校验
+          if (optionName.value === 'email') verifyPass = emailVerify()
+
+          // 身份证号码校验
+          if (optionName.value === 'idcard') verifyPass = idcardVerify()
+
+          // 是否允许下一步
+          if (verifyPass === 1) state.current += 1
+        }
+
+        // 在更改信息时点击下一步
+        if (state.current === 2) {
+          state.current += 1
+        }
+      }
     }
+
+    /**
+     * 密保问题校验
+     * @method questionVerify
+     */
+    const questionVerify = () => {}
+
+    /**
+     * 密码校验
+     * @method passwordVerify
+     */
+    const passwordVerify = () => {}
+
+    /**
+     * 邮箱校验
+     * @method emailVerify
+     */
+    const emailVerify = () => {}
+
+    /**
+     * 身份证号码校验
+     * @method idcardVerify
+     */
+    const idcardVerify = () => {}
 
     /**
      * 上一步按钮事件
@@ -127,6 +180,14 @@ export default {
      * @method btnAffirm
      */
     const btnAffirm = () => {}
+
+    /**
+     * 模态框关闭事件
+     * @method closeEvent
+     */
+    const closeEvent = (e) => {
+      state.current = 0 // 只要触发模态框关闭就重置进度
+    }
 
     watch(
       () => btnIsTrigger.value,
@@ -146,7 +207,8 @@ export default {
       optionIsChange,
       btnNext,
       btnPrev,
-      btnAffirm
+      btnAffirm,
+      closeEvent
     }
   }
 }

@@ -7,6 +7,9 @@ const {
   initSecretQuestion,
   updatePassword,
   securityQuestionFindByTeacherId,
+  securityCompareQuestion,
+  securityCompareIdcard,
+  securityCompareEmail,
 } = require("../controllers/security")
 const {
   entityFormat,
@@ -62,6 +65,42 @@ router.post(
         req.securityQuestionInfo
       )
     )
+  }
+)
+
+router.post(
+  "/verify/password/by-teacherid",
+  securityFindByTeacherId,
+  securityComparePassword,
+  (req, res) => {
+    res.json(stateFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message))
+  }
+)
+
+router.post(
+  "/verify/question/by-teacherid",
+  securityFindByTeacherId,
+  securityCompareQuestion,
+  (req, res) => {
+    res.json(stateFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message))
+  }
+)
+
+router.post(
+  "/verify/idcard/by-teacherid",
+  securityFindByTeacherId,
+  securityCompareIdcard,
+  (req, res) => {
+    res.json(stateFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message))
+  }
+)
+
+router.post(
+  "/verify/email/by-teacherid",
+  securityFindByTeacherId,
+  securityCompareEmail,
+  (req, res) => {
+    res.json(stateFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message))
   }
 )
 

@@ -1,5 +1,5 @@
 /**
- * 针对已经拥有数据的Schema进行刷新，用于更新Schema中新增的Attr
+ * 针对已经拥有数据的Schema进行重置更新，以便用于更新Schema中新增的Attr
  * GET参数schemaName直接复制数据库中集合数据库名称即可
  * 注意：需要在Schema中对新增的Attr设置default值，该API仅针对测试开发时期使用
  */
@@ -9,7 +9,10 @@ const createHttpError = require("http-errors")
 const express = require("express")
 const router = express.Router()
 
-// Schema名称处理，均来自数据库
+/**
+ * 集合名称与模型文件名称匹配处理
+ * @param {String} schemaName 数据库中的集合名称
+ */
 const nameDispose = (schemaName) => {
   const name = schemaName.split("_")
   let disName = ""

@@ -43,7 +43,7 @@ module.exports = {
   },
   WRONG_PASSWORD: {
     code: 3001,
-    message: "密码错误",
+    message: "密码验证错误",
   },
   NOT_FOUND_SECURITY_INFO_BY_TEACHERID: {
     code: 3002,
@@ -232,5 +232,17 @@ module.exports = {
   NOT_FOUND_SECRET_QUESTION_INFO_BY_TEACHERID: {
     code: 3038,
     message: "当前教师没有设置安全问题",
+  },
+  WRONG_QUESTION: {
+    code: 3039,
+    message: "密保问题验证错误",
+  },
+  WRONG_EMAIL: {
+    code: 3040,
+    message: "邮箱验证错误",
+  },
+  WRONG_IDCARD: {
+    code: 3041,
+    message: "身份证号码验证错误",
   },
 }
