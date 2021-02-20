@@ -6,6 +6,7 @@ const {
   changePasswordVerifyType,
   initSecretQuestion,
   updatePassword,
+  securityQuestionFindByTeacherId,
 } = require("../controllers/security")
 const {
   entityFormat,
@@ -52,18 +53,13 @@ router.post(
 
 router.post(
   "/find/question/by-teacherid",
-  securityFindByTeacherId,
+  securityQuestionFindByTeacherId,
   (req, res) => {
-    req.securityInfo.secretQuestion.forEach((element) => {
-      delete element["_id"]
-      delete element["answer"]
-      console.log(element)
-    })
     res.json(
       listFormat(
         HTTP_SUCCEED.code,
         HTTP_SUCCEED.message,
-        req.securityInfo.secretQuestion
+        req.securityQuestionInfo
       )
     )
   }

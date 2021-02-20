@@ -47,6 +47,7 @@ export default {
   FIND_PROJECT_MEMBER_BY_JOBCODE: `${BASE_URL}${PROJ_MEMB}/find/by-jobcode`, // 根据教师工号查询主持和参与的项目数量
   FIND_TEACHER_PROJECT_INFO_BY_JOBCODE: `${BASE_URL}${PROJ_MEMB}/find/allinfo/by-jobcode`, // 根据教师工号找到项目基本信息、成员信息、教学工作简历、教研工作简历
   FIND_TEACHER_SECUITY_INFO_BY_TEACHERID: `${BASE_URL}${SECU}/find/by-teacherid`, // 根据教师编号查询当前教师安全信息
+  FIND_SECURITY_QUESTION_BY_TEACHERID: `${BASE_URL}${SECU}/find/question/by-teacherid`, // 根据教师编号查询当前教师安全问题
   CREATE_DICTIONARY_TERM: `${BASE_URL}${DIC_TERM}/create`, // 创建学期字典信息
   CREATE_DICTIONARY_ROLE: `${BASE_URL}${DIC_ROLE}/create`, // 创建身份字典信息
   CREATE_DICTIONARY_RESEARCH_CATEGORY: `${BASE_URL}${DIC_RESE_CATE}/create`, // 创建研究类别字典信息

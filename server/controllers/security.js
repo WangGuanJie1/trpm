@@ -1,3 +1,4 @@
+const mongoose = require("../models/connect")
 const bcrypt = require("bcrypt")
 const Security = require("../models/Security")
 const { stateFormat } = require("../controllers/dataFormat")
@@ -5,9 +6,10 @@ const createHttpError = require("http-errors")
 const {
   HTTP_SUCCEED,
   WRONG_PASSWORD,
-  NOT_FOUND_SECURITY_INFO,
+  NOT_FOUND_SECURITY_INFO_BY_TEACHERID,
   INITIALIZE_SECURITY_ERROR,
   INITIALIZE_SECRET_QUESTION_INFO_BY_TEACHERID_ERROR,
+  NOT_FOUND_SECRET_QUESTION_INFO_BY_TEACHERID,
 } = require("../config/statusCode")
 const { fillUpdatedBy } = require("../middlewares/fillMustRecord")
 
@@ -29,8 +31,8 @@ module.exports = {
       } else {
         res.json(
           stateFormat(
-            NOT_FOUND_SECURITY_INFO.code,
-            NOT_FOUND_SECURITY_INFO.message
+            NOT_FOUND_SECURITY_INFO_BY_TEACHERID.code,
+            NOT_FOUND_SECURITY_INFO_BY_TEACHERID.message
           )
         )
       }
@@ -175,5 +177,56 @@ module.exports = {
     }
     req.verifyType = verifyType
     next()
+  },
+  /**
+   * 根据教师编号查找当前教师的安全问题
+   * @method securityQuestionFindByTeacherId
+   */
+  securityQuestionFindByTeacherId: async (req, res, next) => {
+    const { _teacherId } = req.body
+    Security.aggregate(
+      [
+        {
+          $lookup: {
+            from: "dictionary_secret_question",
+            localField: "secretQuestion._questionId",
+            foreignField: "_id",
+            as: "dictionary_secret_question",
+          },
+        },
+        {
+          $match: {
+            _teacherId: mongoose.Types.ObjectId(_teacherId),
+          },
+        },
+      ],
+      (err, doc) => {
+        if (err) {
+          console.log(err)
+          next(createHttpError(404))
+        }
+        if (doc) {
+          if (doc[0].dictionary_secret_question.length === 0) {
+            res.json(
+              stateFormat(
+                NOT_FOUND_SECRET_QUESTION_INFO_BY_TEACHERID.code,
+                NOT_FOUND_SECRET_QUESTION_INFO_BY_TEACHERID.message
+              )
+            )
+          } else {
+            // TODO: 这里是将所有的字段都打包发送出去，没有进行字段筛选，一旦被抓包会有安全问题
+            req.securityQuestionInfo = doc[0].dictionary_secret_question
+            next()
+          }
+        } else {
+          res.json(
+            stateFormat(
+              NOT_FOUND_SECURITY_INFO_BY_TEACHERID.code,
+              NOT_FOUND_SECURITY_INFO_BY_TEACHERID.message
+            )
+          )
+        }
+      }
+    )
   },
 }

@@ -571,6 +571,21 @@ export default createStore({
         }
         return res
       })
+    },
+    /**
+     * 根据教师编号获取当前教师安全问题
+     * @method verifyTypeByTeacherId
+     * @param {Object} payload 负载
+     * @returns {Object} 获取到的安全问题
+     */
+    findSecurityQuestionByTeacherId: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.findSecurityQuestionByTeacherId(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
     }
   },
   modules: {

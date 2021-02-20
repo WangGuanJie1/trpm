@@ -45,7 +45,7 @@ module.exports = {
     code: 3001,
     message: "密码错误",
   },
-  NOT_FOUND_SECURITY_INFO: {
+  NOT_FOUND_SECURITY_INFO_BY_TEACHERID: {
     code: 3002,
     message: "没有找到该账号相关安全信息",
   },
@@ -228,5 +228,9 @@ module.exports = {
   INITIALIZE_SECRET_QUESTION_INFO_BY_TEACHERID_ERROR: {
     code: 3047,
     message: "初始设置密保问题信息失败",
+  },
+  NOT_FOUND_SECRET_QUESTION_INFO_BY_TEACHERID: {
+    code: 3038,
+    message: "当前教师没有设置安全问题",
   },
 }

@@ -492,5 +492,19 @@ export default {
       data: payload
     })
     return res
+  },
+  /**
+   * 根据教师编号获取当前教师安全问题
+   * @method findSecurityQuestionByTeacherId
+   * @param {Object} payload 负载
+   * @returns {Object} 获取到的安全问题
+   */
+  findSecurityQuestionByTeacherId: async (payload) => {
+    const res = await http({
+      url: config.FIND_SECURITY_QUESTION_BY_TEACHERID,
+      method: 'post',
+      data: payload
+    })
+    return res
   }
 }
