@@ -64,6 +64,7 @@ import { Drawer, Row, Col, Steps, Button, Space } from 'ant-design-vue'
 import { inject, reactive, watch, ref, provide } from 'vue'
 import VerifyInfo from '@/views/account/security/VerifyInfo'
 import VerifyTypeSelect from '@/views/account/security/VerifyTypeSelect'
+import { useStore } from 'vuex'
 
 export default {
   components: {
@@ -78,13 +79,15 @@ export default {
     AButton: Button
   },
   setup() {
+    const store = useStore()
+    const _teacherId = store.state.currentTeacherInfo.teacherInfo._id
     const btnIsTrigger = inject('btnIsTrigger')
     const btnTriggerName = inject('btnTriggerName')
 
     const showDrawer = ref(false)
     const optionName = ref('') // 选中的验证方式（英文标识）
     provide('optionName', optionName)
-    const secretQuestion = ref('') // 验证信息的数据，数据内容根据验证方式改变，通过 optionName 进行区分
+    const secretQuestion = ref([]) // 密保问题的数据和验证信息
     provide('secretQuestion', secretQuestion)
     const state = reactive({
       current: 0, // 进度条位置
@@ -104,7 +107,6 @@ export default {
      * @param {String} optionName 选项名称
      */
     const optionIsChange = (enName) => {
-      console.log(enName)
       optionName.value = enName
     }
 
@@ -116,7 +118,19 @@ export default {
       // 只有optionName有具体值时候才可允许触发下一步
       if (optionName.value) {
         // 在选择验证方式时点击下一步
-        if (state.current === 0) state.current += 1
+        if (state.current === 0) {
+          store.dispatch('findSecurityQuestionByTeacherId', { _teacherId: _teacherId }).then((res, err) => {
+            if (res.code === 200) {
+              // 初始化答案内容
+              res.data.forEach((element) => {
+                element.answer = ''
+              })
+              secretQuestion.value = res.data
+            }
+          })
+          // 没请求完成也跳转，由子组件控制loading
+          state.current += 1
+        }
 
         // 在输入验证信息时点击下一步
         if (state.current === 1) {
@@ -125,13 +139,10 @@ export default {
           if (optionName.value === 'question') verifyPass = questionVerify()
           // 密码校验
           if (optionName.value === 'password') verifyPass = passwordVerify()
-
           // 邮箱校验
           if (optionName.value === 'email') verifyPass = emailVerify()
-
           // 身份证号码校验
           if (optionName.value === 'idcard') verifyPass = idcardVerify()
-
           // 是否允许下一步
           if (verifyPass === 1) state.current += 1
         }
@@ -147,7 +158,13 @@ export default {
      * 密保问题校验
      * @method questionVerify
      */
-    const questionVerify = () => {}
+    const questionVerify = () => {
+      store
+        .dispatch('verifyQuestionByTeacherId', { _teacherId: _teacherId, secretQuestion: secretQuestion })
+        .then((res, err) => {
+          return res.code === 200 ? 1 : 0
+        })
+    }
 
     /**
      * 密码校验

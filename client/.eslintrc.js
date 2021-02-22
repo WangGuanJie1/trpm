@@ -11,6 +11,7 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-var': 0,
-    'space-before-function-paren': [0, 'always']
+    'space-before-function-paren': [0, 'always'],
+    'no-ternary': 'off'
   }
 }

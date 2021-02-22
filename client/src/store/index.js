@@ -586,67 +586,67 @@ export default createStore({
         }
         return res
       })
+    },
+    /**
+     * 根据教师编号进行密码校验
+     * @method verifyPasswordByTeacherId
+     * @param {Object} payload 负载
+     * @returns {Object} 是否校验成功状态
+     */
+    verifyPasswordByTeacherId: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.verifyPasswordByTeacherId(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
+    },
+    /**
+     * 根据教师编号进行邮箱校验
+     * @method verifyEmailByTeacherId
+     * @param {Object} payload 负载
+     * @returns {Object} 是否校验成功状态
+     */
+    verifyEmailByTeacherId: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.verifyEmailByTeacherId(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
+    },
+    /**
+     * 根据教师编号进行密保问题校验
+     * @method verifyQuestionByTeacherId
+     * @param {Object} payload 负载
+     * @returns {Object} 是否校验成功状态
+     */
+    verifyQuestionByTeacherId: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.verifyQuestionByTeacherId(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
+    },
+    /**
+     * 根据教师编号进行身份证号码校验
+     * @method verifyIdcardByTeacherId
+     * @param {Object} payload 负载
+     * @returns {Object} 是否校验成功状态
+     */
+    verifyIdcardByTeacherId: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.verifyIdcardByTeacherId(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
     }
-  },
-  /**
-   * 根据教师编号进行密码校验
-   * @method verifyPasswordByTeacherId
-   * @param {Object} payload 负载
-   * @returns {Object} 是否校验成功状态
-   */
-  verifyPasswordByTeacherId: ({ commit }, payload) => {
-    return getPromiseActionNoMutations(api.verifyPasswordByTeacherId(payload)).then((res, err) => {
-      if (err) {
-        console.log(err)
-        return
-      }
-      return res
-    })
-  },
-  /**
-   * 根据教师编号进行邮箱校验
-   * @method verifyEmailByTeacherId
-   * @param {Object} payload 负载
-   * @returns {Object} 是否校验成功状态
-   */
-  verifyEmailByTeacherId: ({ commit }, payload) => {
-    return getPromiseActionNoMutations(api.verifyEmailByTeacherId(payload)).then((res, err) => {
-      if (err) {
-        console.log(err)
-        return
-      }
-      return res
-    })
-  },
-  /**
-   * 根据教师编号进行密保问题校验
-   * @method verifyQuestionByTeacherId
-   * @param {Object} payload 负载
-   * @returns {Object} 是否校验成功状态
-   */
-  verifyQuestionByTeacherId: ({ commit }, payload) => {
-    return getPromiseActionNoMutations(api.verifyQuestionByTeacherId(payload)).then((res, err) => {
-      if (err) {
-        console.log(err)
-        return
-      }
-      return res
-    })
-  },
-  /**
-   * 根据教师编号进行身份证号码校验
-   * @method verifyIdcardByTeacherId
-   * @param {Object} payload 负载
-   * @returns {Object} 是否校验成功状态
-   */
-  verifyIdcardByTeacherId: ({ commit }, payload) => {
-    return getPromiseActionNoMutations(api.verifyIdcardByTeacherId(payload)).then((res, err) => {
-      if (err) {
-        console.log(err)
-        return
-      }
-      return res
-    })
   },
   modules: {
     themeSetting

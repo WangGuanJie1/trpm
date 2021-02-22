@@ -1,11 +1,13 @@
 <template>
   <a-row>
     <a-col>
-      <a-form v-if="optionName === 'question'">
-        <a-form-item v-for="(item, index) in secretQuestion" :key="item._id" :label="item.question">
-          <a-input size="large" v-model:value="item.answer" @change="(e) => fillAnswer(e, index)"></a-input>
-        </a-form-item>
-      </a-form>
+      <a-spin v-if="optionName === 'question'" size="large" :spinning="state.loading" tip="加载中...">
+        <a-form v-show="!state.loading">
+          <a-form-item v-for="(item, index) in secretQuestion" :key="item._id" :label="item.question">
+            <a-input size="large" v-model:value="item.answer" @change="(e) => fillAnswer(e, index)"></a-input>
+          </a-form-item>
+        </a-form>
+      </a-spin>
       <a-form v-else>
         <a-form-item v-if="optionName === 'password'" label="原密码">
           <a-input-password size="large"></a-input-password>
@@ -22,9 +24,9 @@
 </template>
 
 <script>
-import { Row, Col, Input, Form } from 'ant-design-vue'
-import { reactive, inject } from 'vue'
-import { useStore } from 'vuex'
+import { Row, Col, Input, Form, Spin } from 'ant-design-vue'
+import { reactive, inject, watch } from 'vue'
+
 export default {
   components: {
     ARow: Row,
@@ -32,27 +34,21 @@ export default {
     AInput: Input,
     AInputPassword: Input.Password,
     AForm: Form,
-    AFormItem: Form.Item
+    AFormItem: Form.Item,
+    ASpin: Spin
   },
   setup(props) {
-    const store = useStore()
     const optionName = inject('optionName')
     const secretQuestion = inject('secretQuestion')
     const state = reactive({
-      question: [] // 获取到的密保问题以及后续填写的答案 {_Id,question,answer}
+      question: [], // 获取到的密保问题以及后续填写的答案 {_Id,question,answer}
+      loading: true
     })
 
-    // 如果教师选择通过密保问题来修改安全信息，则需要重新获取当前教师的密保问题，TODO: 存在多次请求的问题，此处可优化。
+    // 如果教师选择通过密保问题来修改安全信息，则需要监视密保问题是否请求完成，以控制loading
     if (optionName.value === 'question') {
-      const _teacherId = store.state.currentTeacherInfo.teacherInfo._id
-      store.dispatch('findSecurityQuestionByTeacherId', { _teacherId: _teacherId }).then((res, err) => {
-        if (res.code === 200) {
-          // 初始化答案内容
-          res.data.forEach((element) => {
-            element.answer = ''
-          })
-          secretQuestion.value = res.data
-        }
+      watch(secretQuestion, () => {
+        state.loading = false
       })
     }
 
