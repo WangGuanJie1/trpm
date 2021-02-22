@@ -32,7 +32,7 @@ console.log(router)
 const abc = defineAsyncComponent(
   () =>
     new Promise((resolve, reject) => {
-      resolve(import('./SuccessRes'))
+      resolve(import('./ErrorRes'))
     })
 )
 console.log(abc)
