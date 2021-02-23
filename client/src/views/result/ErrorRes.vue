@@ -1,8 +1,6 @@
 <template>
   <a-row>
     <a-col id="isBBB">
-      <Asyncextra />
-
       <a-result status="error" :title="props.title" :sub-title="props.subTitle">
         <template #extra v-if="!props.isBack">
           <a-row>
@@ -14,7 +12,7 @@
         <template #extra v-else>
           <a-row>
             <a-col>
-              <slot name="back"></slot>
+              <a-button type="primary" @click="backPrevRoute">返&emsp;回</a-button>
             </a-col>
           </a-row>
         </template>
@@ -24,24 +22,16 @@
 </template>
 
 <script>
-import { Row, Col, Result } from 'ant-design-vue'
-import { reactive, defineAsyncComponent } from 'vue'
+import { Row, Col, Result, Button } from 'ant-design-vue'
+import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
-const router = useRouter()
-console.log(router)
-const abc = defineAsyncComponent(
-  () =>
-    new Promise((resolve, reject) => {
-      resolve(import('./ErrorRes'))
-    })
-)
-console.log(abc)
+
 export default {
   components: {
-    Asyncextra: abc,
     ARow: Row,
     ACol: Col,
-    AResult: Result
+    AResult: Result,
+    AButton: Button
   },
   props: {
     title: {
@@ -50,7 +40,7 @@ export default {
     },
     subTitle: {
       type: String,
-      default: ''
+      default: '发生错误，将返回至上一页面。  3'
     },
     isBack: {
       type: Boolean,
@@ -58,8 +48,21 @@ export default {
     }
   },
   setup(props) {
+    const router = useRouter()
     const state = reactive({})
-    return { state, props }
+    /**
+     * 返回上一个路由
+     * @method backPrevRoute
+     */
+    const backPrevRoute = () => {
+      router.back()
+      console.log(router)
+    }
+    return {
+      state,
+      props,
+      backPrevRoute
+    }
   }
 }
 </script>

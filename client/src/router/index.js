@@ -105,6 +105,24 @@ const routes = [
           title: '安全设置',
           roles: [teacher, sLeader, dLeader, specialist]
         }
+      },
+      {
+        path: '/error',
+        name: 'error',
+        component: () => import('@/views/result/ErrorRes'),
+        props: (router) => {
+          console.log('路由内容查看：', router)
+          return {
+            // 这里要注意路由参数小写问题
+            title: router.query.title,
+            subTitle: router.query.subtitle,
+            isBack: router.query.isback,
+            extra: router.query.extra
+          }
+        },
+        meta: {
+          title: '发生错误'
+        }
       }
     ]
   },
@@ -123,29 +141,10 @@ const routes = [
     ]
   },
   {
-    path: '/error',
-    name: 'error',
-    component: () => import('@/views/result/ErrorRes'),
-    props: (router) => {
-      console.log('路由内容查看：', router)
-      return {
-        // 这里要注意路由参数小写问题
-        title: router.query.title,
-        subTitle: router.query.subtitle,
-        isBack: router.query.isback,
-        extra: router.query.extra
-      }
-    },
-    meta: {
-      title: '发生错误'
-    }
-  },
-  {
     path: '/404',
     name: '404',
     redirect: '/404',
     component: () => import('@/views/exception/404'),
-
     meta: {
       title: '404'
     }

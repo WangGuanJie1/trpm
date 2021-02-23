@@ -65,6 +65,7 @@ import { inject, reactive, watch, ref, provide } from 'vue'
 import VerifyInfo from '@/views/account/security/VerifyInfo'
 import VerifyTypeSelect from '@/views/account/security/VerifyTypeSelect'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
   components: {
@@ -80,6 +81,7 @@ export default {
   },
   setup() {
     const store = useStore()
+    const router = useRouter()
     const _teacherId = store.state.currentTeacherInfo.teacherInfo._id
     const btnIsTrigger = inject('btnIsTrigger')
     const btnTriggerName = inject('btnTriggerName')
@@ -134,17 +136,22 @@ export default {
 
         // 在输入验证信息时点击下一步
         if (state.current === 1) {
-          let verifyPass = 0 // 校验是否通过
-          // 密保问题校验
-          if (optionName.value === 'question') verifyPass = questionVerify()
-          // 密码校验
-          if (optionName.value === 'password') verifyPass = passwordVerify()
-          // 邮箱校验
-          if (optionName.value === 'email') verifyPass = emailVerify()
-          // 身份证号码校验
-          if (optionName.value === 'idcard') verifyPass = idcardVerify()
-          // 是否允许下一步
-          if (verifyPass === 1) state.current += 1
+          switch (optionName.value) {
+            case 'question': // 密保问题校验
+              questionVerify()
+              break
+            case 'password': // 密码校验
+              passwordVerify()
+              break
+            case 'email': // 邮箱校验
+              emailVerify()
+              break
+            case 'idcard': // 身份证号码校验
+              idcardVerify()
+              break
+            case 'default': //如果不是以上验证方式，说明验证方式一定出现问题，届时需要查明Bug
+              nextOrBack(0, { title: '验证问题有误', subTitle: '请联系系统管理员上报此问题，谢谢。' })
+          }
         }
 
         // 在更改信息时点击下一步
@@ -155,14 +162,28 @@ export default {
     }
 
     /**
+     * 根据请求状态码，判定下一步/返回
+     * @method nextOrBack
+     * @param {Number} code 请求状态码
+     * @param {Object} errorInfo 验证失败提示信息
+     */
+    const nextOrBack = (code, errorInfo) => {
+      code === 200 ? (state.current += 1) : router.push({ name: 'error', query: errorInfo })
+    }
+
+    /**
      * 密保问题校验
      * @method questionVerify
      */
     const questionVerify = () => {
+      const errorInfo = {
+        title: '密保问题验证失败',
+        subTitle: '密保问题验证失败，请重新尝试。'
+      }
       store
         .dispatch('verifyQuestionByTeacherId', { _teacherId: _teacherId, secretQuestion: secretQuestion })
         .then((res, err) => {
-          return res.code === 200 ? 1 : 0
+          return res.code === 200 ? 1 : {}
         })
     }
 
