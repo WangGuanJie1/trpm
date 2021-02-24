@@ -149,7 +149,7 @@ export default {
             case 'idcard': // 身份证号码校验
               idcardVerify()
               break
-            case 'default': //如果不是以上验证方式，说明验证方式一定出现问题，届时需要查明Bug
+            case 'default': // 如果不是以上验证方式，说明验证方式一定出现问题，届时需要查明Bug
               nextOrBack(0, { title: '验证问题有误', subTitle: '请联系系统管理员上报此问题，谢谢。' })
           }
         }
@@ -162,7 +162,7 @@ export default {
     }
 
     /**
-     * 根据请求状态码，判定下一步/返回
+     * 根据请求状态码，判定下一步/报错
      * @method nextOrBack
      * @param {Number} code 请求状态码
      * @param {Object} errorInfo 验证失败提示信息
@@ -182,9 +182,7 @@ export default {
       }
       store
         .dispatch('verifyQuestionByTeacherId', { _teacherId: _teacherId, secretQuestion: secretQuestion })
-        .then((res, err) => {
-          return res.code === 200 ? 1 : {}
-        })
+        .then((res, err) => nextOrBack(res.code, errorInfo))
     }
 
     /**
