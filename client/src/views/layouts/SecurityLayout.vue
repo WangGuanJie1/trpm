@@ -132,6 +132,7 @@ export default {
           })
           // 没请求完成也跳转，由子组件控制loading
           state.current += 1
+          return
         }
 
         // 在输入验证信息时点击下一步
@@ -152,6 +153,7 @@ export default {
             case 'default': // 如果不是以上验证方式，说明验证方式一定出现问题，届时需要查明Bug
               nextOrBack(0, { title: '验证问题有误', subTitle: '请联系系统管理员上报此问题，谢谢。' })
           }
+          return
         }
 
         // 在更改信息时点击下一步
@@ -172,6 +174,19 @@ export default {
     }
 
     /**
+     * 安全验证方式过滤
+     * @method verifyFilter
+     */
+    const verifyFilter = () => {
+      const verifyMap = [
+        { question: questionVerify() },
+        { password: passwordVerify() },
+        { email: emailVerify() },
+        { idcard: idcardVerify() }
+      ]
+    }
+
+    /**
      * 密保问题校验
      * @method questionVerify
      */
@@ -181,7 +196,7 @@ export default {
         subTitle: '密保问题验证失败，请重新尝试。'
       }
       store
-        .dispatch('verifyQuestionByTeacherId', { _teacherId: _teacherId, secretQuestion: secretQuestion })
+        .dispatch('verifyQuestionByTeacherId', { _teacherId, secretQuestion: secretQuestion.value })
         .then((res, err) => nextOrBack(res.code, errorInfo))
     }
 

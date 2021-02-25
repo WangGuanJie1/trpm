@@ -60,6 +60,8 @@ module.exports = {
   securityCompareQuestion: async (req, res, next) => {
     const { _teacher, secretQuestion } = req.body
     const originSecretQuestion = req.securityInfo.secretQuestion // 原密保问题数组
+    console.log("类型：", typeof secretQuestion)
+    console.log("内容", secretQuestion)
     const isPassVerify = secretQuestion.every((item, index) => {
       const isValid = bcrypt.compareSync(
         secretQuestion[index].answer,
