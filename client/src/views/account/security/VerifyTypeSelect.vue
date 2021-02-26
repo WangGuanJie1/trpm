@@ -6,7 +6,7 @@
           <a-form-item label="验证方式">
             <a-select
               style="width: 100% !important"
-              v-model:value="state.verifyOptionName"
+              v-model:value="optionName"
               @change="handleChange"
               :size="'large'"
               class="select-width"
@@ -24,7 +24,7 @@
 
 <script>
 import { Row, Col, Select, Form, Spin } from 'ant-design-vue'
-import { reactive, ref } from 'vue'
+import { inject, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 export default {
   components: {
@@ -38,8 +38,10 @@ export default {
   },
   setup(props, context) {
     const store = useStore()
+    const optionName = inject('optionName') // 默定的选项
+    const allowNext = inject('allowNext') // 是否允许点击下一步
     const state = reactive({
-      verifyOptionName: '', // 默认指定的选项
+      verifyOptionName: '',
       loading: true
     })
     const securityType = ref([])
@@ -51,15 +53,16 @@ export default {
      * @param {String} option 当前选项key
      */
     const handleChange = (option) => {
-      state.verifyOptionName = option
-      context.emit('handle-change', state.verifyOptionName)
+      optionName.value = option
+      allowNext.value = false
+      // context.emit('handle-change', state.verifyOptionName)
     }
 
     // 获取安全验证方式，TODO: 这里点击上一步和下一步存在频繁请求的情况，并且这也导致上一步到第一步时候会重置所有刚刚的操作，缺少操作记忆功能
     store.dispatch('verifyTypeByTeacherId', { _teacherId: teacherId }).then((res, err) => {
       if (res.code === 200) {
         securityType.value = res.data
-        state.verifyOptionName = res.data[0].enName // 初始化下拉列表框默认选项
+        optionName.value = res.data[0].enName // 初始化下拉列表框默认选项
         handleChange(res.data[0].enName)
         state.loading = false
       }
@@ -68,7 +71,8 @@ export default {
     return {
       state,
       securityType,
-      handleChange
+      handleChange,
+      optionName
     }
   }
 }

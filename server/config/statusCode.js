@@ -245,4 +245,8 @@ module.exports = {
     code: 3041,
     message: "身份证号码验证错误",
   },
+  NOT_FOUND_TEACHERID: {
+    code: 3042,
+    message: "没有找到教师号",
+  },
 }

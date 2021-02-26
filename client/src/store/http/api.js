@@ -566,5 +566,16 @@ export default {
       data: payload
     })
     return res
+  },
+  /**
+   * 根据教师编号查找教师信息
+   * @method findTeacherByJobcode
+   * @param {Object} payload 负载
+   * @returns {Object} 查找到的教师信息
+   */
+  findTeacherInfoByTeacherId: async (payload) => {
+    const res = await http({
+      url: config.FIND_TEACHER_INFO_BY_TEACHERID
+    })
   }
 }

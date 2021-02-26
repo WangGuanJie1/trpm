@@ -5,11 +5,11 @@ const { stateFormat } = require("../controllers/dataFormat")
 const createHttpError = require("http-errors")
 const {
   HTTP_SUCCEED,
-  WRONG_PASSWORD,
   NOT_FOUND_SECURITY_INFO_BY_TEACHERID,
   INITIALIZE_SECURITY_ERROR,
   INITIALIZE_SECRET_QUESTION_INFO_BY_TEACHERID_ERROR,
   NOT_FOUND_SECRET_QUESTION_INFO_BY_TEACHERID,
+  WRONG_PASSWORD,
   WRONG_QUESTION,
   WRONG_EMAIL,
   WRONG_IDCARD,
@@ -60,8 +60,6 @@ module.exports = {
   securityCompareQuestion: async (req, res, next) => {
     const { _teacher, secretQuestion } = req.body
     const originSecretQuestion = req.securityInfo.secretQuestion // 原密保问题数组
-    console.log("类型：", typeof secretQuestion)
-    console.log("内容", secretQuestion)
     const isPassVerify = secretQuestion.every((item, index) => {
       const isValid = bcrypt.compareSync(
         secretQuestion[index].answer,
@@ -82,7 +80,12 @@ module.exports = {
    * 身份证号码验证
    * @method securityCompareQuestion
    */
-  securityCompareIdcard: async (req, res, next) => {},
+  securityCompareIdcard: async (req, res, next) => {
+    const { idNumber } = req.body
+    req.teacherInfo.idNumber === idNumber
+      ? next()
+      : res.json(stateFormat(WRONG_IDCARD.code, WRONG_IDCARD.message))
+  },
   /**
    * 更新密码 TODO: 书写+方法命名不规范，待修改
    * @method updatePassword

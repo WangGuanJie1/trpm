@@ -11,6 +11,7 @@ const {
   securityCompareIdcard,
   securityCompareEmail,
 } = require("../controllers/security")
+const { teacherFindByTeacherId } = require("../controllers/teacher")
 const {
   entityFormat,
   listFormat,
@@ -88,7 +89,7 @@ router.post(
 
 router.post(
   "/verify/idcard/by-teacherid",
-  securityFindByTeacherId,
+  teacherFindByTeacherId,
   securityCompareIdcard,
   (req, res) => {
     res.json(stateFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message))

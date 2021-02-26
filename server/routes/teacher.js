@@ -1,26 +1,27 @@
-const express = require('express')
+const express = require("express")
 const router = express.Router()
 const {
   teacherCreate,
   teacherFindByJobCode,
   teacherFindAll,
-} = require('../controllers/teacher')
+  teacherFindByTeacherId,
+} = require("../controllers/teacher")
 const {
   securityComparePassword,
   securityFindByTeacherId,
   securityInitialize,
-} = require('../controllers/security')
-const { roleInitialize, roleFindByTeacherId } = require('../controllers/role')
+} = require("../controllers/security")
+const { roleInitialize, roleFindByTeacherId } = require("../controllers/role")
 const {
   settingInitialize,
   settingFindByTeacherId,
-} = require('../controllers/setting')
-const { creatToken } = require('../middlewares/token')
-const { entityFormat, stateFormat } = require('../controllers/dataFormat')
-const { HTTP_SUCCEED } = require('../config/statusCode')
+} = require("../controllers/setting")
+const { creatToken } = require("../middlewares/token")
+const { entityFormat, stateFormat } = require("../controllers/dataFormat")
+const { HTTP_SUCCEED } = require("../config/statusCode")
 
 router.post(
-  '/create',
+  "/create",
   teacherCreate,
   roleInitialize,
   securityInitialize,
@@ -29,18 +30,29 @@ router.post(
     res.json(stateFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message))
   }
 )
-router.get('/all', teacherFindAll, (req, res) => {
+
+router.get("/all", teacherFindAll, (req, res) => {
   res.json(listFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message, req.teacherInfo))
 })
-router.get('/find/by-jobcode', teacherFindByJobCode, (req, res) => {
+
+router.get("/find/by-jobcode", teacherFindByJobCode, (req, res) => {
   res.json(
     entityFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message, {
       teacherInfo: req.teacherInfo,
     })
   )
 })
+
+router.get("/find/by-teachereid", teacherFindByTeacherId, (req, res) => {
+  res.json(
+    entityFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message, {
+      teacherInfo: req.teacherInfo,
+    })
+  )
+})
+
 router.post(
-  '/login',
+  "/login",
   teacherFindByJobCode,
   securityFindByTeacherId,
   securityComparePassword,

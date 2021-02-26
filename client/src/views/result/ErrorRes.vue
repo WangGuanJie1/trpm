@@ -40,7 +40,7 @@ export default {
     },
     subTitle: {
       type: String,
-      default: '发生错误，将返回至上一页面。  3'
+      default: '发生错误，将返回至上一页面。  3 2 1'
     },
     isBack: {
       type: Boolean,
@@ -56,7 +56,7 @@ export default {
      */
     const backPrevRoute = () => {
       router.back()
-      console.log(router)
+      console.log('ErrorRes组件:', router)
     }
     return {
       state,

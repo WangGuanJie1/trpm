@@ -646,6 +646,21 @@ export default createStore({
         }
         return res
       })
+    },
+    /**
+     * 根据教师编号查找教师信息
+     * @method findTeacherInfoByTeacherId
+     * @param {Object} payload 负载
+     * @returns {Object}  查找到的教师信息
+     */
+    findTeacherInfoByTeacherId: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.findTeacherInfoByTeacherId(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
     }
   },
   modules: {

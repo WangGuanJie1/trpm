@@ -5,6 +5,7 @@ const {
   CREATE_TEACHER_ERROR,
   NOT_FOUND_JOBCODE,
   NOT_FOUND_TEACHER_INFO,
+  NOT_FOUND_TEACHERID,
 } = require("../config/statusCode")
 
 module.exports = {
@@ -65,11 +66,32 @@ module.exports = {
         next(createHttpError(404))
       }
       if (doc) {
-        req.body._teacherId = doc._id
+        req.body._teacherId = doc._id // TODO：待查明，这里为什么使用req.body来存储_teacherId
         req.teacherInfo = doc
         next()
       } else {
         res.json(stateFormat(NOT_FOUND_JOBCODE.code, NOT_FOUND_JOBCODE.message))
+      }
+    })
+  },
+  /**
+   * 根据教师编号查询单条数据
+   * @method teacherFindByTeacherId
+   */
+  teacherFindByTeacherId: async (req, res, next) => {
+    let { _teacherId } = req.body._teacherId ? req.body : req.query
+    Teacher.findOne({ _id: _teacherId }, (err, doc) => {
+      if (err) {
+        console.log(err)
+        next(createHttpError(404))
+      }
+      if (doc) {
+        req.teacherInfo = doc
+        next()
+      } else {
+        res.json(
+          stateFormat(NOT_FOUND_TEACHERID.code, NOT_FOUND_TEACHERID.message)
+        )
       }
     })
   },
