@@ -577,5 +577,6 @@ export default {
     const res = await http({
       url: config.FIND_TEACHER_INFO_BY_TEACHERID
     })
+    return res
   }
 }
