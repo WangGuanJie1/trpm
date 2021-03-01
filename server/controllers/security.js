@@ -4,7 +4,6 @@ const Security = require("../models/Security")
 const { stateFormat } = require("../controllers/dataFormat")
 const createHttpError = require("http-errors")
 const {
-  HTTP_SUCCEED,
   NOT_FOUND_SECURITY_INFO_BY_TEACHERID,
   INITIALIZE_SECURITY_ERROR,
   INITIALIZE_SECRET_QUESTION_INFO_BY_TEACHERID_ERROR,
@@ -13,6 +12,7 @@ const {
   WRONG_QUESTION,
   WRONG_EMAIL,
   WRONG_IDCARD,
+  THE_SAME_PASSWORD,
 } = require("../config/statusCode")
 const { fillUpdatedBy } = require("../middlewares/fillMustRecord")
 
@@ -42,12 +42,29 @@ module.exports = {
     })
   },
   /**
-   * 密码验证
+   * 检查密码、邮箱是否为默认111，密保问题是否为空
+   * @method checkSecurityIsDefault
+   */
+  checkSecurityIsDefault: async (req, res, next) => {
+    let originPassword = req.securityInfo.password
+    let originEmail = req.securityInfo.secureEmail
+    let isValidPwd = bcrypt.compareSync("111", originPassword)
+    let isValidEml = bcrypt.compareSync("111", originEmail)
+    let isValidQues = req.securityInfo.secretQuestion.length === 0
+    req.defaultSecurity = {
+      pwd: isValidPwd,
+      eml: isValidEml,
+      ques: isValidQues,
+    }
+    next()
+  },
+  /**
+   * 原密码验证
    * @method securityComparePassword
    */
   securityComparePassword: async (req, res, next) => {
-    let { _teacherId, password } = req.body
-    let originPassword = req.securityInfo.password
+    let { password } = req.body
+    let originPassword = req.securityInfo.password // 数据库中的密码（原密码）
     let isValid = bcrypt.compareSync(password, originPassword)
     if (!isValid)
       res.json(stateFormat(WRONG_PASSWORD.code, WRONG_PASSWORD.message))
@@ -87,21 +104,47 @@ module.exports = {
       : res.json(stateFormat(WRONG_IDCARD.code, WRONG_IDCARD.message))
   },
   /**
-   * 更新密码 TODO: 书写+方法命名不规范，待修改
+   * 更新密码（需提供原密码、新密码）
    * @method updatePassword
    */
   updatePassword: async (req, res, next) => {
-    let { _teacherId, password } = req.body
+    // 教师编号 原密码 新密码
+    let { _teacherId, password, newPassword } = req.body
+    let originPassword = req.securityInfo.password // 数据库中的密码（原密码）
+    let isValid = bcrypt.compareSync(password, originPassword)
+    if (isValid) {
+      res.json(stateFormat(THE_SAME_PASSWORD.code, THE_SAME_PASSWORD.message))
+    } else {
+      Security.findOneAndUpdate(
+        { _teacherId },
+        { password: newPassword },
+        { new: true },
+        (err, doc) => {
+          if (err) {
+            console.log(err)
+            return
+          }
+          next()
+        }
+      )
+    }
+  },
+  /**
+   * 更新邮箱 TODO：感觉这里有bug
+   * @method updateSecureEmail
+   */
+  updateSecureEmail: async (req, res, next) => {
+    let { _teacherId, secureEmail } = req.body
     Security.findOneAndUpdate(
-      { _teacherId: _teacherId },
-      { password: password },
+      { _teacherId },
+      { secureEmail },
       { new: true },
       (err, doc) => {
         if (err) {
           console.log(err)
-          return
+          next(createHttpError(404))
         }
-        req.data = stateFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message)
+        next()
       }
     )
   },

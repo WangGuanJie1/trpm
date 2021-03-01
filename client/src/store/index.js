@@ -545,6 +545,7 @@ export default createStore({
     /**
      * 根据教师工号初始化安全信息（用于初次登陆）
      * @method initSecurityInfoByJobeCode
+     * @param {Function} commit context.commit
      * @param {Object} payload 负载
      * @returns {Object} 信息初始化是否成功的状态
      */
@@ -560,6 +561,7 @@ export default createStore({
     /**
      * 根据教师编号获取安全验证方式
      * @method verifyTypeByTeacherId
+     * @param {Function} commit context.commit
      * @param {Object} payload 负载
      * @returns {Object} 获取到的安全验证方式
      */
@@ -575,6 +577,7 @@ export default createStore({
     /**
      * 根据教师编号获取当前教师安全问题
      * @method verifyTypeByTeacherId
+     * @param {Function} commit context.commit
      * @param {Object} payload 负载
      * @returns {Object} 获取到的安全问题
      */
@@ -590,6 +593,7 @@ export default createStore({
     /**
      * 根据教师编号进行密码校验
      * @method verifyPasswordByTeacherId
+     * @param {Function} commit context.commit
      * @param {Object} payload 负载
      * @returns {Object} 是否校验成功状态
      */
@@ -605,6 +609,7 @@ export default createStore({
     /**
      * 根据教师编号进行邮箱校验
      * @method verifyEmailByTeacherId
+     * @param {Function} commit context.commit
      * @param {Object} payload 负载
      * @returns {Object} 是否校验成功状态
      */
@@ -620,6 +625,7 @@ export default createStore({
     /**
      * 根据教师编号进行密保问题校验
      * @method verifyQuestionByTeacherId
+     * @param {Function} commit context.commit
      * @param {Object} payload 负载
      * @returns {Object} 是否校验成功状态
      */
@@ -635,6 +641,7 @@ export default createStore({
     /**
      * 根据教师编号进行身份证号码校验
      * @method verifyIdcardByTeacherId
+     * @param {Function} commit context.commit
      * @param {Object} payload 负载
      * @returns {Object} 是否校验成功状态
      */
@@ -650,11 +657,44 @@ export default createStore({
     /**
      * 根据教师编号查找教师信息
      * @method findTeacherInfoByTeacherId
+     * @param {Function} commit context.commit
      * @param {Object} payload 负载
      * @returns {Object}  查找到的教师信息
      */
     findTeacherInfoByTeacherId: ({ commit }, payload) => {
       return getPromiseActionNoMutations(api.findTeacherInfoByTeacherId(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
+    },
+    /**
+     * 根据教师编号更改密码
+     * @method updatePassword
+     * @param {Function} commit context.commit
+     * @param {Object} payload 负载
+     * @returns {Object} 是否成功更改状态
+     */
+    updatePassword: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.updatePassword(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
+    },
+    /**
+     * 根据教师编号更改邮箱
+     * @method updateEmail
+     * @param {Function} commit context.commit
+     * @param {Object} payload 负载
+     * @returns {Object} 是否成功更改状态
+     */
+    updateEmail: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.updateEmail(payload)).then((res, err) => {
         if (err) {
           console.log(err)
           return

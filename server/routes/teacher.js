@@ -10,6 +10,7 @@ const {
   securityComparePassword,
   securityFindByTeacherId,
   securityInitialize,
+  checkSecurityIsDefault,
 } = require("../controllers/security")
 const { roleInitialize, roleFindByTeacherId } = require("../controllers/role")
 const {
@@ -56,6 +57,7 @@ router.post(
   teacherFindByJobCode,
   securityFindByTeacherId,
   securityComparePassword,
+  checkSecurityIsDefault,
   roleFindByTeacherId,
   settingFindByTeacherId,
   creatToken,
@@ -66,6 +68,7 @@ router.post(
           teacherInfo: req.teacherInfo,
           roleInfo: req.roleInfo,
           settingInfo: req.settingInfo,
+          defaultSecurity: req.defaultSecurity,
         },
         token: req.token,
       })

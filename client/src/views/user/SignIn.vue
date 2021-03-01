@@ -11,12 +11,12 @@
               </div>
               <a-from layout="horizontal" align="end">
                 <a-from-item>
-                  <a-input v-model:value="jobCode" placeholder="请输入工号">
+                  <a-input v-model:value="state.jobCode" placeholder="请输入工号">
                     <template v-slot:prefix> <user-outlined class="login-icon-color" /> </template>
                   </a-input>
                 </a-from-item>
                 <a-from-item>
-                  <a-input-password v-model:value="password" placeholder="请输入密码">
+                  <a-input-password v-model:value="state.password" placeholder="请输入密码">
                     <template v-slot:prefix>
                       <lock-outlined class="login-icon-color" />
                     </template>
@@ -24,7 +24,7 @@
                 </a-from-item>
                 <a-from-item>
                   <a-row type="flex" justify="space-between">
-                    <!-- <a-checkbox v-model="checked">自动登录</a-checkbox>
+                    <!-- <a-checkbox v-model="state.checked">自动登录</a-checkbox>
                     <a @click="forgetNotification">忘记密码</a> -->
                   </a-row>
                 </a-from-item>
@@ -37,6 +37,7 @@
           <a-row>
             <p class="copyright">Copyright © 2020 丹东卓智科技有限公司</p>
           </a-row>
+          <InitSecurityInfoLayout />
         </a-col>
       </a-row>
     </a-col>
@@ -47,7 +48,11 @@
 // TODO: 没从antd中引入Checkbox
 import { Row, Col, Button, Input, Form, notification } from 'ant-design-vue'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
-import { mapActions, mapState } from 'vuex'
+import { useStore } from 'vuex'
+import { reactive, provide, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import InitSecurityInfoLayout from '@/views/layouts/InitSecurityInfoLayout'
+
 export default {
   components: {
     ARow: Row,
@@ -59,30 +64,46 @@ export default {
     AFromItem: Form.Item,
     // ACheckbox: Checkbox,
     UserOutlined,
-    LockOutlined
+    LockOutlined,
+    InitSecurityInfoLayout
   },
-  data() {
-    return {
+  setup() {
+    const store = useStore()
+    const router = useRouter()
+    const state = reactive({
       jobCode: null,
       password: null,
       checked: false,
       showmore: false
-    }
-  },
-  computed: { ...mapState({}) },
-  methods: {
-    ...mapActions(['executeSignIn', 'loadDictionaryRoleInfo']),
-    login() {
-      this.executeSignIn({ jobCode: this.jobCode, password: this.password }).then((res, err) => {
-        if (res.code === 200) this.$router.push({ name: 'index' })
+    })
+    const isInitSecurity = ref(false) // 安全信息是否为初始信息
+    provide('isInitSecurity', isInitSecurity)
+
+    const login = () => {
+      store.dispatch('executeSignIn', { jobCode: state.jobCode, password: state.password }).then((res, err) => {
+        if (res.code === 200) {
+          const defaultSecurity = store.state.currentTeacherInfo.defaultSecurity
+          defaultSecurity.pwd || defaultSecurity.eml || defaultSecurity.ques
+            ? (isInitSecurity.value = true)
+            : router.push({ name: 'index' })
+        } else {
+          router.push({ name: '404' })
+        }
       })
-    },
-    forgetNotification() {
+    }
+
+    // 忘记密码提示信息
+    const forgetNotification = () => {
       notification.info({
         message: '提示信息',
         description: '如果您忘记密码，请联络所在部门教研项目负责人。',
         key: 'forgetPasswordAction'
       })
+    }
+    return {
+      state,
+      login,
+      forgetNotification
     }
   }
 }

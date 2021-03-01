@@ -249,4 +249,8 @@ module.exports = {
     code: 3042,
     message: "没有找到教师号",
   },
+  THE_SAME_PASSWORD: {
+    code: 3043,
+    message: "与当前密码相同",
+  },
 }
