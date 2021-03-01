@@ -148,6 +148,14 @@ const routes = [
     meta: {
       title: '404'
     }
+  },
+  {
+    path: '/security/init',
+    name: 'securityInit',
+    component: () => import('@/views/layouts/InitSecurityInfoLayout'),
+    meta: {
+      title: '重置安全信息'
+    }
   }
 ]
 

@@ -26,6 +26,7 @@
 import { Row, Col, Select, Form, Spin } from 'ant-design-vue'
 import { inject, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
+
 export default {
   components: {
     ARow: Row,
@@ -40,6 +41,7 @@ export default {
     const store = useStore()
     const optionName = inject('optionName') // 默定的选项
     const allowNext = inject('allowNext') // 是否允许点击下一步
+
     const state = reactive({
       verifyOptionName: '',
       loading: true

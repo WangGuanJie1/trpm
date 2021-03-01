@@ -578,5 +578,33 @@ export default {
       url: config.FIND_TEACHER_INFO_BY_TEACHERID
     })
     return res
+  },
+  /**
+   * 根据教师编号更改密码
+   * @method updatePassword
+   * @param {Object} payload 负载
+   * @returns {Object} 是否成功更改状态
+   */
+  updatePassword: async (payload) => {
+    const res = await http({
+      url: config.UPDATE_PASSWORD,
+      method: 'post',
+      data: payload
+    })
+    return res
+  },
+  /**
+   * 根据教师编号更改邮箱
+   * @method updatePassword
+   * @param {Object} payload 负载
+   * @returns {Object} 是否成功更改状态
+   */
+  updateEmail: async (payload) => {
+    const res = await http({
+      url: config.UPDATE_EMAIL,
+      method: 'post',
+      data: payload
+    })
+    return res
   }
 }

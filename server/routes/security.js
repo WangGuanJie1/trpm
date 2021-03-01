@@ -10,6 +10,7 @@ const {
   securityCompareQuestion,
   securityCompareIdcard,
   securityCompareEmail,
+  updateSecureEmail,
 } = require("../controllers/security")
 const { teacherFindByTeacherId } = require("../controllers/teacher")
 const {
@@ -20,14 +21,17 @@ const {
 const { HTTP_SUCCEED } = require("../config/statusCode")
 
 const router = express.Router()
-// 更新密码 TODO: 该接口怀疑是测试API时候使用，需要重写
+// 更新密码
 router.post(
   "/update/password",
-  creatToken,
   securityFindByTeacherId,
   securityComparePassword,
   updatePassword
 )
+
+router.post("/update/email", updateSecureEmail, (req, res) => {
+  res.json(stateFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message))
+})
 
 // 慎用：根据教师编号查询教师安全信息,该接口缺乏安全性，需要进一步加强安全性验证
 router.post("/find/by-teacherid", securityFindByTeacherId, (req, res) => {

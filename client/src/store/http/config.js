@@ -69,5 +69,7 @@ export default {
   VERITY_PASSWORD: `${BASE_URL}${SECU}/verify/password/by-teacherid`, // 密码校验
   VERITY_EMAIL: `${BASE_URL}${SECU}/verify/email/by-teacherid`, // 邮箱校验
   VERITY_QUESTION: `${BASE_URL}${SECU}/verify/question/by-teacherid`, // 密保问题校验
-  VERITY_IDCARD: `${BASE_URL}${SECU}/verify/idcard/by-teacherid` // 身份证号码校验
+  VERITY_IDCARD: `${BASE_URL}${SECU}/verify/idcard/by-teacherid`, // 身份证号码校验
+  UPDATE_PASSWORD: `${BASE_URL}${SECU}/update/password`, // 根据教师编号更改密码
+  UPDATE_EMAIL:`${BASE_URL}${secu]}/update/email` // 根据教师编号更改邮箱
 }
