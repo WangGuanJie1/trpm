@@ -66,7 +66,7 @@ export default {
   setup() {
     const router = useRouter()
     const store = useStore()
-    console.log(store)
+    console.log('InitSecurityInfoLayout组件', store)
     // const _teacherId = store.state.currentTeacherInfo.teacherInfo._teacherId
     // const jobCode = store.state.currentTeacherInfo.teacherInfo.jobCode
     // const defaultSecurity = store.state.currentTeacherInfo.defaultSecurity

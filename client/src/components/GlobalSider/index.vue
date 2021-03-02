@@ -170,6 +170,7 @@ import { Menu } from 'ant-design-vue'
 import Logo from './logo'
 import { reactive } from 'vue'
 import { MenuFoldOutlined } from '@ant-design/icons-vue'
+import { useRouter } from 'vue-router'
 
 export default {
   components: {
@@ -181,6 +182,8 @@ export default {
   },
   props: ['collapsed', 'navTheme'],
   setup(props) {
+    const router = useRouter()
+    console.log('navigation：', router)
     const state = reactive({})
     return {
       state
