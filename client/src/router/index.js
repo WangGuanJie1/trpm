@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '../store'
 import subMenuList from './subMenuList.js'
-import mainRoutes from './routes'
-import otherRoutes from './routes/otherRoutes'
+// import { otherRoutes } from './routes'
+const otherRoutes = []
 
 // TODO: 目前身份权限属于写死状态，一旦发生变更将会对整个系统产生不可逆的影响，这里的身份权限要与MongoDB中dictionary_role保持一致性
 const teacher = '教师'
@@ -28,7 +28,7 @@ const routes = [
         }
       },
       {
-        path: `/projectSelectionApplication`,
+        path: '/projectSelectionApplication',
         name: 'projectSelectionApplication',
         component: () => import('@/views/list/projectSelectionApplication'),
         meta: {
@@ -40,7 +40,7 @@ const routes = [
       {
         path: '/projectSelectionApplication',
         name: 'projectSelectionApplication',
-        component: () => import(),
+        component: () => import('@/views/list/projectSelectionApplication'),
         meta: {
           title: '申报教研项目',
           roles: [teacher, sLeader, dLeader, specialist],
@@ -99,82 +99,10 @@ const routes = [
           roles: [sLeader],
           subMenu: subMenuList[0].key
         }
-      },
-      {
-        path: '/account/personalCenter',
-        name: 'personalCenter',
-        component: () => import('@/views/account/PersonalCenter'),
-        meta: {
-          title: '个人中心',
-          roles: [teacher, sLeader, dLeader, specialist],
-          subMenu: subMenuList[0].key
-        }
-      },
-      {
-        path: '/account/securitySetting',
-        name: 'securitySetting',
-        component: () => import('@/views/account/SecuritySetting'),
-        meta: {
-          title: '安全设置',
-          roles: [teacher, sLeader, dLeader, specialist],
-          subMenu: subMenuList[0].key
-        }
-      },
-      {
-        path: '/account/systemSetting',
-        name: 'systemSetting',
-        component: () => import('@/views/account/SyetemSetting'),
-        meta: {
-          title: '系统设置',
-          roles: [teacher, sLeader, dLeader, specialist],
-          subMenu: subMenuList[0].key
-        }
       }
     ]
   },
-  { ...otherRoutes },
-  {
-    path: '/error',
-    name: 'error',
-    component: () => import('@/views/result/ErrorRes'),
-    props: (router) => {
-      // console.log('error路由参数内容查看：', router)
-      return {
-        // 这里要注意路由参数小写问题
-        title: router.query.title,
-        subTitle: router.query.subtitle,
-        isBack: router.query.isback,
-        extra: router.query.extra
-      }
-    },
-    meta: {
-      title: '发生错误'
-    }
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/layouts/UserLayout'),
-    children: [
-      {
-        path: '/login',
-        name: 'login',
-        component: () => import('@/views/user/SignIn'),
-        meta: {
-          title: '登录'
-        }
-      }
-    ]
-  },
-  {
-    path: '/404',
-    name: '404',
-    redirect: '/404',
-    component: () => import('@/views/exception/404'),
-    meta: {
-      title: '404'
-    }
-  }
+  [...otherRoutes]
 ]
 
 const router = createRouter({

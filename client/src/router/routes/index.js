@@ -8,16 +8,16 @@ import projAuditRoutes from './projAuditRoutes'
 import projMsgRoutes from './projMsgRoutes'
 import projReviewRoutes from './projReviewRoutes'
 import teacherMsgRoutes from './teacherMsgRoutes'
+import otherRoutes from './otherRoutes'
 
-export default [
-  [...accountRoutes],
-  [...announcementMsgRoutes],
-  [...basisMsgRoutes],
-  [...homeRoutes],
-  [...logRoutes],
-  [...projActiveRoutes],
-  [...projAuditRoutes],
-  [...projMsgRoutes],
-  [...projReviewRoutes],
-  [...teacherMsgRoutes]
-]
+export { accountRoutes }
+export { announcementMsgRoutes }
+export { basisMsgRoutes }
+export { homeRoutes }
+export { logRoutes }
+export { projActiveRoutes }
+export { projAuditRoutes }
+export { projMsgRoutes }
+export { projReviewRoutes }
+export { teacherMsgRoutes }
+export { otherRoutes }

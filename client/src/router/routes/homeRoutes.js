@@ -1,3 +1,5 @@
+import { teacher, sLeader, dLeader, specialist } from '../role'
+
 export default [
   {
     path: '/index',
@@ -5,7 +7,7 @@ export default [
     component: () => import('@/components/ActionCard/ActionCard'),
     meta: {
       title: '首页',
-      roles: [teacher, sLeader, dLeader, specialist],
+      roles: [teacher.name, sLeader.name, dLeader.name, specialist.name],
       subMenu: subMenuList[0].key
     }
   }
