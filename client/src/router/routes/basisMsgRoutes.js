@@ -4,24 +4,24 @@ const subMenu = subMenuList[7]
 
 export default [
   {
-    path: '/viewSchoolProject',
-    name: 'viewSchoolProject',
+    path: `/${subMenu.key}/viewSchoolProject`,
+    name: '没有组件',
     // TODO: 组件暂时未做
     component: () => import('@/views/list/projectSelectionApplication'),
     meta: {
       title: '各部门基础信息管理',
-      roles: [sLeader],
+      roles: [sLeader.name],
       subMenu: subMenuList[2].key
     }
   },
   {
-    path: '/viewDepartmentProject',
-    name: 'viewDepartmentProject',
+    path: `/${subMenu.key}/viewSchoolProject`,
+    name: '没有组件',
     // TODO: 组件暂时未做
     component: () => import('@/views/list/projectSelectionApplication'),
     meta: {
       title: '所属部门基础信息管理',
-      roles: [sLeader, dLeader],
+      roles: [dLeader.name],
       subMenu: subMenuList[2].key
     }
   }

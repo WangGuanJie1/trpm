@@ -83,6 +83,7 @@ export default {
       store.dispatch('executeSignIn', { jobCode: state.jobCode, password: state.password }).then((res, err) => {
         if (res.code === 200) {
           const defaultSecurity = store.state.currentTeacherInfo.defaultSecurity
+          console.log(defaultSecurity)
           defaultSecurity.pwd || defaultSecurity.eml || defaultSecurity.ques
             ? (isInitSecurity.value = true)
             : router.push({ name: 'index' })
