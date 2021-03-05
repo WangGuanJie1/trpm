@@ -11,4 +11,5 @@ router.get('/all', roleFindAll, (req, res) => {
 router.get('/find/by-teacherid', roleFindByTeacherId, (req, res) => {
   res.json(listFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message, req.roleInfo))
 })
+
 module.exports = router

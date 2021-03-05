@@ -97,7 +97,6 @@ export default {
   computed: {
     ...mapState({
       batchParticularsInfo: (state) => {
-        console.log(state)
         const batchParticularsInfo = JSON.parse(JSON.stringify(state.batchParticularsInfo))
         return batchParticularsInfo.map((item, index) => {
           item.key = index.toString()
@@ -230,7 +229,7 @@ export default {
           this.teacherProjectInfo = res.data.teacherProjectInfo
           const projectId = res.data.projectId
           console.log('成功创建项目,项目id:', res.data.projectId)
-          this.$router.push({ name: 'projectApplication', params: { projectId } })
+          this.$router.push({ name: 'projectSetUp', params: { projectId } })
         }
       })
     },

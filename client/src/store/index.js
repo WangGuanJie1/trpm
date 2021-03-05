@@ -57,6 +57,9 @@ export default createStore({
     },
     SET_TEACHER_PROJECT_INFO: (state, teacherProjectInfo) => {
       state.teacherProjectInfo = teacherProjectInfo
+    },
+    CLEAR_STATE: (state) => {
+      state = {}
     }
   },
   actions: {

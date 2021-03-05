@@ -12,18 +12,24 @@
       <template #overlay>
         <a-menu>
           <a-menu-item key="personalCenter">
-            <router-link :to="{ name: 'personalCenter' }"><UserOutlined :style="menuItemIcon" />个人中心 </router-link>
+            <router-link :to="{ name: state.accountRoutes[0].name }"
+              ><UserOutlined :style="menuItemIcon" />个人中心
+            </router-link>
           </a-menu-item>
           <a-menu-item key="securitySetting">
-            <router-link :to="{ name: 'securitySetting' }">
+            <router-link :to="{ name: state.accountRoutes[1].name }">
               <SafetyOutlined :style="menuItemIcon" />安全设置
             </router-link>
           </a-menu-item>
           <a-menu-item key="systemSetting">
-            <router-link :to="{ name: 'systemSetting' }"><SettingOutlined :style="menuItemIcon" />系统设置</router-link>
+            <router-link :to="{ name: state.accountRoutes[2].name }">
+              <SettingOutlined :style="menuItemIcon" />系统设置
+            </router-link>
           </a-menu-item>
-          <a-menu-item key="logout">
-            <router-link to=""><PoweroffOutlined :style="[menuItemIcon, logoutIcon]" />退出登录</router-link>
+          <a-menu-item key="logout" @click="logoutEvent">
+            <router-link :to="{ name: 'login' }">
+              <PoweroffOutlined :style="[menuItemIcon, logoutIcon]" />退出登录
+            </router-link>
           </a-menu-item>
         </a-menu>
       </template>
@@ -34,6 +40,7 @@
 
 <script>
 import { Dropdown, Avatar, Menu, Spin } from 'ant-design-vue'
+import accountRoutes from '../../router/routes/accountRoutes'
 import {
   CaretDownOutlined,
   UserOutlined,
@@ -43,6 +50,7 @@ import {
 } from '@ant-design/icons-vue'
 import { useStore } from 'vuex'
 import { reactive } from 'vue'
+
 export default {
   components: {
     ADropdown: Dropdown,
@@ -58,23 +66,36 @@ export default {
   },
   setup() {
     const store = useStore()
+    // 图标样式
     const menuItemIcon = {
       color: '#1890ff',
       marginRight: '12px'
     }
+    // 退出图标样式
     const logoutIcon = {
       color: '#FF4D4F'
     }
     const state = reactive({
+      accountRoutes,
       username: store.state.currentTeacherInfo.teacherInfo.name,
       avatar: ''
       // 'https://lh3.googleusercontent.com/-xWEepX1PSVA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucmvJoena98hPnusSGyIdeFlmqyeOA/photo.jpg?sz=46'
     })
 
+    /**
+     * 登录退出事件
+     */
+    const logoutEvent = () => {
+      localStorage.clear()
+      sessionStorage.clear()
+      store.commit('CLEAR_STATE')
+    }
+
     return {
       state,
       menuItemIcon,
-      logoutIcon
+      logoutIcon,
+      logoutEvent
     }
   }
 }

@@ -101,7 +101,7 @@ export default {
     const closeEvent = () => {
       isInitSecurity.value = false
       setTimeout(() => {
-        router.push({ name: 'index' })
+        router.push({ name: 'home' })
       }, 100)
     }
     return {

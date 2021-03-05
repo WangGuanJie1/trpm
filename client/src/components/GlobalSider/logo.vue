@@ -1,7 +1,9 @@
 <template>
   <div class="logo-wrapper">
     <img src="@/assets/logo.png" alt="logo" class="logo-img" />
-    <h1 class="system-title" :class="[!showTitle ? 'show' : 'hidden']">{{ title }}</h1>
+    <router-link :to="{ name: 'home' }">
+      <h1 class="system-title" :class="[!showTitle ? 'show' : 'hidden']">{{ title }}</h1>
+    </router-link>
   </div>
 </template>
 

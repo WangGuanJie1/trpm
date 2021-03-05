@@ -86,7 +86,7 @@ export default {
           console.log(defaultSecurity)
           defaultSecurity.pwd || defaultSecurity.eml || defaultSecurity.ques
             ? (isInitSecurity.value = true)
-            : router.push({ name: 'index' })
+            : router.push({ name: 'home' })
         } else {
           router.push({ name: '404' })
         }

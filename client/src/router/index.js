@@ -1,149 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '../store'
-import subMenuList from './subMenuList.js'
-// import { otherRoutes } from './routes'
-// const otherRoutes = []
+import { homeRoute, mainRoutesList, otherRoutesList } from './routes'
 
 // TODO: 目前身份权限属于写死状态，一旦发生变更将会对整个系统产生不可逆的影响，这里的身份权限要与MongoDB中dictionary_role保持一致性
-const teacher = '教师'
-const sLeader = '学校负责人'
-const dLeader = '部门负责人'
-const specialist = '专家'
-
 const routes = [
   {
     path: '/',
-    name: 'home',
     component: () => import('@/views/layouts/BaseLayout'),
-    redirect: '/index',
-    children: [
-      {
-        path: '/index',
-        name: 'index',
-        component: () => import('@/components/ActionCard/ActionCard'),
-        meta: {
-          title: '首页',
-          roles: [teacher, sLeader, dLeader, specialist],
-          subMenu: subMenuList[0].key
-        }
-      },
-      {
-        path: '/projectSelectionApplication',
-        name: 'projectSelectionApplication',
-        component: () => import('@/views/list/projectSelectionApplication'),
-        meta: {
-          title: '申报教研项目',
-          roles: [teacher, sLeader, dLeader, specialist],
-          subMenu: subMenuList[1].key
-        }
-      },
-      {
-        path: '/projectSelectionApplication',
-        name: 'projectSelectionApplication',
-        component: () => import('@/views/list/projectSelectionApplication'),
-        meta: {
-          title: '申报教研项目',
-          roles: [teacher, sLeader, dLeader, specialist],
-          subMenu: subMenuList[1].key
-        }
-      },
-      {
-        path: '/viewSchoolProject',
-        name: 'viewSchoolProject',
-        // TODO: 组件暂时未做
-        component: () => import('@/views/list/projectSelectionApplication'),
-        meta: {
-          title: '查看学校所有项目',
-          roles: [sLeader],
-          subMenu: subMenuList[2].key
-        }
-      },
-      {
-        path: '/viewDepartmentProject',
-        name: 'viewDepartmentProject',
-        // TODO: 组件暂时未做
-        component: () => import('@/views/list/projectSelectionApplication'),
-        meta: {
-          title: '查看本部门所有项目',
-          roles: [sLeader, dLeader],
-          subMenu: subMenuList[2].key
-        }
-      },
-      {
-        path: '/viewOwnProject',
-        name: 'viewOwnProject',
-        // TODO: 组件暂时未做
-        component: () => import('@/views/list/projectSelectionApplication'),
-        meta: {
-          title: '查看个人项目',
-          roles: [teacher, sLeader, dLeader, specialist],
-          subMenu: subMenuList[2].key
-        }
-      },
-      {
-        path: '/projectApplication',
-        name: 'projectApplication',
-        component: () => import('@/views/form/projectApplication'),
-        meta: {
-          title: '教研项目申请',
-          roles: [teacher, sLeader],
-          subMenu: subMenuList[1].key
-        }
-      },
-      {
-        path: '/createProjectBatch',
-        name: 'createProjectBatch',
-        component: () => import('@/views/form/createProjectBatch'),
-        meta: {
-          title: '创建项目批次信息',
-          roles: [sLeader],
-          subMenu: subMenuList[0].key
-        }
-      }
-    ]
+    redirect: '/home',
+    children: [].concat(homeRoute, mainRoutesList)
   },
-  {
-    path: '/error',
-    name: 'error',
-    component: () => import('@/views/result/ErrorRes'),
-    props: (router) => {
-      // console.log('error路由参数内容查看：', router)
-      return {
-        // 这里要注意路由参数小写问题
-        title: router.query.title,
-        subTitle: router.query.subtitle,
-        isBack: router.query.isback,
-        extra: router.query.extra
-      }
-    },
-    meta: {
-      title: '发生错误'
-    }
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/layouts/UserLayout'),
-    children: [
-      {
-        path: '/login',
-        name: 'login',
-        component: () => import('@/views/user/SignIn'),
-        meta: {
-          title: '登录'
-        }
-      }
-    ]
-  },
-  {
-    path: '/404',
-    name: '404',
-    redirect: '/404',
-    component: () => import('@/views/exception/404'),
-    meta: {
-      title: '404'
-    }
-  }
+  ...otherRoutesList
 ]
 
 const router = createRouter({
@@ -180,10 +47,6 @@ router.beforeEach((to, from, next) => {
   document.title = to.meta.title
   window.scrollTo(0, 0)
 
-  // const role = store.state.currentTeacherInfo.roleInfo.roleName
-  const role = '教师'
-  const toUrlRoles = to.meta.roles
-
   console.table({
     fromUrl: from.name,
     toUrl: to.name,
@@ -197,6 +60,8 @@ router.beforeEach((to, from, next) => {
   if (notRolePage.includes(to.name)) {
     isNeedToken(next, () => router.push({ name: 'login' }))
   } else {
+    const role = store.state.currentTeacherInfo.roleInfo.roleName
+    const toUrlRoles = to.meta.roles
     // 权限比对
     if (toUrlRoles.includes(role)) {
       isNeedToken(next, () => router.push({ name: 'login' }))

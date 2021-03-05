@@ -1,9 +1,7 @@
 <template>
   <a-row type="flex">
     <a-page-header class="global-page-header-wrapper" :title="title" :breadcrumb="{ routes, itemRender }">
-      <template #subTitle>
-        {{ subTitle }}
-      </template>
+      <template #subTitle>{{ subTitle }}</template>
       <template #extra>
         <slot name="headerPageExtra"></slot>
       </template>

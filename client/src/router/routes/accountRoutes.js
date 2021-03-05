@@ -10,7 +10,7 @@ export default [
     meta: {
       title: '个人中心',
       roles: [teacher.name, sLeader.name, dLeader.name, specialist.name],
-      subMenu: subMenuList[0].key
+      subMenu: subMenu.key
     }
   },
   {
@@ -20,7 +20,7 @@ export default [
     meta: {
       title: '安全设置',
       roles: [teacher.name, sLeader.name, dLeader.name, specialist.name],
-      subMenu: subMenuList[0].key
+      subMenu: subMenu.key
     }
   },
   {
@@ -30,7 +30,7 @@ export default [
     meta: {
       title: '系统设置',
       roles: [teacher.name, sLeader.name, dLeader.name, specialist.name],
-      subMenu: subMenuList[0].key
+      subMenu: subMenu.key
     }
   }
 ]
