@@ -3,6 +3,7 @@ const express = require("express")
 const path = require("path")
 const cookieParser = require("cookie-parser")
 const logger = require("morgan")
+const bodyParser = require("body-parser") // 文件上传大小限制中间件
 // const expressJWT = require('express-jwt')
 // const keys = require('./config/keys')
 
@@ -29,9 +30,16 @@ const batchParticularsRouter = require("./routes/batchParticulars")
 
 const app = express()
 
-// view engine setup
 app.set("views", path.join(__dirname, "views"))
 app.set("view engine", "jade")
+
+app.use(bodyParser.json({ limit: "10mb", type: "application/json" }))
+app.use(
+  bodyParser.urlencoded({
+    limit: "10mb",
+    extended: true,
+  })
+)
 
 app.use(logger("dev"))
 app.use(express.json())

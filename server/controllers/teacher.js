@@ -6,7 +6,10 @@ const {
   NOT_FOUND_JOBCODE,
   NOT_FOUND_TEACHER_INFO,
   NOT_FOUND_TEACHERID,
+  CREATE_MORE_TEACHER_ERROR,
 } = require("../config/statusCode")
+const { fillAllMust } = require("../middlewares/fillMustRecord")
+const workerThreads = require("worker_threads") // 工作线程模块
 
 module.exports = {
   /**
@@ -27,6 +30,28 @@ module.exports = {
       } else {
         res.json(
           stateFormat(CREATE_TEACHER_ERROR.code, CREATE_TEACHER_ERROR.message)
+        )
+      }
+    })
+  },
+  // 批量创建教师
+  teacherMoreCreate: async (req, res, next) => {
+    Teacher.insertMany(req.body.data, (err, doc) => {
+      if (err) {
+        console.log(err)
+        next(createHttpError(404))
+      }
+      if (doc) {
+        let teacherIdList = []
+        doc.forEach((element) => {
+          teacherIdList.push({ _teacherId: element._id })
+        })
+        req.teacherInfo = teacherIdList
+        next()
+      } else {
+        res.json(
+          CREATE_MORE_TEACHER_ERROR.code,
+          CREATE_MORE_TEACHER_ERROR.message
         )
       }
     })

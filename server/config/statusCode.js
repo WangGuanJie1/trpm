@@ -253,4 +253,20 @@ module.exports = {
     code: 3043,
     message: "与当前密码相同",
   },
+  CREATE_MORE_TEACHER_ERROR: {
+    code: 3044,
+    message: "批量创建教师失败",
+  },
+  INITIALIZE_MORE_ROLE_ERROR: {
+    code: 3045,
+    message: "批量初始化身份失败",
+  },
+  INITIALIZE_MORE_SECURITY_ERROR: {
+    code: 3046,
+    message: "批量初始化安全信息失败",
+  },
+  INITIALIZE_MORE_SETTING_ERROR: {
+    code: 3047,
+    message: "批量初始化账号风格配置失败",
+  },
 }

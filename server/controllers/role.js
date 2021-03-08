@@ -6,6 +6,7 @@ const {
   NOT_FOUND_ROLE_INFO,
   INITIALIZE_ROLE_ERROR,
   NOT_FOUND_ROLE_INFO_BY_TEACHERID,
+  INITIALIZE_MORE_ROLE_ERROR,
 } = require("../config/statusCode")
 const { fillAllMust } = require("../middlewares/fillMustRecord")
 
@@ -47,6 +48,30 @@ module.exports = {
       } else {
         res.json(
           stateFormat(INITIALIZE_ROLE_ERROR.code, INITIALIZE_ROLE_ERROR.message)
+        )
+      }
+    })
+  },
+  /**
+   * 批量初始化身份
+   * @method roleInitializeMore
+   */
+  roleInitializeMore: async (req, res, next) => {
+    Role.insertMany(req.teacherInfo, (err, doc) => {
+      if (err) {
+        console.log(err)
+        next(createHttpError(404))
+      }
+      if (doc) {
+        console.log("role")
+        req.roleInfo = doc
+        next()
+      } else {
+        res.json(
+          stateFormat(
+            INITIALIZE_MORE_ROLE_ERROR.code,
+            INITIALIZE_MORE_ROLE_ERROR.message
+          )
         )
       }
     })

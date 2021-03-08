@@ -3,6 +3,7 @@ const createHttpError = require("http-errors")
 const { stateFormat } = require("./dataFormat")
 const {
   INITIALIZE_SETTING_ERROR,
+  INITIALIZE_MORE_SETTING_ERROR,
   NOT_FOUND_SETTING_INFO,
 } = require("../config/statusCode")
 
@@ -26,6 +27,29 @@ module.exports = {
           stateFormat(
             INITIALIZE_SETTING_ERROR.code,
             INITIALIZE_SETTING_ERROR.message
+          )
+        )
+      }
+    })
+  },
+  /**
+   * 批量初始化账号风格配置
+   * @method settingInitializeMore
+   */
+  settingInitializeMore: async (req, res, next) => {
+    Setting.insertMany(req.teacherInfo, (err, doc) => {
+      if (err) {
+        console.log(err)
+        next(createHttpError(404))
+      }
+      if (doc) {
+        req.settingInfo = doc
+        next()
+      } else {
+        res.json(
+          stateFormat(
+            INITIALIZE_MORE_SETTING_ERROR.code,
+            INITIALIZE_MORE_SETTING_ERROR.message
           )
         )
       }

@@ -17,6 +17,15 @@ const TeacherSchema = new Schema(
     department: {
       type: String,
     },
+    // 部门编号
+    departmentId: {
+      type: String,
+    },
+    // 工作时间
+    workStartTime: {
+      type: String,
+      default: "",
+    },
     // 所属系部
     office: {
       type: String,
@@ -131,6 +140,11 @@ const TeacherSchema = new Schema(
     },
     // 所学专业分类
     majorClassification: {
+      type: String,
+      default: "",
+    },
+    // 联系方式
+    telephone: {
       type: String,
       default: "",
     },

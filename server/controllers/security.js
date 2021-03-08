@@ -1,8 +1,8 @@
-const mongoose = require('../models/connect')
-const bcrypt = require('bcrypt')
-const Security = require('../models/Security')
-const { stateFormat } = require('../controllers/dataFormat')
-const createHttpError = require('http-errors')
+const mongoose = require("../models/connect")
+const bcrypt = require("bcrypt")
+const Security = require("../models/Security")
+const { stateFormat } = require("../controllers/dataFormat")
+const createHttpError = require("http-errors")
 const {
   NOT_FOUND_SECURITY_INFO_BY_TEACHERID,
   INITIALIZE_SECURITY_ERROR,
@@ -13,8 +13,9 @@ const {
   WRONG_EMAIL,
   WRONG_IDCARD,
   THE_SAME_PASSWORD,
-} = require('../config/statusCode')
-const { fillUpdatedBy } = require('../middlewares/fillMustRecord')
+  INITIALIZE_MORE_SECURITY_ERROR,
+} = require("../config/statusCode")
+const { fillUpdatedBy } = require("../middlewares/fillMustRecord")
 
 module.exports = {
   /**
@@ -48,8 +49,8 @@ module.exports = {
   checkSecurityIsDefault: async (req, res, next) => {
     let originPassword = req.securityInfo.password
     let originEmail = req.securityInfo.secureEmail
-    let isValidPwd = bcrypt.compareSync('111', originPassword)
-    let isValidEml = bcrypt.compareSync('111', originEmail)
+    let isValidPwd = bcrypt.compareSync("111", originPassword)
+    let isValidEml = bcrypt.compareSync("111", originEmail)
     let isValidQues = req.securityInfo.secretQuestion.length === 0
     req.defaultSecurity = {
       pwd: isValidPwd,
@@ -173,6 +174,30 @@ module.exports = {
     })
   },
   /**
+   * 批量初始化安全信息
+   * @method securityInitializeMore
+   */
+  securityInitializeMore: async (req, res, next) => {
+    Security.insertMany(req.teacherInfo, (err, doc) => {
+      if (err) {
+        console.log(err)
+        next(createHttpError(404))
+      }
+      if (doc) {
+        console.log("security")
+        req.securityInfo = doc
+        next()
+      } else {
+        res.json(
+          stateFormat(
+            INITIALIZE_MORE_SECURITY_ERROR.code,
+            INITIALIZE_MORE_SECURITY_ERROR.message
+          )
+        )
+      }
+    })
+  },
+  /**
    * 初始化密保问题（一定需要提供3个问题及答案）
    * @method createSecretQuestion
    */
@@ -207,46 +232,46 @@ module.exports = {
   changePasswordVerifyType: async (req, res, next) => {
     const verifyType = [
       {
-        cnName: '密码',
-        enName: 'password',
+        cnName: "密码",
+        enName: "password",
       },
       {
-        cnName: '邮箱',
-        enName: 'email',
+        cnName: "邮箱",
+        enName: "email",
       },
       {
-        cnName: '密保问题',
-        enName: 'question',
+        cnName: "密保问题",
+        enName: "question",
       },
     ]
     // 身份证验证方式，不要轻易允许教师使用身份证验证
     const idCard2Verify = {
-      cnName: '身份证号',
-      enName: 'idcard',
+      cnName: "身份证号",
+      enName: "idcard",
     }
     let { password, secureEmail } = req.securityInfo
     // 验证密码、邮箱、密保问题是否是默认设置
-    const passwordIsValid = bcrypt.compareSync(password, '111')
-    const emailIsValid = bcrypt.compareSync(secureEmail, '111')
+    const passwordIsValid = bcrypt.compareSync(password, "111")
+    const emailIsValid = bcrypt.compareSync(secureEmail, "111")
 
     // 当密码是初始化密码111，则不允许使用密码进行验证
     if (!passwordIsValid) {
       const index = verifyType.findIndex(
-        (element) => element.enName === 'password'
+        (element) => element.enName === "password"
       )
       verifyType.splice(index, 1)
     }
     // 当邮箱是初始化邮箱111，则不允许使用邮箱进行验证
     if (!emailIsValid) {
       const index = verifyType.findIndex(
-        (element) => element.enName === 'email'
+        (element) => element.enName === "email"
       )
       verifyType.splice(index, 1)
     }
     // 当密保问题数量小于1，则不允许使用密保问题进行验证
     if (req.securityInfo.secretQuestion.length < 1) {
       const index = verifyType.findIndex(
-        (element) => element.enName === 'question'
+        (element) => element.enName === "question"
       )
       verifyType.splice(index, 1)
     }
@@ -267,10 +292,10 @@ module.exports = {
       [
         {
           $lookup: {
-            from: 'dictionary_secret_question',
-            localField: 'secretQuestion._questionId',
-            foreignField: '_id',
-            as: 'dictionary_secret_question',
+            from: "dictionary_secret_question",
+            localField: "secretQuestion._questionId",
+            foreignField: "_id",
+            as: "dictionary_secret_question",
           },
         },
         {

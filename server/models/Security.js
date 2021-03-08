@@ -40,7 +40,6 @@ const SecuritySchema = new Schema(
         // 问题（数据来自dictionary_secret_question._id）
         _questionId: {
           type: Schema.Types.ObjectId,
-          require: true,
           ref: "dictionary_secret_question",
         },
         // 答案
@@ -49,7 +48,6 @@ const SecuritySchema = new Schema(
           set: (val) => {
             return bcrypt.hashSync(val, 10)
           },
-          require: true,
         },
       },
     ],

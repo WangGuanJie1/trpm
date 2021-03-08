@@ -5,28 +5,50 @@ const {
   teacherFindByJobCode,
   teacherFindAll,
   teacherFindByTeacherId,
+  teacherMoreCreate,
 } = require("../controllers/teacher")
 const {
   securityComparePassword,
   securityFindByTeacherId,
   securityInitialize,
   checkSecurityIsDefault,
+  securityInitializeMore,
 } = require("../controllers/security")
-const { roleInitialize, roleFindByTeacherId } = require("../controllers/role")
+const {
+  roleInitialize,
+  roleFindByTeacherId,
+  roleInitializeMore,
+} = require("../controllers/role")
 const {
   settingInitialize,
   settingFindByTeacherId,
+  settingInitializeMore,
 } = require("../controllers/setting")
 const { creatToken } = require("../middlewares/token")
-const { entityFormat, stateFormat } = require("../controllers/dataFormat")
+const {
+  entityFormat,
+  stateFormat,
+  listFormat,
+} = require("../controllers/dataFormat")
 const { HTTP_SUCCEED } = require("../config/statusCode")
 
 router.post(
   "/create",
   teacherCreate,
   roleInitialize,
-  securityInitialize,
   settingInitialize,
+  securityInitialize,
+  (req, res) => {
+    res.json(stateFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message))
+  }
+)
+
+router.post(
+  "/createmore",
+  teacherMoreCreate,
+  roleInitializeMore,
+  settingInitializeMore,
+  securityInitializeMore,
   (req, res) => {
     res.json(stateFormat(HTTP_SUCCEED.code, HTTP_SUCCEED.message))
   }
