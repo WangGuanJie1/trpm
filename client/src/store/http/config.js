@@ -8,7 +8,6 @@ const DIC_DEPA = '/dictionary-department'
 const DIC_PROJ_STAG = '/dictionary-project-stage'
 const DIC_RESE_CATE = '/dictionary-research-category'
 const DIC_TERM = '/dictionary-term'
-const DIC_PROJ_BATC = '/dictionary-project-batch'
 const DIC_SECR_QUES = '/dictionary-secret-question'
 const PROJ = '/project'
 const PROJ_MEMB = '/project-member'
@@ -21,7 +20,7 @@ const TEAC_RESE_RESU = '/teaching-research-resume'
 const TEAC_RESU = '/teaching-resume'
 const LOG_PROJ_STAT = '/log-project-status'
 const TOKEN = '/token'
-const BATC_PART = '/batch-particulars'
+const BATC = '/batch'
 
 export default {
   EXECUTE_SIGN_IN: `${BASE_URL}${TEAC}/login`, // 登录
@@ -29,7 +28,6 @@ export default {
   LOAD_DICTIONARY_DEPARTMENT_INFO: `${BASE_URL}${DIC_DEPA}/all`, // 获取所有部门字典信息
   LOAD_DICTIONARY_RESEARCH_CATEGORY_INFO: `${BASE_URL}${DIC_RESE_CATE}/all`, // 获取所有研究类别字典信息
   LOAD_DICTIONARY_TERM_INFO: `${BASE_URL}${DIC_TERM}/all`, // 获取所有学期字典信息
-  LOAD_DICTIONARY_PROJECT_BATCH_INFO: `${BASE_URL}${DIC_PROJ_BATC}/all`, // 获取所有项目批次字典信息
   LOAD_DICTIONARY_SECRET_QUESTION_INFO: `${BASE_URL}${DIC_SECR_QUES}/all`, // 获取所有密保问题字典信息
   LOAD_PROJECT_INFO: `${BASE_URL}${PROJ}/all`, // 获取所有项目信息
   LOAD_PROJECT_MEMBER_INFO: `${BASE_URL}${PROJ_MEMB}/all`, // 获取所有项目成员信息
@@ -40,9 +38,8 @@ export default {
   LOAD_TEACHING_RESEARCH_RESUME_INFO: `${BASE_URL}${TEAC_RESE_RESU}/all`, // 获取所有主要科学研究和教学研究工作简历信息
   LOAD_TEACHING_RESUME_INFO: `${BASE_URL}${TEAC_RESU}/all`, // 获取所有主要教学工作简历信息
   LOAD_TEACHER_INFO: `${BASE_URL}${TEAC}/all`, // 获取所有教师信息
-  LOAD_BATCH_PARTICULARS_INFO: `${BASE_URL}${BATC_PART}/all`, // 获取所有批次详情信息
+  LOAD_BATCH_INFO: `${BASE_URL}${BATC}/all`, // 获取所有批次信息
   INITIALIZE_PROJECT: `${BASE_URL}${PROJ}/init`, // 初始化项目信息
-  INITIALIZE_BATCH_PARTICULARS: `${BASE_URL}${BATC_PART}/init`, // 初始化批次详情信息
   INITIALIZE_SECURITY_INFO: `${BASE_URL}${SECU}/init`, // 初始化安全信息
   FIND_TEACHER_BY_JOBCODE: `${BASE_URL}${TEAC}/find/by-jobcode`, // 根据工号查询教师信息
   FIND_ROLE_BY_TEACHERID: `${BASE_URL}${ROLE}/find/by-teacherid`, // 根据教师编号查询身份信息
@@ -52,16 +49,18 @@ export default {
   FIND_TEACHER_SECUITY_INFO_BY_TEACHERID: `${BASE_URL}${SECU}/find/by-teacherid`, // 根据教师编号查询当前教师安全信息
   FIND_SECURITY_QUESTION_BY_TEACHERID: `${BASE_URL}${SECU}/find/question/by-teacherid`, // 根据教师编号查询当前教师安全问题
   FIND_TEACHER_INFO_BY_TEACHERID: `${BASE_URL}${TEAC}/find/by-teacherid`, // 根据教师编号查找教师信息
+  CREATE_BATCH: `${BASE_URL}${BATC}/create`, // 创建批次信息
   CREATE_DICTIONARY_TERM: `${BASE_URL}${DIC_TERM}/create`, // 创建学期字典信息
   CREATE_DICTIONARY_ROLE: `${BASE_URL}${DIC_ROLE}/create`, // 创建身份字典信息
   CREATE_DICTIONARY_RESEARCH_CATEGORY: `${BASE_URL}${DIC_RESE_CATE}/create`, // 创建研究类别字典信息
   CREATE_DICTIONARY_PROJECT_STAGE: `${BASE_URL}${DIC_PROJ_STAG}/create`, // 创建项目阶段字典信息
-  CREATE_DICTIONARY_PROJECT_BATCH: `${BASE_URL}${DIC_PROJ_BATC}/create`, // 创建项目批次字典信息
   CREATE_DICTIONARY_DEPARTMENT: `${BASE_URL}${DIC_DEPA}/create`, // 创建部门字典信息
   CREATE_DICTIONARY_SECRET_QUESTION: `${BASE_URL}${DIC_SECR_QUES}/create`, // 创建密保问题字典信息
   CREATE_LOG_PROJECT_STATUS: `${BASE_URL}${LOG_PROJ_STAT}/create`, // 创建项目状态日志信息
   CREATE_TOKEN: `${BASE_URL}${TOKEN}/creat`, // 创建token
   CREATE_PROJECT_MEMBER: `${BASE_URL}${PROJ_MEMB}/create`, // 创建项目成员
+  CREATE_TEACHER: `${BASE_URL}${TEAC}/create`, // 创建单个教师（并初始化security、role、setting）
+  CREATE_MORE_TEACHER: `${BASE_URL}${TEAC}/createmore`, // 批量创建教师（并初始化security、role、setting）
   UPDATE_PROJECT_BY_ID: `${BASE_URL}${PROJ}/update/by-id`, // 根据项目编号更新项目信息
   VERIFY_TOKEN: `${BASE_URL}${TOKEN}/verify`, // 验证token
   VERIFY_TYPE_BY_TEACHERID: `${BASE_URL}${SECU}/verifytype`, // 获取安全验证方式

@@ -4,7 +4,7 @@ const subMenu = subMenuList[7]
 
 export default [
   {
-    path: `/${subMenu.key}/all/dept/management`,
+    path: 'all/dept/management',
     name: 'allDeptManagement',
     // TODO: 组件暂时未做
     component: () => import('@/views/list/projectSelectionApplication'),
@@ -15,7 +15,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/own/dept/management`,
+    path: 'own/dept/management',
     name: 'ownDeptManagement',
     // TODO: 组件暂时未做
     component: () => import('@/views/list/projectSelectionApplication'),

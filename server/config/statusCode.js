@@ -193,13 +193,13 @@ module.exports = {
     code: 3038,
     message: "Token已过期",
   },
-  NOT_FOUND_BATCH_PARTICULARS_INFO: {
+  NOT_FOUND_BATCH_INFO: {
     code: 3039,
-    message: "没有找到批次详情信息",
+    message: "没有找到批次信息",
   },
-  INITIALIZE_BATCH_PARTICULARS_ERROR: {
+  CREATE_BATCH_ERROR: {
     code: 3040,
-    message: "初始化批次详情信息失败",
+    message: "创建批次信息失败",
   },
   NOT_FOUND_PROJECT_MEMBER_INFO_BY_JOBCODE: {
     code: 3041,

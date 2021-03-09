@@ -4,7 +4,7 @@ const subMenu = subMenuList[8]
 
 export default [
   {
-    path: `/${subMenu.key}/personal/center`,
+    path: '/personal/center',
     name: 'personalCenter',
     component: () => import('@/views/account/PersonalCenter'),
     meta: {
@@ -14,7 +14,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/security/setting`,
+    path: '/security/setting',
     name: 'securitySetting',
     component: () => import('@/views/account/SecuritySetting'),
     meta: {
@@ -24,7 +24,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/system/setting`,
+    path: '/system/setting',
     name: 'systemSetting',
     component: () => import('@/views/account/SyetemSetting'),
     meta: {

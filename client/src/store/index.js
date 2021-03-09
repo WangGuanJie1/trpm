@@ -14,9 +14,8 @@ export default createStore({
     dictionaryTermInfo: [], // 学期字典
     dictionaryDepartmentInfo: [], // 部门字典
     dictionaryRoleInfo: [], // 身份字典
-    dictionaryProjectBatchInfo: [], // 项目批次字典
-    dictionarySecretQuestionInfo: [], // 密保问题字典
-    batchParticularsInfo: [] // 批次详细信息
+    batchInfo: [], // 项目批次信息
+    dictionarySecretQuestionInfo: [] // 密保问题字典
   },
   getters: {},
   mutations: {
@@ -46,14 +45,11 @@ export default createStore({
     SET_DICTIONARY_ROLE_INFO: (state, dictionaryRoleInfo) => {
       state.dictionaryRoleInfo = dictionaryRoleInfo
     },
-    SET_DICTIONARY_PROJECT_BATCH_INFO: (state, dictionaryProjectBatchInfo) => {
-      state.dictionaryProjectBatchInfo = dictionaryProjectBatchInfo
+    SET_BATCH_INFO: (state, batchInfo) => {
+      state.batchInfo = batchInfo
     },
     SET_DICTIONARY_SECRET_QUESTION_INFO: (state, dictionarySecretQuestionInfo) => {
       state.dictionarySecretQuestionInfo = dictionarySecretQuestionInfo
-    },
-    SET_BATCH_PARTICULARS_INFO: (state, batchParticularsInfo) => {
-      state.batchParticularsInfo = batchParticularsInfo
     },
     SET_TEACHER_PROJECT_INFO: (state, teacherProjectInfo) => {
       state.teacherProjectInfo = teacherProjectInfo
@@ -86,9 +82,8 @@ export default createStore({
           dispatch('loadDictionaryTermInfo')
           dispatch('loadDictionaryDepartmentInfo')
           dispatch('loadDictionaryRoleInfo')
-          dispatch('loadDictionaryProjectBatchInfo')
+          dispatch('loadBatchInfo')
           dispatch('loadDictionarySecretQuestionInfo')
-          dispatch('loadBatchParticularsInfo')
           const jobCode = res.data.currentTeacherInfo.teacherInfo.jobCode
           dispatch('findTeacherProjectInfoByJobcode', { jobCode })
         })
@@ -184,20 +179,35 @@ export default createStore({
       })
     },
     /**
-     * 获取所有项目批次字典信息
-     * @method loadDictionaryProjectBatchInfo
+     * 获取所有项目批次信息
+     * @method loadBatchInfo
      * @param {Function} commit context.commit
-     * @returns {Object} 所有身份字典信息
+     * @returns {Object} 所有批次信息
      */
-    loadDictionaryProjectBatchInfo: ({ commit }) => {
-      return getPromiseActionNoMutations(api.loadDictionaryProjectBatchInfo()).then((res, err) => {
+    loadBatchInfo: ({ commit }) => {
+      return getPromiseActionNoMutations(api.loadBatchInfo()).then((res, err) => {
         if (err) {
           console.log(err)
           return
         }
         stateSuccessVerify(res.code, () => {
-          commit('SET_DICTIONARY_PROJECT_BATCH_INFO', res.data)
+          commit('SET_BATCH_INFO', res.data)
         })
+        return res
+      })
+    },
+    /**
+     * 创建项目批次信息
+     * @method createBatch
+     * @param {Function} commit context.commit
+     * @returns {Object} 创建成功后的批次信息
+     */
+    createBatch: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.createBatch(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
         return res
       })
     },
@@ -274,22 +284,6 @@ export default createStore({
      */
     createDictionaryTerm: ({ commit }, payload) => {
       return getPromiseActionNoMutations(api.createDictionaryTerm(payload)).then((res, err) => {
-        if (err) {
-          console.log(err)
-          return
-        }
-        return res
-      })
-    },
-    /**
-     * 创建项目批次字典信息
-     * @method createDictionaryProjectBatch
-     * @param {Function} commit context.commit
-     * @param {Object} payload 负载
-     * @returns {Object} 创建成功后的项目批次字典信息
-     */
-    createDictionaryProjectBatch: ({ commit }, payload) => {
-      return getPromiseActionNoMutations(api.createDictionaryProjectBatch(payload)).then((res, err) => {
         if (err) {
           console.log(err)
           return
@@ -409,24 +403,6 @@ export default createStore({
           console.log(err)
           return
         }
-        return res
-      })
-    },
-    /**
-     * 获取所有批次详情信息
-     * @method loadBatchParticularsInfo
-     * @param {Function} commit context.commit
-     * @returns {Object} 所有批次详情信息
-     */
-    loadBatchParticularsInfo: ({ commit }) => {
-      return getPromiseActionNoMutations(api.loadBatchParticularsInfo()).then((res, err) => {
-        if (err) {
-          console.log(err)
-          return
-        }
-        stateSuccessVerify(res.code, () => {
-          commit('SET_BATCH_PARTICULARS_INFO', res.data)
-        })
         return res
       })
     },
@@ -698,6 +674,38 @@ export default createStore({
      */
     updateEmail: ({ commit }, payload) => {
       return getPromiseActionNoMutations(api.updateEmail(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
+    },
+    /**
+     * 创建单个教师（并初始化security、role、setting）
+     * @method createTeacher
+     * @param {Function} commit context.commit
+     * @param {Object} payload 负载
+     * @returns {Object} 是否成功创建状态
+     */
+    createTeacher: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.createTeacher(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
+    },
+    /**
+     * 批量创建教师（并初始化security、role、setting）
+     * @method createMoreTeacher
+     * @param {Function} commit context.commit
+     * @param {Object} payload 负载
+     * @returns {Object} 是否成功创建状态
+     */
+    createMoreTeacher: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.createMoreTeacher(payload)).then((res, err) => {
         if (err) {
           console.log(err)
           return

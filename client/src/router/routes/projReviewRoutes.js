@@ -4,7 +4,7 @@ const subMenu = subMenuList[3]
 
 export default [
   {
-    path: `/${subMenu.key}/set/specialist`,
+    path: '/set/specialist',
     name: '没有组件',
     // TODO: 组件暂时未做
     component: () => import('@/views/list/projectSelectionApplication'),
@@ -15,7 +15,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/project/review`,
+    path: '/project/review',
     name: 'projectReview',
     // TODO: 组件暂时未做
     component: () => import('@/views/list/projectSelectionApplication'),

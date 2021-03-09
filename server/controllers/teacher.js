@@ -9,7 +9,7 @@ const {
   CREATE_MORE_TEACHER_ERROR,
 } = require("../config/statusCode")
 const { fillAllMust } = require("../middlewares/fillMustRecord")
-const workerThreads = require("worker_threads") // 工作线程模块
+// const workerThreads = require("worker_threads") // 工作线程模块
 
 module.exports = {
   /**

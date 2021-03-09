@@ -4,7 +4,7 @@ const subMenu = subMenuList[5]
 
 export default [
   {
-    path: `/${subMenu.key}/school/publish`,
+    path: '/school/publish',
     name: 'schoolPublishAnno',
     // TODO: 组件暂时未做
     component: () => import('@/components/ActionCard/ActionCard'),
@@ -15,7 +15,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/dept/publish`,
+    path: '/dept/publish',
     name: 'deptPublishAnno',
     // TODO: 组件暂时未做
     component: () => import('@/components/ActionCard/ActionCard'),
@@ -26,7 +26,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/school/management`,
+    path: '/school/management',
     name: 'schoolManagementAnno',
     // TODO: 组件暂时未做
     component: () => import('@/components/ActionCard/ActionCard'),
@@ -37,7 +37,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/dept/management`,
+    path: '/dept/management',
     name: 'deptManagementAnno',
     // TODO: 组件暂时未做
     component: () => import('@/components/ActionCard/ActionCard'),
@@ -48,7 +48,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/school/view`,
+    path: '/school/view',
     name: 'schoolViewAnno',
     // TODO: 组件暂时未做
     component: () => import('@/components/ActionCard/ActionCard'),
@@ -59,7 +59,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/dept/view`,
+    path: '/dept/view',
     name: 'deptViewAnno',
     // TODO: 组件暂时未做
     component: () => import('@/components/ActionCard/ActionCard'),

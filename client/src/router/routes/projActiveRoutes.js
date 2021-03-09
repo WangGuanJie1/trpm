@@ -4,9 +4,9 @@ const subMenu = subMenuList[1]
 
 export default [
   {
-    path: `/${subMenu.key}/create/batch`,
+    path: '/create/batch',
     name: 'createBatch',
-    component: () => import('@/views/form/createProjectBatch'),
+    component: () => import('@/views/active/CreateBatch'),
     meta: {
       title: '创建项目批次信息',
       roles: [sLeader.name],
@@ -14,7 +14,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/project/setup`,
+    path: '/project/setup',
     name: 'projectSetUp',
     component: () => import('@/views/list/projectSelectionApplication'),
     meta: {
@@ -24,7 +24,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/project/phase/check`,
+    path: '/project/phase/check',
     name: 'projectPhaseCheck',
     // TODO: 组件暂时未做
     component: () => import('@/views/list/projectSelectionApplication'),
@@ -35,7 +35,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/project/final/check`,
+    path: '/project/final/check',
     name: 'projectFinalCheck',
     // TODO: 组件暂时未做
     component: () => import('@/views/list/projectSelectionApplication'),

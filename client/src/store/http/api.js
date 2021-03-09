@@ -68,17 +68,6 @@ export default {
     return res
   },
   /**
-   * 请求所有项目批次字典信息
-   * @method loadDictionaryProjectBatchInfo
-   * @returns {Array} 项目批次字典信息
-   */
-  loadDictionaryProjectBatchInfo: async () => {
-    const res = await http({
-      url: config.LOAD_DICTIONARY_PROJECT_BATCH_INFO
-    })
-    return res
-  },
-  /**
    * 请求所有项目信息
    * @method loadProjectInfo
    * @returns {Array} 项目信息
@@ -269,19 +258,6 @@ export default {
     return res
   },
   /**
-   * 创建项目批次字典信息
-   * @method createDictionaryProjectBatch
-   * @param {Object} payload 负载
-   * @returns {Object} 创建成功后的项目批次字典信息
-   */
-  createDictionaryProjectBatch: async (payload) => {
-    const res = await http({
-      url: config.CREATE_DICTIONARY_PROJECT_BATCH,
-      data: payload
-    })
-    return res
-  },
-  /**
    * 创建部门字典信息
    * @method createDictionaryDepartment
    * @param {Object} payload 负载
@@ -364,13 +340,27 @@ export default {
     return res
   },
   /**
-   * 请求所有批次详情信息
-   * @method loadBatchParticularsInfo
-   * @returns {Array} 批次详情信息
+   * 获取所有批次信息
+   * @method loadBatchInfo
+   * @returns {Array} 批次信息
    */
-  loadBatchParticularsInfo: async () => {
+  loadBatchInfo: async () => {
     const res = await http({
-      url: config.LOAD_BATCH_PARTICULARS_INFO
+      url: config.LOAD_BATCH_INFO
+    })
+    return res
+  },
+  /**
+   * 创建批次信息
+   * @method createBatch
+   * @param {Object} payload 负载
+   * @returns {Object} 创建成功后的批次信息
+   */
+  createBatch: async (payload) => {
+    const res = await http({
+      url: config.CREATE_BATCH,
+      method: 'post',
+      data: payload
     })
     return res
   },
@@ -602,6 +592,34 @@ export default {
   updateEmail: async (payload) => {
     const res = await http({
       url: config.UPDATE_EMAIL,
+      method: 'post',
+      data: payload
+    })
+    return res
+  },
+  /**
+   * 创建单个教师（并初始化security、role、setting）
+   * @method createTeacher
+   * @param {Object} payload 负载
+   * @returns {Object} 是否成功创建状态
+   */
+  createTeacher: async (payload) => {
+    const res = await http({
+      url: config.CREATE_TEACHER,
+      method: 'post',
+      data: payload
+    })
+    return res
+  },
+  /**
+   * 批量创建教师（并初始化security、role、setting）
+   * @method createMoreTeacher
+   * @param {Object} payload 负载
+   * @returns {Object} 是否成功创建状态
+   */
+  createMoreTeacher: async (payload) => {
+    const res = await http({
+      url: config.CREATE_MORE_TEACHER,
       method: 'post',
       data: payload
     })

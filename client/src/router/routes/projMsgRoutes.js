@@ -4,7 +4,7 @@ const subMenu = subMenuList[2]
 
 export default [
   {
-    path: `/${subMenu.key}/personal/project/view`,
+    path: '/personal/project/view',
     name: 'personalProjectView',
     // TODO: 组件暂时未做
     component: () => import('@/views/list/projectSelectionApplication'),
@@ -15,7 +15,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/dept/project/view`,
+    path: '/dept/project/view',
     name: 'deptProjectView',
     // TODO: 组件暂时未做
     component: () => import('@/views/list/projectSelectionApplication'),
@@ -26,7 +26,7 @@ export default [
     }
   },
   {
-    path: `/${subMenu.key}/school/project/view`,
+    path: '/school/project/view',
     name: 'schoolProjectView',
     // TODO: 组件暂时未做
     component: () => import('@/views/list/projectSelectionApplication'),
