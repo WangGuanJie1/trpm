@@ -35,10 +35,10 @@ router.beforeEach((to, from, next) => {
       store.dispatch('verifyToken').then((res, err) => {
         const verifyToken = res.code === 200 && res.data.tokenUser === store.state.currentTeacherInfo.teacherInfo._id
         if (verifyToken) {
-          console.log(to.name + '的权限验证通过')
+          // 访问页面的权限验证通过
           callback()
         } else {
-          console.log(to.name + '的权限验证不通过')
+          // 访问页面的权限验证不通过
           callback2()
         }
       })

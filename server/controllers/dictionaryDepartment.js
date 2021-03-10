@@ -4,6 +4,7 @@ const { stateFormat } = require("./dataFormat")
 const {
   NOT_FOUND_DICTIONARY_DEPARTMENT_INFO,
   CREATE_DICTIONARY_DEPARTMENT_ERROR,
+  CREATE_MORE_DICTIONARY_DEPARTMENT_ERROR,
 } = require("../config/statusCode")
 const { fillAllMust } = require("../middlewares/fillMustRecord")
 
@@ -50,6 +51,30 @@ module.exports = {
           stateFormat(
             CREATE_DICTIONARY_DEPARTMENT_ERROR.code,
             CREATE_DICTIONARY_DEPARTMENT_ERROR.message
+          )
+        )
+      }
+    })
+  },
+  /**
+   * 批量创建部门
+   * @method dictionaryDepartmentCreateMore
+   */
+  dictionaryDepartmentCreateMore: async (req, res, next) => {
+    req = fillAllMust(req)
+    DictionaryDepartment.insertMany(req.data, (err, doc) => {
+      if (err) {
+        console.log(err)
+        next(createHttpError(404))
+      }
+      if (doc) {
+        req.dictionaryDepartmentInfo = doc
+        next()
+      } else {
+        res.json(
+          stateFormat(
+            CREATE_MORE_DICTIONARY_DEPARTMENT_ERROR.code,
+            CREATE_MORE_DICTIONARY_DEPARTMENT_ERROR.message
           )
         )
       }

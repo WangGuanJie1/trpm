@@ -8,8 +8,25 @@ module.exports = {
    * @returns {Object} 修改后的请求信息
    */
   fillCreatedBy: (req) => {
-    if (req.query.handler) req.query.createdBy = req.query.handler
-    if (req.body.handler) req.body.createdBy = req.body.handler
+    const isDone = false // 判断是否在GET/POST请求中找到 handle
+    // 如果是GET请求就重新赋值到req.query中
+    const isGet = () => {
+      req.query.createdBy = req.query.handler
+      isDone = 1
+    }
+    // 如果是POST请求就重新赋值到req.body中
+    const isPost = () => {
+      req.body.createdBy = req.body.handler
+      isDone = 1
+    }
+    // 如果GET和POST请求中都没有找到 handle 则执行此方法
+    const isOther = () => {
+      req.query.createdBy = "administrator"
+      req.body.createdBy = "administrator"
+    }
+    req.query.handler ? isGet() : false
+    req.body.handler ? isPost() : false
+    isDone ? false : isOther()
     return req
   },
 
@@ -19,13 +36,25 @@ module.exports = {
    * @returns {Object} 修改后的请求信息
    */
   fillUpdatedBy: (req) => {
-    if (req.query.handler) {
+    const isDone = false // 判断是否在GET/POST请求中找到 handle
+    // 如果是GET请求就重新赋值到req.query中
+    const isGet = () => {
       req.query.updatedBy = req.query.handler
-    } else {
-      req.body.handler
-        ? () => (req.body.updatedBy = req.body.handler)
-        : "administrator"
+      isDone = 1
     }
+    // 如果是POST请求就重新赋值到req.body中
+    const isPost = () => {
+      req.body.updatedBy = req.body.handler
+      isDone = 1
+    }
+    // 如果GET和POST请求中都没有找到 handle 则执行此方法
+    const isOther = () => {
+      req.query.updatedBy = "administrator"
+      req.body.updatedBy = "administrator"
+    }
+    req.query.handler ? isGet() : false
+    req.body.handler ? isPost() : false
+    isDone ? false : isOther()
     return req
   },
 
@@ -35,18 +64,18 @@ module.exports = {
    * @returns {Object} 修改后的请求信息
    */
   fillAllMust: (req) => {
-    req.query.handler
-      ? () => {
-          req.query.createdBy = req.query.handler
-          req.query.updatedBy = req.query.handler
-        }
-      : false
-    req.body.handler
-      ? () => {
-          req.body.createdBy = req.body.handler
-          req.body.updatedBy = req.body.handler
-        }
-      : false
+    // 如果是GET请求就重新赋值到req.query中
+    const isGet = () => {
+      req.query.createdBy = req.query.handler
+      req.query.updatedBy = req.query.handler
+    }
+    // 如果是POST请求就重新赋值到req.body中
+    const isPost = () => {
+      req.body.createdBy = req.body.handler
+      req.body.updatedBy = req.body.handler
+    }
+    req.query.handler ? isGet() : false
+    req.body.handler ? isPost() : false
     return req
   },
 }

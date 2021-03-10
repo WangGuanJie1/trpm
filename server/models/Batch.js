@@ -9,10 +9,15 @@ const model = mongoose.model
 
 const BatchSchema = new Schema(
   {
+    // 批次名称
+    name: {
+      type: String,
+      required: true,
+    },
     level: {
       type: String,
       enum: ["simple", "major"],
-      require: true,
+      required: true,
     },
     // 项目申报起始时间（yyyy-MM-dd hh:mm:ss）
     deInTi: {

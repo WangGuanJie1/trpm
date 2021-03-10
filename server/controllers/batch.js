@@ -33,6 +33,7 @@ module.exports = {
    * @method createBatch
    */
   createBatch: async (req, res, next) => {
+    req = fillAllMust(req)
     Batch.create(req.body, (err, doc) => {
       if (err) {
         console.log(err)

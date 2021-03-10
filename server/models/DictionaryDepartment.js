@@ -14,6 +14,10 @@ const DictionaryDepartmentSchema = new Schema(
       type: String,
       required: true,
     },
+    departmentId: {
+      type: Number,
+      required: true,
+    },
     // 创建人
     createdBy: {
       type: String,

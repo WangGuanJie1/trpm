@@ -269,4 +269,8 @@ module.exports = {
     code: 3047,
     message: "批量初始化账号风格配置失败",
   },
+  CREATE_MORE_DICTIONARY_DEPARTMENT_ERROR: {
+    code: 3048,
+    message: "批量创建部门失败",
+  },
 }
