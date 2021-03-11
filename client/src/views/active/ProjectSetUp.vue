@@ -79,7 +79,7 @@ export default {
         batchList.value = res.data
       }
     })
-
+    console.log(12)
     return {
       state,
       columns,
