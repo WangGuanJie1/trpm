@@ -61,8 +61,7 @@ module.exports = {
    * @method dictionaryDepartmentCreateMore
    */
   dictionaryDepartmentCreateMore: async (req, res, next) => {
-    req = fillAllMust(req)
-    DictionaryDepartment.insertMany(req.data, (err, doc) => {
+    DictionaryDepartment.insertMany(req.body.data, (err, doc) => {
       if (err) {
         console.log(err)
         next(createHttpError(404))

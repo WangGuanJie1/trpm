@@ -624,5 +624,19 @@ export default {
       data: payload
     })
     return res
+  },
+  /**
+   * 批量创建部门
+   * @method createMoreDepartmentDictionary
+   * @param {Object} payload 负载
+   * @returns {Object} 是否成功创建状态
+   */
+  createMoreDepartmentDictionary: async (payload) => {
+    const res = await http({
+      url: config.CREATE_MORE_DICTIONARY_DEPARTMENT,
+      method: 'post',
+      data: payload
+    })
+    return res
   }
 }

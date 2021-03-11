@@ -61,7 +61,7 @@ export default {
   CREATE_PROJECT_MEMBER: `${BASE_URL}${PROJ_MEMB}/create`, // 创建项目成员
   CREATE_TEACHER: `${BASE_URL}${TEAC}/create`, // 创建单个教师（并初始化security、role、setting）
   CREATE_MORE_TEACHER: `${BASE_URL}${TEAC}/createmore`, // 批量创建教师（并初始化security、role、setting）
-  UPDATE_PROJECT_BY_ID: `${BASE_URL}${PROJ}/update/by-id`, // 根据项目编号更新项目信息
+  CREATE_MORE_DICTIONARY_DEPARTMENT: `${BASE_URL}${DIC_DEPA}/createmore`, // 批量创建部门
   VERIFY_TOKEN: `${BASE_URL}${TOKEN}/verify`, // 验证token
   VERIFY_TYPE_BY_TEACHERID: `${BASE_URL}${SECU}/verifytype`, // 获取安全验证方式
   VERIFY_APPLY_QUALIFICATION: `${BASE_URL}${PROJ_MEMB}/veApQu`, // 验证项目申请资格
@@ -69,6 +69,7 @@ export default {
   VERITY_EMAIL: `${BASE_URL}${SECU}/verify/email/by-teacherid`, // 邮箱校验
   VERITY_QUESTION: `${BASE_URL}${SECU}/verify/question/by-teacherid`, // 密保问题校验
   VERITY_IDCARD: `${BASE_URL}${SECU}/verify/idcard/by-teacherid`, // 身份证号码校验
+  UPDATE_PROJECT_BY_ID: `${BASE_URL}${PROJ}/update/by-id`, // 根据项目编号更新项目信息
   UPDATE_PASSWORD: `${BASE_URL}${SECU}/update/password`, // 根据教师编号更改密码
   UPDATE_EMAIL: `${BASE_URL}${SECU}/update/email` // 根据教师编号更改邮箱
 }

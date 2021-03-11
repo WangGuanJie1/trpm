@@ -14,7 +14,6 @@ export default createStore({
     dictionaryTermInfo: [], // 学期字典
     dictionaryDepartmentInfo: [], // 部门字典
     dictionaryRoleInfo: [], // 身份字典
-    batchInfo: [], // 项目批次信息
     dictionarySecretQuestionInfo: [] // 密保问题字典
   },
   getters: {},
@@ -44,9 +43,6 @@ export default createStore({
     },
     SET_DICTIONARY_ROLE_INFO: (state, dictionaryRoleInfo) => {
       state.dictionaryRoleInfo = dictionaryRoleInfo
-    },
-    SET_BATCH_INFO: (state, batchInfo) => {
-      state.batchInfo = batchInfo
     },
     SET_DICTIONARY_SECRET_QUESTION_INFO: (state, dictionarySecretQuestionInfo) => {
       state.dictionarySecretQuestionInfo = dictionarySecretQuestionInfo
@@ -82,7 +78,6 @@ export default createStore({
           dispatch('loadDictionaryTermInfo')
           dispatch('loadDictionaryDepartmentInfo')
           dispatch('loadDictionaryRoleInfo')
-          dispatch('loadBatchInfo')
           dispatch('loadDictionarySecretQuestionInfo')
           const jobCode = res.data.currentTeacherInfo.teacherInfo.jobCode
           dispatch('findTeacherProjectInfoByJobcode', { jobCode })
@@ -190,9 +185,6 @@ export default createStore({
           console.log(err)
           return
         }
-        stateSuccessVerify(res.code, () => {
-          commit('SET_BATCH_INFO', res.data)
-        })
         return res
       })
     },
@@ -705,6 +697,22 @@ export default createStore({
      * @returns {Object} 是否成功创建状态
      */
     createMoreTeacher: ({ commit }, payload) => {
+      return getPromiseActionNoMutations(api.createMoreTeacher(payload)).then((res, err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        return res
+      })
+    },
+    /**
+     * 批量创建部门
+     * @method createMoreDepartmentDictionary
+     * @param {Function} commit context.commit
+     * @param {Object} payload 负载
+     * @returns {Object} 是否成功创建状态
+     */
+    createMoreDepartmentDictionary: ({ commit }, payload) => {
       return getPromiseActionNoMutations(api.createMoreTeacher(payload)).then((res, err) => {
         if (err) {
           console.log(err)
