@@ -4,16 +4,12 @@
       <a-spin tip="正在创建项目..." :spinning="state.isLoading">
         <a-table :columns="columns" :data-source="batchList" :pagination="tablePaginationOption" bordered>
           <template #name="{ record }">
-            {{ record }}
+            {{ record.name }}
           </template>
-          <template #level>
-            {{ record.level }}
+          <template #level="{ record }">
+            {{ record.level === 'simple' ? '一般项目' : '重点项目' }}
           </template>
-          <template #time="{ record }">
-            {{ record.deInTi }} -
-            {{ record.deClTi }}
-          </template>
-          <template #timeRange="{ record }"> {{ record.level }}</template>
+          <template #timeRange="{ record }"> {{ toDate(record.deInTi) }} ~ {{ toDate(record.deClTi) }}</template>
           <template #operation="{ record }">
             <a>申请项目{{ record.level }}</a>
           </template>
@@ -28,6 +24,7 @@ import BaseContentLayout from '@/views/layouts/BaseContentLayout'
 import { Table, Spin } from 'ant-design-vue'
 import { reactive, ref } from 'vue'
 import { useStore } from 'vuex'
+import { toDate } from '@/utils/timeChange'
 
 export default {
   components: {
@@ -72,19 +69,20 @@ export default {
     const state = reactive({
       isLoading: false // 验证是否有资格申报时候的加载动画
     })
-    const batchList = ref([]) // 批次列表
+    const batchList = ref([]) // 批次数据
     // 获取所有批次信息
     store.dispatch('loadBatchInfo').then((res, err) => {
-      if (res === 200) {
+      if (res.code === 200) {
         batchList.value = res.data
+        console.log(batchList.value)
       }
     })
-    console.log(12)
     return {
       state,
       columns,
       batchList,
-      tablePaginationOption
+      tablePaginationOption,
+      toDate
     }
   }
 }
