@@ -20,11 +20,11 @@ const ProjectSchema = new Schema(
       default: null,
       ref: "dictionary_research_category",
     },
-    // 项目所属批次编号（数据来自dictionary_project_batch._id）
-    _projectBatchId: {
+    // 项目所属批次编号（数据来自batch._id）
+    _batchId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "dictionary_project_batch",
+      ref: "batch",
     },
     // 所在部门（数据来源未确定）
     department: {

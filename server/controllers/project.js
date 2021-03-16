@@ -38,9 +38,9 @@ module.exports = {
    */
   projectInitialize: async (req, res, next) => {
     req = fillAllMust(req)
-    const { _projectBatchId, createdBy, updatedBy } =
+    const { _batchId, createdBy, updatedBy } =
       JSON.stringify(req.query) !== "{}" ? req.query : req.body
-    Project.create({ _projectBatchId, createdBy, updatedBy }, (err, doc) => {
+    Project.create({ _batchId, createdBy, updatedBy }, (err, doc) => {
       if (err) {
         console.log(err)
         next(createHttpError(404))

@@ -43,5 +43,3 @@ const createSubMenu = () => {
 
 // 这里返回的是一个总集合，具体如何规定导航应该如何显示由调用该方法的组件控制
 export const subMenu = createSubMenu()
-
-console.log(subMenu)

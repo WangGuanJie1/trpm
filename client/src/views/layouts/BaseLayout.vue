@@ -1,35 +1,38 @@
 <template>
-  <a-layout id="base-layout-wrapper" class="base-layout-wrapper">
-    <a-layout-sider
-      :collapsed="state.collapsed"
-      width="256"
-      :trigger="null"
-      collapsible
-      :theme="state.navTheme"
-      class="base-layout-sider-wrapper"
-    >
-      <GlobalSider :collapsed="state.collapsed" :navTheme="state.navTheme" />
-    </a-layout-sider>
-    <a-layout>
-      <a-layout-header class="base-layout-header-wrapper">
-        <a-row type="flex" justify="space-between">
-          <a-col>
-            <menu-fold-outlined class="trigger" v-if="!state.collapsed" @click="toggleCollapsed" />
-            <menu-unfold-outlined class="trigger" v-else @click="toggleCollapsed" />
-          </a-col>
-          <a-col>
-            <AvatarDropdown />
-          </a-col>
-        </a-row>
-      </a-layout-header>
-      <a-layout-content class="base-layout-content-wrapper">
-        <router-view class="min-content-height"> </router-view>
-      </a-layout-content>
+  <div id="base-layout-wrapper">
+    <a-layout class="base-layout-wrapper">
+      <a-back-top :visibilityHeight="100" />
+      <a-layout-sider
+        :collapsed="state.collapsed"
+        width="256"
+        :trigger="null"
+        collapsible
+        :theme="state.navTheme"
+        class="base-layout-sider-wrapper"
+      >
+        <GlobalSider :collapsed="state.collapsed" :navTheme="state.navTheme" />
+      </a-layout-sider>
+      <a-layout>
+        <a-layout-header class="base-layout-header-wrapper">
+          <a-row type="flex" justify="space-between">
+            <a-col>
+              <menu-fold-outlined class="trigger" v-if="!state.collapsed" @click="toggleCollapsed" />
+              <menu-unfold-outlined class="trigger" v-else @click="toggleCollapsed" />
+            </a-col>
+            <a-col>
+              <AvatarDropdown />
+            </a-col>
+          </a-row>
+        </a-layout-header>
+        <a-layout-content class="base-layout-content-wrapper">
+          <router-view class="min-content-height"> </router-view>
+        </a-layout-content>
+      </a-layout>
     </a-layout>
-  </a-layout>
+  </div>
 </template>
 <script>
-import { Layout, Row, Col } from 'ant-design-vue'
+import { Layout, Row, Col, BackTop } from 'ant-design-vue'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 import GlobalSider from '@/components/GlobalSider'
 import { useStore } from 'vuex'
@@ -44,6 +47,7 @@ export default {
     ALayoutContent: Layout.Content,
     ARow: Row,
     ACol: Col,
+    ABackTop: BackTop,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     GlobalSider,

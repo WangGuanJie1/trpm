@@ -17,7 +17,7 @@ export default [
     path: '/project/setup',
     name: 'projectSetUp',
     // component: () => import('@/views/list/projectSelectionApplication'),
-    component: () => import('@/views/active/ProjectSetUp'),
+    component: () => import('@/views/active/setup/BatchList'),
     meta: {
       title: '项目立项申报',
       roles: [teacher.name, sLeader.name, dLeader.name, specialist.name],

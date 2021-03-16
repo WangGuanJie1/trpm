@@ -35,5 +35,15 @@ export default [
       roles: [sLeader.name],
       subMenu: subMenu.key
     }
+  },
+  {
+    path: '/project/setup/:projectId',
+    name: 'projectSetupItem',
+    // TODO: 组件暂时未做
+    component: () => import('@/views/active/setup/ProjectSetUp'),
+    meta: {
+      title: '创建项目',
+      roles: [teacher.name, sLeader.name, dLeader.name, specialist.name]
+    }
   }
 ]

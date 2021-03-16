@@ -274,6 +274,7 @@ module.exports = {
     ProjectMember.create(payload, (err, doc) => {
       if (err) {
         console.log(err)
+        console.log(2345678)
         next(createHttpError(404))
       }
       if (doc) {
